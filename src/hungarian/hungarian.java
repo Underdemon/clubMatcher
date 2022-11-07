@@ -76,13 +76,13 @@ public class hungarian
     /**
      * Step 3 - Zero Marking
      * 
-     * mark all reduced values that are equal to 0 with a "square"
-     * preferably one zero per row and column (one zero per worker job pair)
+     * mark all reduced values that are equal to 0 with a "star"
+     * one zero per row and column (one zero per worker job pair)
      */
     private void zeroMarker()
     {
-        int[] row_has_zero = new int[cost_matrix.length];
-        int[] col_has_zero = new int[cost_matrix[0].length];
+        int[] row_has_starred_zero = new int[cost_matrix.length];
+        int[] col_has_starred_zero = new int[cost_matrix[0].length];
         
         for(int i = 0; i < cost_matrix.length; ++i)
         {
@@ -95,20 +95,20 @@ public class hungarian
                  *      no already marked 0s in the column
                  */
                 
-                if(cost_matrix[i][j] == 0 && row_has_zero[i] == 0 && col_has_zero[j] == 0)
+                if(cost_matrix[i][j] == 0 && row_has_starred_zero[i] == 0 && col_has_starred_zero[j] == 0)
                 {
                     // mark that the current row now has a 0
-                    row_has_zero[i] = 1;
+                    row_has_starred_zero[i] = 1;
                     
                     // and the current column now has a 0
-                    col_has_zero[j] = 1;
+                    col_has_starred_zero[j] = 1;
                     
                     // save row position of 0
                     zero_row[i] = j;
                     // save column position of 0
                     zero_col[j] = i;
                     
-                    continue;   // move to the next row
+                    continue;   // next row ( a zero has been discovered )
                 }
             }
         }
@@ -116,10 +116,12 @@ public class hungarian
     
     /**
      * Step 4 - Covering the 0
+     * 
+     * cover all columns that have "stars"
      */
     private void zeroCover()
     {
-        
+        for(int i = 0; i < )
     }
     
     
