@@ -189,6 +189,10 @@ public class hungarian
                     {
                         rowCovered[j] = 1;
                         //uncover the row of 0*
+                        
+                        
+                        
+                        row_star = col_star;
                     }
                 }
             }
