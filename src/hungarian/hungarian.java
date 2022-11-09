@@ -18,14 +18,16 @@ public class hungarian
     
     int[] row_star, col_star;
     
-    int[] rowCovered, colCovered;
+    boolean[] rowCovered, colCovered;
     
-    int[] rowPrime, colPrime;
+    int[] rowPrime;
     
     public hungarian(int[][] matrix)
     {
         this.cost_matrix = matrix;
     }
+    
+    
     
     /**
      * Step 1 - Row Reduction
@@ -111,9 +113,9 @@ public class hungarian
                     col_has_starred_zero[j] = 1;
                     
                     // save row position of 0
-                    row_star[i] = j;
+                    row_star[i] = i;
                     // save column position of 0
-                    col_star[j] = i;
+                    col_star[j] = j;
                     
                     continue;   // next row ( a zero has been discovered )
                 }
@@ -152,16 +154,16 @@ public class hungarian
              * 
              * if(col_star[i] != -1         // all arrays filled with -1 as default values
              * {
-             *      colCovered[i] = 1;
+             *      colCovered[i] = true;
              * }
              * else
              * {
-             *      colCovered[i] = 0;
+             *      colCovered[i] = false;
              * }
              * 
              */
             
-            colCovered[i] = col_star[i] != -1 ? 1: 0;
+            colCovered[i] = (col_star[i] != -1) ? true : false;
         }
     }
     
@@ -178,27 +180,26 @@ public class hungarian
     {
         for(int i = 0; i < cost_matrix.length; ++i)
         {
+            if(colCovered[i])
+                continue;
+            
             for(int j : cost_matrix[0])
             {
-                if(cost_matrix[i][j] == 0 && colCovered[i] == 0)    // if there is a non-covered 0
+                if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
                 {
-                    rowPrime[j] = 1;
-                    colPrime[i] = 1;
+                    rowPrime[j] = i;
 
-                    if()    // if the 0* is on the same row as the primed 0
+                    if(row_star[j] != -1)    // if the 0* is on the same row as the primed 0
                     {
-                        rowCovered[j] = 1;
+                        rowCovered[j] = true;
                         //uncover the row of 0*
                         
-                        
-                        
-                        row_star = col_star;
+                        colCovered[row_star[j]] = false;
                     }
                 }
             }
         }
     }
-    
     
     /**
      * The Ultimate Step - Final Destination
@@ -208,11 +209,17 @@ public class hungarian
      */
     private boolean is_all_columns_covered()
     {
-        for(int i : colCovered)
+        for(boolean i : colCovered)
         {
-            if(i == 0)
+            if(!i)
                 return false;
         }
+        for(boolean i : rowCovered)
+        {
+            if(!i)
+                return false;
+        }
+        
         return true;
     }
 }
