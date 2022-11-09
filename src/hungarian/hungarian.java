@@ -185,6 +185,8 @@ public class hungarian
             
             for(int j : cost_matrix[0])
             {
+                
+                
                 if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
                 {
                     rowPrime[j] = i;
@@ -196,6 +198,8 @@ public class hungarian
                         
                         colCovered[row_star[j]] = false;
                     }
+                    
+                    if(cost_matrix[i][j] == 0 &&)
                 }
             }
         }
