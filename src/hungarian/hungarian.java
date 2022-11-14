@@ -5,6 +5,8 @@
  */
 package hungarian;
 
+import java.util.Arrays;
+
 /**
  *
  * @author rayan
@@ -12,21 +14,59 @@ package hungarian;
 public class hungarian
 {
     int[][] cost_matrix;
-    
+    int[][] original_matrix;
     
     // markers
     
     int[] row_star, col_star;
     
+    int[] row_prime;
+    
     boolean[] rowCovered, colCovered;
     
-    int[] rowPrime;
-    
     public hungarian(int[][] matrix)
-    {
-        this.cost_matrix = matrix;
+    {        
+        this.cost_matrix = matrix;        
+        
+        original_matrix = cost_matrix;
+        
+        row_star = row_prime = new int[matrix.length];
+        col_star = new int[matrix[0].length];
+        
+        rowCovered = new boolean[matrix.length];
+        colCovered = new boolean[matrix[0].length];
+        
+        Arrays.fill(row_star, -1);
+        Arrays.fill(col_star, -1);
+        Arrays.fill(row_prime, -1);
+        Arrays.fill(rowCovered, false);
+        Arrays.fill(colCovered, false);
     }
     
+    public int[][] optimalAssignment()
+    {        
+        System.out.println(Arrays.deepToString(cost_matrix));
+        
+        
+        row_reduction();
+        col_reduction();
+        init_task_assign();
+        cover_zero_col();
+        
+        while(!prime_uncovered())
+        {
+            
+        }
+        
+        int[][] optimalAssignment = new int[cost_matrix.length][];
+        for(int i : col_star)
+        {
+            optimalAssignment[i] = new int[]{i, col_star[i]};
+        }
+        
+        System.out.println(Arrays.deepToString(optimalAssignment));
+        return optimalAssignment;
+    }
     
     
     /**
@@ -37,20 +77,22 @@ public class hungarian
      */
     private void row_reduction()
     {
-        for(int i = 0; i < cost_matrix.length; ++i)
+        for(int i = 0; i < cost_matrix.length; i++)
         {
             int rowMin = Integer.MAX_VALUE;
-            for(int j = 0; j < cost_matrix[i].length; ++j)
+            for(int j = 0; j < cost_matrix[i].length; j++)
             {
                 if(cost_matrix[i][j] < rowMin)
                     rowMin = cost_matrix[i][j];
             }
             
-            for(int j = 0; j < cost_matrix[i].length; ++j)
+            for(int j = 0; j < cost_matrix[i].length; j++)
             {
                 cost_matrix[i][j] -= rowMin;
             }
         }
+        
+        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     /**
@@ -63,21 +105,23 @@ public class hungarian
      */
     private void col_reduction()
     {
-        // for(int i = 0; i < cost_matrix[0].length; ++i)
+        // for(int i = 0; i < cost_matrix[0].length; i++)
         for(int i : cost_matrix[0])
         {
             int colMin = Integer.MAX_VALUE;
-            for(int j = 0; j < cost_matrix.length; ++j)
+            for(int j = 0; j < cost_matrix.length; j++)
             {
                 if(cost_matrix[j][i] < colMin)
                     colMin = cost_matrix[j][i];
             }
             
-            for(int j = 0; j < cost_matrix.length; ++j)
+            for(int j = 0; j < cost_matrix.length; j++)
             {
                 cost_matrix[j][i] -= colMin;
             }
         }
+        
+        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     /**
@@ -91,9 +135,9 @@ public class hungarian
         int[] row_has_starred_zero = new int[cost_matrix.length];
         int[] col_has_starred_zero = new int[cost_matrix[0].length];
         
-        for(int i = 0; i < cost_matrix.length; ++i)
+        for(int i = 0; i < cost_matrix.length; i++)
         {
-            // for(int j = 0; j < cost_matrix[0].length; ++j)
+            // for(int j = 0; j < cost_matrix[0].length; j++)
             for(int j : cost_matrix[0])
             {
                 
@@ -121,6 +165,8 @@ public class hungarian
                 }
             }
         }
+        
+        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     /**
@@ -130,7 +176,7 @@ public class hungarian
      */
     private void cover_zero_col()
     {
-        // for(int i = 0; i < col_star.length; ++i)
+        // for(int i = 0; i < col_star.length; i++)
         for(int i : col_star)
         {
             /**
@@ -165,6 +211,8 @@ public class hungarian
             
             colCovered[i] = (col_star[i] != -1) ? true : false;
         }
+        
+        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     /**
@@ -176,32 +224,70 @@ public class hungarian
      *      cover the corresponding row
      *      uncover the column of the starred 0
      */
-    private void prime_uncovered()
+    private boolean prime_uncovered()
     {
-        for(int i = 0; i < cost_matrix.length; ++i)
+        for(int i = 0; i < cost_matrix.length; i++)
         {
             if(colCovered[i])
                 continue;
             
             for(int j : cost_matrix[0])
-            {
-                
-                
+            {            
                 if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
                 {
-                    rowPrime[j] = i;
+                    row_prime[j] = i;
 
+                    if(row_star[j] == -1)     // if a non-covered 0 has no assigned zero (or starred 0) on its row
+                    {
+                        zero_pathing(i, j);
+                        return false;
+                    }
+                    
                     if(row_star[j] != -1)    // if the 0* is on the same row as the primed 0
                     {
                         rowCovered[j] = true;
-                        //uncover the row of 0*
+                        // cover the corresponding row
                         
                         colCovered[row_star[j]] = false;
+                        // uncover the column of the 0*s
                     }
-                    
-                    if(cost_matrix[i][j] == 0 &&)
                 }
             }
+        }
+        
+        return true;
+    }
+    
+    private void zero_pathing(int row, int col)
+    {
+        findStarredInCol(row, col);
+        
+        Arrays.fill(rowCovered, false);
+        Arrays.fill(colCovered, false);
+    }
+    
+    private void findStarredInCol(int row, int col)
+   {
+        int row_tmp = 0;
+        if(col_star[col] != -1)
+        {
+            row_tmp = col_star[col];
+            
+            // unstar starred 0s
+            row_star[col_star[col]] = -1;
+            col_star[col] = -1;
+            
+            findPrimedInRow(row_tmp, col);
+        }
+    }
+    
+    private void findPrimedInRow(int row, int col)
+    {
+        if(row_prime[row] != -1)
+        {
+            row_star[row] = row;
+            col_star[col] = row_star[row];
+            findStarredInCol(row, row_prime[row]);
         }
     }
     
