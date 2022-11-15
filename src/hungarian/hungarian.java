@@ -28,7 +28,7 @@ public class hungarian
     {        
         this.cost_matrix = matrix;        
         
-        original_matrix = cost_matrix;
+        original_matrix = Arrays.stream(cost_matrix).map(int[]::clone).toArray(int[][]::new);
         
         row_star = row_prime = new int[matrix.length];
         col_star = new int[matrix[0].length];
@@ -43,7 +43,7 @@ public class hungarian
         Arrays.fill(colCovered, false);
     }
     
-    public int[][] optimalAssignment()
+    public int optimalAssignment()
     {        
         System.out.println(Arrays.deepToString(cost_matrix));
         
@@ -52,19 +52,30 @@ public class hungarian
         col_reduction();
         init_task_assign();
         cover_zero_col();
-        
-        while(!prime_uncovered())
+        if(is_all_columns_covered())
         {
-            
+            System.out.println(Arrays.deepToString(cost_matrix));
+            System.out.println(Arrays.deepToString(original_matrix));
         }
         
-        int[][] optimalAssignment = new int[cost_matrix.length][];
-        for(int i : col_star)
+//        while(!is_all_columns_covered())
+//        {
+//            prime_uncovered();
+//        }
+        
+        int optimalAssignment = 0;
+        
+        
+        System.out.println("\n");
+        for(int i = 0; i < cost_matrix.length; i++)
         {
-            optimalAssignment[i] = new int[]{i, col_star[i]};
+            System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]] + " + ");
+            optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
         }
         
-        System.out.println(Arrays.deepToString(optimalAssignment));
+        System.out.println(" = " + optimalAssignment);
+        
+        // System.out.println(Arrays.deepToString(optimalAssignment));
         return optimalAssignment;
     }
     
@@ -106,7 +117,7 @@ public class hungarian
     private void col_reduction()
     {
         // for(int i = 0; i < cost_matrix[0].length; i++)
-        for(int i : cost_matrix[0])
+        for(int i = 0; i < cost_matrix[0].length; i++)
         {
             int colMin = Integer.MAX_VALUE;
             for(int j = 0; j < cost_matrix.length; j++)
@@ -138,7 +149,7 @@ public class hungarian
         for(int i = 0; i < cost_matrix.length; i++)
         {
             // for(int j = 0; j < cost_matrix[0].length; j++)
-            for(int j : cost_matrix[0])
+            for(int j = 0; j < cost_matrix[0].length; j++)
             {
                 
                 /**
@@ -157,16 +168,14 @@ public class hungarian
                     col_has_starred_zero[j] = 1;
                     
                     // save row position of 0
-                    row_star[i] = i;
+                    row_star[i] = j;
                     // save column position of 0
-                    col_star[j] = j;
+                    col_star[j] = i;
                     
                     continue;   // next row ( a zero has been discovered )
                 }
             }
         }
-        
-        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     /**
@@ -176,8 +185,7 @@ public class hungarian
      */
     private void cover_zero_col()
     {
-        // for(int i = 0; i < col_star.length; i++)
-        for(int i : col_star)
+        for(int i = 0; i < col_star.length; i++)
         {
             /**
              * ternary conditional operators
@@ -231,7 +239,7 @@ public class hungarian
             if(colCovered[i])
                 continue;
             
-            for(int j : cost_matrix[0])
+            for(int j = 0; j < cost_matrix[0].length; j++)
             {            
                 if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
                 {
@@ -267,28 +275,13 @@ public class hungarian
     }
     
     private void findStarredInCol(int row, int col)
-   {
-        int row_tmp = 0;
-        if(col_star[col] != -1)
-        {
-            row_tmp = col_star[col];
-            
-            // unstar starred 0s
-            row_star[col_star[col]] = -1;
-            col_star[col] = -1;
-            
-            findPrimedInRow(row_tmp, col);
-        }
+    {
+        
     }
     
     private void findPrimedInRow(int row, int col)
     {
-        if(row_prime[row] != -1)
-        {
-            row_star[row] = row;
-            col_star[col] = row_star[row];
-            findStarredInCol(row, row_prime[row]);
-        }
+        
     }
     
     /**
@@ -299,14 +292,25 @@ public class hungarian
      */
     private boolean is_all_columns_covered()
     {
-        for(boolean i : colCovered)
+//        for(boolean i : colCovered)
+//        {
+//            if(!i)
+//                return false;
+//        }
+//        for(boolean i : rowCovered)
+//        {
+//            if(!i)
+//                return false;
+//        }
+        
+        for(int i = 0; i < colCovered.length; i++)
         {
-            if(!i)
+            if(!colCovered[i])
                 return false;
         }
-        for(boolean i : rowCovered)
+        for(int i = 0; i < rowCovered.length; i++)
         {
-            if(!i)
+            if(!rowCovered[i])
                 return false;
         }
         
