@@ -57,11 +57,12 @@ public class hungarian
             System.out.println(Arrays.deepToString(cost_matrix));
             System.out.println(Arrays.deepToString(original_matrix));
         }
-        
-//        while(!is_all_columns_covered())
-//        {
-//            prime_uncovered();
-//        }
+        else
+        {
+            while(!prime_uncovered()) {}
+            
+            
+        }
         
         int optimalAssignment = 0;
         
@@ -72,6 +73,8 @@ public class hungarian
             System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]] + " + ");
             optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
         }
+        
+        
         
         System.out.println(" = " + optimalAssignment);
         
@@ -272,16 +275,24 @@ public class hungarian
         
         Arrays.fill(rowCovered, false);
         Arrays.fill(colCovered, false);
+        Arrays.fill(row_prime, -1);
     }
     
     private void findStarredInCol(int row, int col)
     {
-        
+        if(col_star[col] != -1)
+        {
+            col_star[col] = -1;
+            row_star[row] = -1;
+            findPrimedInRow(row, col);
+        }
     }
     
     private void findPrimedInRow(int row, int col)
     {
-        
+        col_star[col] = col;
+        row_star[row_prime[col]] = row;
+        findStarredInCol(row, col);
     }
     
     /**
