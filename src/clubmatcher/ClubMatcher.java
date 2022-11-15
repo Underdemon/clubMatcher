@@ -21,6 +21,7 @@ public class ClubMatcher
     {
         // TODO code application logic herehow to do
         
+        
         int[][] m = new int[3][3];
         
         m[0][0] = 17;
