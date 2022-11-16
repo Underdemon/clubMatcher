@@ -282,8 +282,9 @@ public class hungarian
     {
         if(col_star[col] != -1)
         {
+            row = col_star[col];
+            row_star[col_star[col]] = -1;
             col_star[col] = -1;
-            row_star[row] = -1;
             findPrimedInRow(row, col);
         }
     }
