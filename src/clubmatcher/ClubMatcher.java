@@ -24,6 +24,7 @@ public class ClubMatcher
         
         int[][] m = new int[3][3];
         
+        /*
         m[0][0] = 17;
         m[0][1] = 54;
         m[0][2] = 12;
@@ -35,6 +36,19 @@ public class ClubMatcher
         m[2][0] = 22;
         m[2][1] = 48;
         m[2][2] = 46;
+        */
+        
+        m[0][0] = 34;
+        m[0][1] = 20;
+        m[0][2] = 60;
+        
+        m[1][0] = 48;
+        m[1][1] = 17;
+        m[1][2] = 62;
+        
+        m[2][0] = 30;
+        m[2][1] = 38;
+        m[2][2] = 21;
         
         hungarian h = new hungarian(m);
         h.optimalAssignment();

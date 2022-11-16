@@ -24,6 +24,8 @@ public class hungarian
     
     boolean[] rowCovered, colCovered;
     
+    
+    
     public hungarian(int[][] matrix)
     {        
         this.cost_matrix = matrix;        
@@ -43,15 +45,21 @@ public class hungarian
         Arrays.fill(colCovered, false);
     }
     
+    
+    
     public int optimalAssignment()
     {        
         System.out.println(Arrays.deepToString(cost_matrix));
         
         
         row_reduction();
+        
         col_reduction();
+        
         init_task_assign();
+        
         cover_zero_col();
+        
         if(is_all_columns_covered())
         {
             System.out.println(Arrays.deepToString(cost_matrix));
@@ -59,9 +67,10 @@ public class hungarian
         }
         else
         {
-            while(!prime_uncovered()) {}
-            
-            
+            while(!is_all_columns_covered())
+            {
+                prime_uncovered();
+            }
         }
         
         int optimalAssignment = 0;
@@ -81,6 +90,7 @@ public class hungarian
         // System.out.println(Arrays.deepToString(optimalAssignment));
         return optimalAssignment;
     }
+    
     
     
     /**
@@ -108,6 +118,8 @@ public class hungarian
         
         System.out.println(Arrays.deepToString(cost_matrix));
     }
+    
+    
     
     /**
      * Step 2 - Column Reduction
@@ -137,6 +149,8 @@ public class hungarian
         
         System.out.println(Arrays.deepToString(cost_matrix));
     }
+    
+    
     
     /**
      * Step 3 - Zero Marking/Initial Task Assignments
@@ -180,6 +194,8 @@ public class hungarian
             }
         }
     }
+    
+    
     
     /**
      * Step 4 - Covering the 0
@@ -226,6 +242,8 @@ public class hungarian
         System.out.println(Arrays.deepToString(cost_matrix));
     }
     
+    
+    
     /**
      * Step 5 - Priming the Uncovered
      * 
@@ -250,6 +268,7 @@ public class hungarian
 
                     if(row_star[j] == -1)     // if a non-covered 0 has no assigned zero (or starred 0) on its row
                     {
+                        
                         zero_pathing(i, j);
                         return false;
                     }
@@ -296,6 +315,35 @@ public class hungarian
         findStarredInCol(row, col);
     }
     
+    
+    
+    private void post_reduction()
+    {
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < cost_matrix.length; i++)
+        {
+            for(int j = 0; j < cost_matrix[i].length; j++)
+            {
+                if(cost_matrix[i][j] < min)
+                    min = cost_matrix[i][j];
+            }
+        }
+        
+        for(int i = 0; i < cost_matrix.length; i++)
+        {
+            for(int j = 0; j < cost_matrix[i].length; j++)
+            {
+                if(rowCovered[j])
+                    cost_matrix[i][j] += min;
+                
+                if(!colCovered[i])
+                    cost_matrix[i][j] -= min;
+            }
+        }
+    }
+    
+    
+    
     /**
      * The Ultimate Step - Final Destination
      * 
@@ -319,13 +367,7 @@ public class hungarian
         {
             if(!colCovered[i])
                 return false;
-        }
-        for(int i = 0; i < rowCovered.length; i++)
-        {
-            if(!rowCovered[i])
-                return false;
-        }
-        
+        }        
         return true;
     }
 }
