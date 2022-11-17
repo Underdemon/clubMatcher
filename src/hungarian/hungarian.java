@@ -6,7 +6,6 @@
 package hungarian;
 
 import java.util.Arrays;
-
 /**
  *
  * @author rayan
@@ -69,7 +68,24 @@ public class hungarian
         {
             while(!is_all_columns_covered())
             {
-                prime_uncovered();
+                int[] primed = prime_uncovered();
+                while(primed == null)
+                {
+                    post_reduction();
+                    primed = prime_uncovered();
+                }
+                
+                if(row_star[primed[0]] == -1)
+                {
+                    
+                    init_task_assign();
+                }
+                else
+                {
+                    rowCovered[primed[0]] = true;
+                    colCovered[row_star[primed[0]]] = false;
+                    post_reduction();
+                }
             }
         }
         
@@ -83,7 +99,7 @@ public class hungarian
             optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
         }
         
-        
+        System.out.println("\n\nCOL STAR\n" + Arrays.toString(col_star) + "\n\nROW STAR\n" + Arrays.toString(row_star));
         
         System.out.println(" = " + optimalAssignment);
         
@@ -253,6 +269,8 @@ public class hungarian
      *      cover the corresponding row
      *      uncover the column of the starred 0
      */
+    
+    /*
     private boolean prime_uncovered()
     {
         for(int i = 0; i < cost_matrix.length; i++)
@@ -268,7 +286,6 @@ public class hungarian
 
                     if(row_star[j] == -1)     // if a non-covered 0 has no assigned zero (or starred 0) on its row
                     {
-                        
                         zero_pathing(i, j);
                         return false;
                     }
@@ -286,6 +303,28 @@ public class hungarian
         }
         
         return true;
+    }
+    */
+    
+    private int[] prime_uncovered()
+    {
+        for(int i = 0; i < cost_matrix.length; i++)
+        {
+            if(colCovered[i])
+                continue;
+            
+            for(int j = 0; j < cost_matrix[0].length; j++)
+            {            
+                if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
+                {
+                    row_prime[j] = i;
+                    
+                    return new int[]{i, j};
+                }
+            }
+        }
+        
+        return null;
     }
     
     private void zero_pathing(int row, int col)
@@ -316,28 +355,46 @@ public class hungarian
     }
     
     
-    
+    /**
+     * Step 5.5 - Post Reduction
+     * 
+     * The function runs on the condition that the prime_uncovered() function returns -1
+     * The function has 3 steps to it
+     * 
+     * 1) find the minimum uncovered value in the matrix
+     * 2) subtract the minimum value from all uncovered values
+     * 3) add the minimum value to all twice covered values (covered with both a row & column)
+     */
     private void post_reduction()
     {
-        int min = Integer.MAX_VALUE;
+        int uncovered_min = Integer.MAX_VALUE;
         for(int i = 0; i < cost_matrix.length; i++)
         {
+            if(!rowCovered[i])
+                continue;
+            
             for(int j = 0; j < cost_matrix[i].length; j++)
             {
-                if(cost_matrix[i][j] < min)
-                    min = cost_matrix[i][j];
+                if(cost_matrix[i][j] < uncovered_min && !colCovered[j])
+                    uncovered_min = cost_matrix[i][j];
             }
         }
         
-        for(int i = 0; i < cost_matrix.length; i++)
+        if(uncovered_min > 0)
         {
-            for(int j = 0; j < cost_matrix[i].length; j++)
+            for(int i = 0; i < cost_matrix.length; i++)
             {
-                if(rowCovered[j])
-                    cost_matrix[i][j] += min;
-                
-                if(!colCovered[i])
-                    cost_matrix[i][j] -= min;
+                for(int j = 0; j < cost_matrix[i].length; j++)
+                {
+                    if(rowCovered[i] && colCovered[j])
+                    {
+                        cost_matrix[i][j] += uncovered_min;
+                    }
+                    else if(!rowCovered[i] && !colCovered[j])
+                    {
+                        cost_matrix[i][j] -= uncovered_min;
+                    }
+                }
             }
         }
     }

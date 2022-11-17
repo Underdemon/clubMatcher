@@ -38,6 +38,7 @@ public class ClubMatcher
         m[2][2] = 46;
         */
         
+        
         m[0][0] = 34;
         m[0][1] = 20;
         m[0][2] = 60;
