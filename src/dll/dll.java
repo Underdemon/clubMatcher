@@ -4,11 +4,14 @@
  */
 package dll;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  *
  * @author rayan
  */
-public class dll<E>
+public class dll<E> implements Iterable<E>
 {
     private int len;
     private dl_node<E> head;
@@ -219,8 +222,6 @@ public class dll<E>
         }
     }
     
-    
-    
     public int getCount()
     {
         return len;
@@ -249,5 +250,34 @@ public class dll<E>
     public void setTail(dl_node<E> tail)
     {
         this.tail = tail;
+    }
+    
+    private class dllIterator<E> implements Iterator<E>
+    {
+        private dl_node<E> curr = new dl_node(null, head, null);
+        
+        public dllIterator()
+        {
+            
+        }
+        
+        @Override
+        public boolean hasNext()
+        {
+            return curr.getNext() != null;
+        }
+
+        @Override
+        public E next() 
+        {
+            curr = curr.getNext();
+            return curr.getData();
+        }
+    }
+    
+    @Override
+    public Iterator<E> iterator()
+    {
+        return new dllIterator<E>();
     }
 }

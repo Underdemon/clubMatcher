@@ -5,6 +5,7 @@
  */
 package hungarian;
 
+import dll.dll;
 import java.util.Arrays;
 /**
  *
@@ -68,22 +69,22 @@ public class hungarian
         {
             while(!is_all_columns_covered())
             {
-                int[] primed = prime_uncovered();
-                while(primed == null)
+                int[] chosen_zero = prime_uncovered();
+                while(chosen_zero == null)
                 {
                     post_reduction();
-                    primed = prime_uncovered();
+                    chosen_zero = prime_uncovered();
                 }
                 
-                if(row_star[primed[0]] == -1)
+                if(row_star[chosen_zero[0]] == -1)
                 {
                     
                     init_task_assign();
                 }
                 else
                 {
-                    rowCovered[primed[0]] = true;
-                    colCovered[row_star[primed[0]]] = false;
+                    rowCovered[chosen_zero[0]] = true;
+                    colCovered[row_star[chosen_zero[0]]] = false;
                     post_reduction();
                 }
             }
@@ -270,42 +271,6 @@ public class hungarian
      *      uncover the column of the starred 0
      */
     
-    /*
-    private boolean prime_uncovered()
-    {
-        for(int i = 0; i < cost_matrix.length; i++)
-        {
-            if(colCovered[i])
-                continue;
-            
-            for(int j = 0; j < cost_matrix[0].length; j++)
-            {            
-                if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
-                {
-                    row_prime[j] = i;
-
-                    if(row_star[j] == -1)     // if a non-covered 0 has no assigned zero (or starred 0) on its row
-                    {
-                        zero_pathing(i, j);
-                        return false;
-                    }
-                    
-                    if(row_star[j] != -1)    // if the 0* is on the same row as the primed 0
-                    {
-                        rowCovered[j] = true;
-                        // cover the corresponding row
-                        
-                        colCovered[row_star[j]] = false;
-                        // uncover the column of the 0*s
-                    }
-                }
-            }
-        }
-        
-        return true;
-    }
-    */
-    
     private int[] prime_uncovered()
     {
         for(int i = 0; i < cost_matrix.length; i++)
@@ -327,32 +292,6 @@ public class hungarian
         return null;
     }
     
-    private void zero_pathing(int row, int col)
-    {
-        findStarredInCol(row, col);
-        
-        Arrays.fill(rowCovered, false);
-        Arrays.fill(colCovered, false);
-        Arrays.fill(row_prime, -1);
-    }
-    
-    private void findStarredInCol(int row, int col)
-    {
-        if(col_star[col] != -1)
-        {
-            row = col_star[col];
-            row_star[col_star[col]] = -1;
-            col_star[col] = -1;
-            findPrimedInRow(row, col);
-        }
-    }
-    
-    private void findPrimedInRow(int row, int col)
-    {
-        col_star[col] = col;
-        row_star[row_prime[col]] = row;
-        findStarredInCol(row, col);
-    }
     
     
     /**
@@ -399,6 +338,42 @@ public class hungarian
         }
     }
     
+    
+    
+    private void zero_pathing(int[] chosen_zero)
+    {
+        int i = chosen_zero[0];
+        int j = chosen_zero[1];
+        
+        dll dll = new dll();
+        dll.append(chosen_zero);
+        boolean found = false;
+        
+        do
+        {
+            if(col_star[j] != -1)
+            {
+                dll.append(new int[]{col_star[j], j});
+                found = true;
+            }
+            else
+                found = false;
+            
+            if(!found) {break;}
+            
+            i = col_star[j];
+            j = row_prime[i];
+            
+            if(j != -1)
+            {
+                dll.append(new int[]{i, j});
+                found = true;
+            }
+            else
+                found = false;
+        }
+        while(found);
+    }
     
     
     /**
