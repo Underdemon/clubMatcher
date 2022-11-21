@@ -27,12 +27,25 @@ public class hungarian
     
     
     public hungarian(int[][] matrix)
-    {        
+    {
+        if(matrix.length != matrix[0].length)
+        {
+            try
+            {
+                throw new IllegalAccessException("The matrix is not square!");
+            }
+            catch (IllegalAccessException ex)
+            {
+                System.err.println(ex);
+                System.exit(1);
+            }
+        }
         this.cost_matrix = matrix;        
         
         original_matrix = Arrays.stream(cost_matrix).map(int[]::clone).toArray(int[][]::new);
         
-        row_star = row_prime = new int[matrix.length];
+        row_star = new int[matrix.length];
+        row_prime = new int[matrix.length];
         col_star = new int[matrix[0].length];
         
         rowCovered = new boolean[matrix.length];
@@ -48,10 +61,7 @@ public class hungarian
     
     
     public int optimalAssignment()
-    {        
-        System.out.println(Arrays.deepToString(cost_matrix));
-        
-        
+    {
         row_reduction();
         
         col_reduction();
@@ -60,34 +70,27 @@ public class hungarian
         
         cover_zero_col();
         
-        if(is_all_columns_covered())
+        while(!is_all_columns_covered())
         {
-            System.out.println(Arrays.deepToString(cost_matrix));
-            System.out.println(Arrays.deepToString(original_matrix));
-        }
-        else
-        {
-            while(!is_all_columns_covered())
+            int[] chosen_zero = prime_uncovered();
+            while(chosen_zero == null)
             {
-                int[] chosen_zero = prime_uncovered();
-                while(chosen_zero == null)
-                {
-                    post_reduction();
-                    chosen_zero = prime_uncovered();
-                }
-                
-                if(row_star[chosen_zero[0]] == -1)
-                {
-                    
-                    init_task_assign();
-                }
-                else
-                {
-                    rowCovered[chosen_zero[0]] = true;
-                    colCovered[row_star[chosen_zero[0]]] = false;
-                    post_reduction();
-                }
+                post_reduction();
+                chosen_zero = prime_uncovered();
+                System.out.println(Arrays.deepToString(cost_matrix));
             }
+
+            if(row_star[chosen_zero[0]] == -1)
+            {
+                zero_pathing(chosen_zero);
+                cover_zero_col();
+            }
+            else
+            {
+                rowCovered[chosen_zero[0]] = true;
+                colCovered[row_star[chosen_zero[0]]] = false;
+                post_reduction(); 
+           }
         }
         
         int optimalAssignment = 0;
@@ -96,11 +99,13 @@ public class hungarian
         System.out.println("\n");
         for(int i = 0; i < cost_matrix.length; i++)
         {
-            System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]] + " + ");
-            optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
+//            if(i == cost_matrix.length - 1)
+//                System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]]);
+//            else
+//                System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]] + " + ");
+            //optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
+            optimalAssignment += original_matrix[col_star[i]][row_star[col_star[i]]];
         }
-        
-        System.out.println("\n\nCOL STAR\n" + Arrays.toString(col_star) + "\n\nROW STAR\n" + Arrays.toString(row_star));
         
         System.out.println(" = " + optimalAssignment);
         
@@ -163,8 +168,6 @@ public class hungarian
                 cost_matrix[j][i] -= colMin;
             }
         }
-        
-        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     
@@ -255,8 +258,6 @@ public class hungarian
             
             colCovered[i] = (col_star[i] != -1) ? true : false;
         }
-        
-        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     
@@ -275,16 +276,16 @@ public class hungarian
     {
         for(int i = 0; i < cost_matrix.length; i++)
         {
-            if(colCovered[i])
-                continue;
-            
-            for(int j = 0; j < cost_matrix[0].length; j++)
-            {            
-                if(cost_matrix[i][j] == 0 && !rowCovered[i])    // if there is a non-covered 0
-                {
-                    row_prime[j] = i;
-                    
-                    return new int[]{i, j};
+            if(!rowCovered[i])
+            {
+                for(int j = 0; j < cost_matrix[0].length; j++)
+                {            
+                    if(cost_matrix[i][j] == 0 && !colCovered[j])    // if there is a non-covered 0
+                    {
+                        row_prime[i] = j;
+
+                        return new int[]{i, j};
+                    }
                 }
             }
         }
@@ -309,12 +310,12 @@ public class hungarian
         int uncovered_min = Integer.MAX_VALUE;
         for(int i = 0; i < cost_matrix.length; i++)
         {
-            if(!rowCovered[i])
+            if(rowCovered[i])
                 continue;
             
             for(int j = 0; j < cost_matrix[i].length; j++)
             {
-                if(cost_matrix[i][j] < uncovered_min && !colCovered[j])
+                if((cost_matrix[i][j] < uncovered_min) && !colCovered[j])
                     uncovered_min = cost_matrix[i][j];
             }
         }
@@ -345,7 +346,7 @@ public class hungarian
         int i = chosen_zero[0];
         int j = chosen_zero[1];
         
-        dll dll = new dll();
+        dll<int[]> dll = new dll<>();
         dll.append(chosen_zero);
         boolean found = false;
         
@@ -373,6 +374,25 @@ public class hungarian
                 found = false;
         }
         while(found);
+        
+        for(int[] zero : dll)
+        {
+            if(col_star[zero[1]] == zero[0])
+            {
+                row_star[zero[0]] = -1;
+                col_star[zero[1]] = -1;
+            }
+
+            if(row_prime[zero[0]] == zero[1])
+            {
+                row_star[zero[0]] = zero[1];
+                col_star[zero[1]] = zero[0];
+            }
+        }
+        
+        Arrays.fill(row_prime, -1);
+        Arrays.fill(rowCovered, false);
+        Arrays.fill(colCovered, false);
     }
     
     
@@ -384,22 +404,11 @@ public class hungarian
      */
     private boolean is_all_columns_covered()
     {
-//        for(boolean i : colCovered)
-//        {
-//            if(!i)
-//                return false;
-//        }
-//        for(boolean i : rowCovered)
-//        {
-//            if(!i)
-//                return false;
-//        }
-        
-        for(int i = 0; i < colCovered.length; i++)
+        for(boolean i : colCovered)
         {
-            if(!colCovered[i])
+            if(i == false)
                 return false;
-        }        
+        }
         return true;
     }
 }
