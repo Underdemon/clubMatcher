@@ -5,8 +5,6 @@
 package clubmatcher;
 
 import hungarian.hungarian;
-import hungarian.HungarianAlgorithm;
-import java.util.Arrays;
 
 /**
  *
