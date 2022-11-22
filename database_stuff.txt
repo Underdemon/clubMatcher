@@ -1,0 +1,101 @@
+EVERYTHING FOCUSED ON MINIMUM ==CRUD==
+
+- crud --> https://www.google.com/search?q=what+is+crud+in+programming
+
+cool similar project --> https://github.com/andylican/Club-And-Course-Selector
+
+timetable visualisation --> https://github.com/java-tester-x/javaexercises/blob/master/nestedloop/TimeTable.java
+
+database normalisation to 5NF --> https://www.guru99.com/database-normalization.html
+
+
+CURRENT (MR JAMES) TABLES
+
+TEACHER TABLE / REGISTERED CLUB LEADERS
+=======================================
+teacher (user)
+UID
+log
+
+CLUB LIST
+==========
+Day
+LOAS - Lunch or AfterSchool (morning lunch afternoon)
+club name
+teacher running club
+
+Attendance
+============
+first name
+last name
+yeargroup
+house
+teacher
+timestamp
+day
+LOAS
+Club
+
+=======================
+ALL ATTRIBUTES I NEED:
+=======================
+- first name
+- last name
+- yeargroup
+- house
+- teacher names/initial
+- teacher that runs club
+- club name
+- time club takes place (like LOAS but for each period/before school/lunch/after school individually) OR start time + end time of club
+- day club takes place
+	- ENUM mon-fri
+- OR schedule table with table of day and then time slot
+	- https://github.com/andylican/Club-And-Course-Selector/blob/master/clubNcourseSelector/ClubSchedules/Schedule.csv
+- attendance (as a record in attendance table?)
+	- https://github.com/andylican/Club-And-Course-Selector/blob/master/clubNcourseSelector/Clubs/CS.csv
+- NSL
+- student timetables (if necessary)
+	- https://github.com/andylican/Club-And-Course-Selector/blob/master/clubNcourseSelector/CourseTimetables/Timetables.csv
+	- MANUALLY INPUT ANY CLUBS ALREADY BEING ATTENDED
+- subjects and clubs taken (bias for cost matrix)
+- dijkstra cost matrix input graph stored in database
+- club priority (how hard it is to move club/not attend/attend)
+	- ccf has a higher priority than anything after school tues bc ccf cant be moved
+	- if detention after school it is higher priority than ccf
+
+=======
+TABLES:
+=======
+
+GRAPH:
+-------
+- for dijkstra to find costs in cost matrix of clubs
+
+STUDENT:
+--------
+- first name
+- last name
+- year group
+- house
+- subjects taken
+
+CLUBS:
+------
+- club name
+- day club takes place
+- time club takes place
+- students attending
+- teacher that runs clubs (TEACHERS primary identifier as foreign key)
+
+TEACHERS:
+---------
+- teacher names/initials
+- teacher subjects
+
+ATTENDANCE:
+-----------
+- timestamp
+- foreign key of STUDENT primary key (full name, studentID, etc)
+- written/added to top of CSV of (CLUB_NAME.csv)
+
+NSL????????? - implement after
