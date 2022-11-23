@@ -4,7 +4,7 @@
  */
 package clubmatcher;
 
-import hungarian.hungarian;
+import algorithms.hungarian.hungarian;
 
 /**
  *

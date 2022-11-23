@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hashmap;
+package dataStructures.hashmap;
 
-import BST.BST;
+import dataStructures.BST.BST;
 import java.util.ArrayList;
 import java.util.Iterator;
 /**
@@ -20,6 +20,8 @@ import java.util.Iterator;
  * this improves the time complexity of methods such as get() to O(log n)
  * 
  * (note to self: often implemented with red-black BST)
+ * @param <K>
+ * @param <V>
  */
 public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implements Map<K, V>
 {
@@ -71,10 +73,13 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         int hash = hash(key);
         hashEntry<K, V> entry = new hashEntry<>(key, value);
         
-        if(table[hash] != null)
-            table[hash].insert(table[hash].getRoot(), entry);
-        else
-            table[hash] = new BST<>(entry);
+        if(!this.containsKey(key))
+        {
+            if(table[hash] != null)
+                table[hash].insert(table[hash].getRoot(), entry);
+            else
+                table[hash] = new BST<>(entry);
+        }
     }
 
     @Override
