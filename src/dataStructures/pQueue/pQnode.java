@@ -13,12 +13,14 @@ public class pQnode<T extends Comparable<T>>
     private T data;
     private pQnode<T> next;
     private pQnode<T> prev;
+    private int priority;
     
-    public pQnode(T data, pQnode next, pQnode prev)
+    public pQnode(T data, pQnode next, pQnode prev, int priority)
     {
-        this.data = data;
-        this.next = next;
-        this.prev = prev;
+        this.data       = data;
+        this.next       = next;
+        this.prev       = prev;
+        this.priority   = priority;
     }
 
     public T getData()
@@ -39,6 +41,16 @@ public class pQnode<T extends Comparable<T>>
     public void setNext(pQnode<T> next)
     {
         this.next = next;
+    }
+
+    public int getPriority()
+    {
+        return priority;
+    }
+
+    public void setPriority(int priority)
+    {
+        this.priority = priority;
     }
 
     public pQnode<T> getPrev()

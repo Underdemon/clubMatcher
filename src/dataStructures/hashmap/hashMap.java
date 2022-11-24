@@ -23,7 +23,7 @@ import java.util.Iterator;
  * @param <K>
  * @param <V>
  */
-public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implements Map<K, V>
+public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implements Map<K, V>, Comparable<hashMap<K, V>>
 {
     /*
         below a bitwise shift operator is used (just to test knowledge)
@@ -169,6 +169,15 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
 //            return new hashEntry<>(kvEntries.get(curr - 1));
 //        }
 //    }
+
+    @Override
+    public int compareTo(hashMap<K, V> o)
+    {
+        if(this.hashCode() < o.hashCode())
+            return 1;
+        else if(this.hashCode() == o.hashCode())
+            return 0;
+        else
+            return -1;
+    }
 }
-
-

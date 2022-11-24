@@ -46,90 +46,54 @@ public class pQueue<T extends Comparable<T>>
         return pattern.matcher(str).matches();
     }
     
-    public void enqueue(T data)
+    public void enqueue(T data, int priority)
     {
-        pQnode temp = new pQnode(data, null, null);
-        if(isNumeric(data.toString()))  // SORTS NUMBERS NUMERICALLY
+        pQnode temp = new pQnode(data, null, null, priority);
+            
+        if(head == null)
         {
-            if(head == null)
-            {
-                // adds first node to queue
-                this.head = temp;
-                this.tail = temp;
-            }
-            else if(Integer.parseInt(this.head.getData().toString()) >= Integer.parseInt(data.toString()))
-            {
-                temp.setNext(this.head);
-                this.head.setPrev(temp.getNext());
-                this.head = temp;
-            }
-            else if(Integer.parseInt(this.tail.getData().toString()) <= Integer.parseInt(data.toString()))
-            {
-                temp.setPrev(this.tail);
-                this.tail.setNext(temp);
-                this.tail = temp;
-            }
-            else
-            {
-                pQnode node = this.head;
-                // find the point at which the inserted data has a higher priority
-                //if(!isNumeric(data.toString()))
-                //{
-                while(Integer.parseInt(node.getData().toString()) < Integer.parseInt(data.toString()))
-                {
-                    node = node.getNext();
-                }
-                //}
-                // code to actually add the node
-                temp.setNext(node);
-                temp.setPrev(node.getPrev());
-                node.getPrev().setNext(temp);
-                node.setPrev(temp);
-            }
+            // adds first node to queue
+            this.head = temp;
+            this.tail = temp;
         }
-        else    // SORTS STRING DATA LEXICOGRAPHICALLY
+        else if(priority > this.head.getPriority())
         {
-            if(head == null)
-            {
-                // adds first node to queue
-                this.head = temp;
-                this.tail = temp;
-            }
-            else if(this.head.getData().compareTo(data) >= 0)
-            {
-                // add node at first pos
-                temp.setNext(this.head);
-                this.head.setPrev(temp.getNext());
-                this.head = temp;
-            }
-            else if(this.tail.getData().compareTo(data) <= 0)
-            {
-                // add node to last pos
-                temp.setPrev(this.tail);
-                this.tail.setNext(temp);
-                this.tail = temp;
-            }
-            else
-            {
-                pQnode node = this.head;
+            // add node at first pos
+            temp.setNext(this.head);
+            this.head.setPrev(temp.getNext());
+            this.head = temp;
+        }
+        else if(priority < this.tail.getPriority())
+        {
+            // add node to last pos
+            temp.setPrev(this.tail);
+            this.tail.setNext(temp);
+            this.tail = temp;
+        }
+        else
+        {
+            pQnode node = this.head;
 
-                // find the point at which the inserted data has a higher priority
-                //if(!isNumeric(data.toString()))
-                //{
-                    while(node.getData().compareTo(data) < 0)
-                    {
-                        node = node.getNext();
-                    }
-                //}
-                // code to actually add the node
-                temp.setNext(node);
-                temp.setPrev(node.getPrev());
-                node.getPrev().setNext(temp);
-                node.setPrev(temp);
+            // find the point at which the inserted data has a higher priority
+            while(node.getPriority() < priority)
+            {
+                node = node.getNext();
             }
+            
+            // code to actually add the node
+            temp.setNext(node);
+            temp.setPrev(node.getPrev());
+            node.getPrev().setNext(temp);
+            node.setPrev(temp);
         }
         
         this.size++;
+    }
+    
+    public void replace(T value, int priority)
+    {
+        this.remove(value);
+        this.enqueue(value, priority);
     }
     
     public T peek() throws IllegalStateException    // peeks first element
@@ -207,6 +171,41 @@ public class pQueue<T extends Comparable<T>>
             return;
         }
         throw new IllegalStateException();
+    }
+    
+    public int index(T data)
+    {
+        // index of -1 signifies value is not present or list is empty
+        
+        if(isEmpty())
+            return -1;
+        
+        boolean isFound = false;
+        
+        pQnode tmp = this.head;
+        int count = 0;
+        
+        do
+        {
+            if(tmp.getData().equals(data))
+                isFound = true;
+            else
+            {
+                tmp = tmp.getNext();
+                ++count;
+            }
+        }
+        while(tmp != null && !isFound);
+        
+        if(!isFound)
+           return -1;   // -1 can be used to check if the pQueue contains a value
+        
+        return count;
+    }
+    
+    public boolean contains(T value)
+    {
+        return index(value) >= 0;
     }
     
     public void printQueue()
