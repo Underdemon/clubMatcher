@@ -7,6 +7,7 @@ package algorithms.dijkstra;
 import dataStructures.pQueue.pQueue;
 import dataStructures.graphs.graph;
 import dataStructures.hashmap.hashMap;
+import dataStructures.hashmap.hashEntry;
 
 /**
  *
@@ -14,5 +15,20 @@ import dataStructures.hashmap.hashMap;
  */
 public class dijkstra
 {
-    private pQueue unvisited;
+    private pQueue<String> unvisited;
+    private hashMap<String, hashEntry<Integer, String>> results;
+    private final int MAX_CAPACITY = 1 >> 7;
+    String start;
+    
+    public dijkstra(String start)
+    {
+        results = new hashMap<>();
+        this.start = start;
+        unvisited = new pQueue<>();
+    }
+    
+    public void shortestPath(graph graph, String src)
+    {
+        
+    }
 }

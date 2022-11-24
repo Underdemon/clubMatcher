@@ -81,7 +81,7 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
                 table[hash] = new BST<>(entry);
         }
     }
-
+    
     @Override
     public void remove(K key)  // renmoves hashEntry with key value matching key arg
     {
