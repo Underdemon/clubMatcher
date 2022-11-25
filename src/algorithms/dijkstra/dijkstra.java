@@ -29,6 +29,9 @@ public class dijkstra
     
     public void shortestPath(graph graph, String src)
     {
-        
+        for(int i = 0; i < graph.size(); i++)   // for each vertex in the graph
+        {
+            
+        }
     }
 }

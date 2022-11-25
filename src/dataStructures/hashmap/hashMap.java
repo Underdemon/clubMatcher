@@ -59,6 +59,19 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         }
     }
     
+    public int size()
+    {
+        int size = 0;
+        
+        for(int i = 0; i < table.length; i++)
+        {
+            if(table[i] != null)
+                size++;
+        }
+        
+        return size;
+    }
+    
     public int hash(K key)
     {
         return Math.abs(key.hashCode() % capacity);

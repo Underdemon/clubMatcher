@@ -61,4 +61,9 @@ public class graph <T extends Comparable<T>>
         
         map.get(src).remove(dest);
     }
+    
+    public int size()
+    {
+        return map.size();
+    }
 }
