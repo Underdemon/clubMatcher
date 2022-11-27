@@ -5,7 +5,9 @@
  */
 package dataStructures.BST;
 
+import dataStructures.dll.dll;
 import java.util.regex.Pattern;
+import dataStructures.hashmap.hashEntry;
 
 /**
  *
@@ -23,55 +25,58 @@ public class BST<T extends Comparable<T>>
         this.size++;
     }
     
-    public void insert(DL_Node temp, T value)
+    public void insert(DL_Node temp, T ... values)
     {
-        if(isNumeric(temp.getData().toString()))
+        for(T value : values)
         {
-            if(Integer.parseInt(value.toString()) < Integer.parseInt(temp.getData().toString()))
+            if(isNumeric(temp.getData().toString()))
             {
-                if(temp.prev != null)
-                    insert(temp.prev, value);
-                else
+                if(Integer.parseInt(value.toString()) < Integer.parseInt(temp.getData().toString()))
                 {
-                    temp.prev = new DL_Node(value);
-                    System.out.println(value.toString() + " inserted as the left child of " + temp.getData());
-                    this.size++;
+                    if(temp.prev != null)
+                        insert(temp.prev, value);
+                    else
+                    {
+                        temp.prev = new DL_Node(value);
+                        System.out.println(value.toString() + " inserted as the left child of " + temp.getData());
+                        this.size++;
+                    }
+                }
+                else if(Integer.parseInt(value.toString()) > Integer.parseInt(temp.getData().toString()))
+                {
+                    if(temp.next != null)
+                        insert(temp.next, value);
+                    else
+                    {
+                        temp.next = new DL_Node(value);
+                        System.out.println(value.toString() + " inserted as the right child of " + temp.getData());
+                        this.size++;
+                    }
                 }
             }
-            else if(Integer.parseInt(value.toString()) > Integer.parseInt(temp.getData().toString()))
+            else
             {
-                if(temp.next != null)
-                    insert(temp.next, value);
-                else
+                if(value.compareTo((T) temp.getData()) < 0)
                 {
-                    temp.next = new DL_Node(value);
-                    System.out.println(value.toString() + " inserted as the right child of " + temp.getData());
-                    this.size++;
+                    if(temp.prev != null)
+                        insert(temp.prev, value);
+                    else
+                    {
+                        temp.prev = new DL_Node(value);
+                        System.out.println(value.toString() + " inserted as the left child of " + temp.getData());
+                        this.size++;
+                    }
                 }
-            }
-        }
-        else
-        {
-            if(value.compareTo((T) temp.getData()) < 0)
-            {
-                if(temp.prev != null)
-                    insert(temp.prev, value);
-                else
+                else if(value.compareTo((T)temp.getData()) > 0)
                 {
-                    temp.prev = new DL_Node(value);
-                    System.out.println(value.toString() + " inserted as the left child of " + temp.getData());
-                    this.size++;
-                }
-            }
-            else if(value.compareTo((T)temp.getData()) > 0)
-            {
-                if(temp.next != null)
-                    insert(temp.next, value);
-                else
-                {
-                    temp.next = new DL_Node(value);
-                    System.out.println(value.toString() + " inserted as the right child of " + temp.getData());
-                    this.size++;
+                    if(temp.next != null)
+                        insert(temp.next, value);
+                    else
+                    {
+                        temp.next = new DL_Node(value);
+                        System.out.println(value.toString() + " inserted as the right child of " + temp.getData());
+                        this.size++;
+                    }
                 }
             }
         }
@@ -136,10 +141,12 @@ public class BST<T extends Comparable<T>>
     
     public DL_Node search(DL_Node temp, T value)
     {
-        if(temp.getData() == value)
-            return temp;
+        if(temp == null)
+            return null;
         else if(temp.getData() == null)
             return null;
+        else if(temp.getData().toString() == value.toString())
+            return temp;
         
         if(isNumeric(temp.getData().toString()))
         {
@@ -188,6 +195,25 @@ public class BST<T extends Comparable<T>>
         }
     }
     
+    public dll returnData()
+    {
+        dll data_set = new dll();
+        
+        returnData(this.getRoot(), data_set);
+        
+        return data_set;
+    }
+    
+    private void returnData(DL_Node temp, dll list)
+    {
+        if(temp != null)
+        {
+            returnData(temp.prev, list);
+            list.append(temp.getData());
+            returnData(temp.next, list);
+        }
+    }
+    
     public void inOrder(DL_Node temp)
     {
         if(temp != null)
@@ -225,16 +251,6 @@ public class BST<T extends Comparable<T>>
             System.out.println(temp.getData().toString());
         
         prettyPrint(temp.getPrev(), level  + 1);
-    }
-    
-    public DL_Node getRoot()
-    {
-        return root;
-    }
-
-    public void setRoot(DL_Node root)
-    {
-        this.root = root;
     }
     
     public void printBFS()   //level order traversal
@@ -296,6 +312,16 @@ public class BST<T extends Comparable<T>>
         */
         
         return pattern.matcher(str).matches();
+    }
+    
+    public DL_Node getRoot()
+    {
+        return root;
+    }
+
+    public void setRoot(DL_Node root)
+    {
+        this.root = root;
     }
 }
 

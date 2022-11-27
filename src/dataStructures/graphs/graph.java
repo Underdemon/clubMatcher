@@ -4,13 +4,14 @@
  */
 package dataStructures.graphs;
 
+import dataStructures.dll.dll;
 import dataStructures.hashmap.hashMap;
 /**
  *
  * @author rayan
  * @param <T>
  */
-public class graph <T extends Comparable<T>>
+public class graph<T extends Comparable<T>>
 {
     private hashMap<T, hashMap<T, Integer>> map;
     private final int capacity = 1 << 7;
@@ -66,4 +67,25 @@ public class graph <T extends Comparable<T>>
     {
         return map.size();
     }
+    
+    public void print()
+    {
+        System.out.println("\n===============\nPRINTING GRAPH |\n===============");
+    }
+    
+    public dll returnSourceData()
+    {
+        return map.returnData();
+    }
+    
+    public hashMap<T, hashMap<T, Integer>> getMap()
+    {
+        return map;
+    }
+
+    public void setMap(hashMap<T, hashMap<T, Integer>> map)
+    {
+        this.map = map;
+    }
+    
 }

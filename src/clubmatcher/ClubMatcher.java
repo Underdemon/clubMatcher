@@ -4,7 +4,13 @@
  */
 package clubmatcher;
 
+import algorithms.dijkstra.dijkstra;
 import algorithms.hungarian.hungarian;
+import dataStructures.BST.BST;
+import dataStructures.dll.dll;
+import dataStructures.graphs.graph;
+import dataStructures.hashmap.hashMap;
+import dataStructures.pQueue.pQueue;
 
 /**
  *
@@ -18,12 +24,10 @@ public class ClubMatcher
      */
     public static void main(String[] args)
     {
-        // TODO code application logic herehow to do
-        
-        
-        int[][] m = new int[10][10];        
+        // TODO code application logic here   
         
         /*
+        int[][] m = new int[10][10];    
         m[0][0] = 33;
         m[0][1] = 19;
         m[0][2] = 56;
@@ -133,10 +137,71 @@ public class ClubMatcher
         m[9][7] = 93;
         m[9][8] = 58;
         m[9][9] = 44;
-        */
         
         hungarian h = new hungarian(m);
         h.optimalAssignment();
+        */
+        
+        /*
+        dll list1 = new dll();
+        dll list2 = new dll();
+        
+        list1.append(1, 2, 3);
+        list2.append(4, 5, 6);
+        list1.printList();
+        list2.printList();
+        list1.concatenate(list2);
+        list2 = null; // 2ns list concatenated
+        // remove references to object
+        // jvm garbage collection will remove object
+        list1.printList();
+        
+        System.out.println(list1.returnAtIndex(5).getData().toString());
+        
+        
+        BST bst = new BST(5);
+        bst.insert(bst.getRoot(), 2, 1, 8, 4, 6);
+        bst.prettyPrint(bst.getRoot(), 0);
+        
+        dll data = bst.returnData();
+        data.printList();
+        
+        
+        hashMap map = new hashMap();
+        map.add(1, "z");
+        map.add(2, "a");
+        map.add(3, "b");
+        map.add(4, "c");
+        map.add(5, "d");
+        map.add(6, "e");
+        map.add(6, "e");
+        map.add(8, "g");
+        map.add(12, "h");
+        
+        map.returnData();
+        
+        pQueue<String> q = new pQueue<>();
+        q.enqueue("a", 1);
+        q.enqueue("b", 2);
+        q.enqueue("c", 3);
+        q.enqueue("d", 4);
+        q.enqueue("e", 5);
+        System.out.println(q.peek());
+        q.printQueue();
+        
+        
+        */
+        graph<String> graph = new graph<>();
+        graph.add("a", "b", 6);
+        graph.add("a", "e", 20);
+        graph.add("a", "c", 4);
+        graph.add("b", "d", 1);
+        graph.add("b", "e", 2);
+        graph.add("d", "e", 3);
+        
+        dijkstra d = new dijkstra();
+        d.shortestPath(graph, "a");
+        
     }
     
 }

@@ -62,6 +62,6 @@ public class hashEntry<K extends Comparable<K>, V extends Comparable<V>> impleme
     @Override
     public String toString()
     {
-        return this.key.toString() + " = " + this.value.toString();
+        return this.key.toString();
     }
 }

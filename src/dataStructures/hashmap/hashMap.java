@@ -5,6 +5,7 @@
 package dataStructures.hashmap;
 
 import dataStructures.BST.BST;
+import dataStructures.dll.dll;
 import java.util.ArrayList;
 import java.util.Iterator;
 /**
@@ -35,7 +36,8 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         https://www.javatpoint.com/operator-shifting
         https://bit-calculator.com/bit-shift-calculator
     */
-    private final int capacity = (1 << 7);
+    // private final int capacity = (1 << 7);
+    private final int capacity = (5);
     
     /*  array stores the root node for the binary tree  */
     private BST<hashEntry<K, V>>[] table = new BST[capacity];
@@ -65,8 +67,7 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         
         for(int i = 0; i < table.length; i++)
         {
-            if(table[i] != null)
-                size++;
+            size += table[i].size(table[i].getRoot());
         }
         
         return size;
@@ -106,15 +107,17 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     public V get(K key)
     {
         int hash = hash(key);
-        hashEntry<K, V> tmp = (hashEntry) table[hash].search(table[hash].getRoot(), (hashEntry) key).getData();
+        hashEntry<K, V> temp = new hashEntry<>(key, null);
+        hashEntry<K, V> tmp = (hashEntry) table[hash].search(table[hash].getRoot(), temp).getData();
         return tmp.getValue();
     }
-
+    
     @Override
     public boolean containsKey(K key)
     {
         int hash = hash(key);
-        if(table[hash].search(table[hash].getRoot(), (hashEntry) key).getData() != null)
+        hashEntry<K, V> tmp = new hashEntry(key, null);
+        if(table[hash] != null && table[hash].search(table[hash].getRoot(), tmp) != null)
             return true;
         else
             return false;
@@ -127,6 +130,21 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
             if(table[i] != null)
                 table[i].prettyPrint(table[i].getRoot(), 0);
         }
+    }
+    
+    public dll returnData()
+    {
+        dll list = new dll(); 
+        
+        for(int i = 0; i < table.length; ++i)
+        {
+            if(table[i] != null)
+            {
+                list.concatenate(table[i].returnData());
+            }
+        }
+        
+        return list;
     }
     
     /*

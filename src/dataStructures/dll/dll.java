@@ -41,13 +41,16 @@ public class dll<E> implements Iterable<E>
         }
     }
     
-    public void append(E data)
+    public void append(E ... data_set)
     {
-        tail = new dl_node<E>(data, null, tail);
-        if(this.isEmpty())
+        for(E data : data_set)
         {
-            head = tail;
-            ++this.len;
+            tail = new dl_node<E>(data, null, tail);
+            if(this.isEmpty())
+            {
+                head = tail;
+                ++this.len;
+            }
         }
     }
     
@@ -190,6 +193,14 @@ public class dll<E> implements Iterable<E>
         return occurence;
     }
     
+    public void concatenate(dll<E> list)
+    {
+        for(E value : list)
+        {
+            this.append(value);
+        }
+    }
+    
     public void index(E item)
     {
         dl_node temp = this.head;
@@ -202,6 +213,18 @@ public class dll<E> implements Iterable<E>
             ++index;
         }
         while(temp != null);
+    }
+    
+    public E returnAtIndex(int index)
+    {
+        dl_node<E> temp = this.head;
+        while(index != 0)
+        {
+            temp = temp.getNext();
+            --index;
+        }
+        
+        return temp.getData();
     }
     
     public void printList()
@@ -251,6 +274,18 @@ public class dll<E> implements Iterable<E>
     {
         this.tail = tail;
     }
+
+    public int getLen()
+    {
+        return len;
+    }
+
+    public void setLen(int len)
+    {
+        this.len = len;
+    }
+    
+    
     
     private class dllIterator<E> implements Iterator<E>
     {
@@ -271,6 +306,11 @@ public class dll<E> implements Iterable<E>
         public E next() 
         {
             curr = curr.getNext();
+            return curr.getData();
+        }
+        
+        public E getData()
+        {
             return curr.getData();
         }
     }

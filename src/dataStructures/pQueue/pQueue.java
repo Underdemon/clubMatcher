@@ -56,7 +56,7 @@ public class pQueue<T extends Comparable<T>>
             this.head = temp;
             this.tail = temp;
         }
-        else if(priority > this.head.getPriority())
+        else if(priority >= this.head.getPriority())
         {
             // add node at first pos
             temp.setNext(this.head);
@@ -92,8 +92,25 @@ public class pQueue<T extends Comparable<T>>
     
     public void replace(T value, int priority)
     {
-        this.remove(value);
-        this.enqueue(value, priority);
+        if(this.head.getData().equals(value))
+        {
+            head.setPriority(priority);
+        }
+        else if(this.tail.getData().equals(value))
+        {
+            tail.setPriority(priority);
+        }
+        else
+        {
+            pQnode node = this.head;
+            
+            while(!node.getData().equals(value))
+            {
+                node = node.getNext();
+            }
+            
+            node.setPriority(priority);
+        }
     }
     
     public T peek() throws IllegalStateException    // peeks first element
