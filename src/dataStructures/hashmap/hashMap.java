@@ -112,6 +112,19 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         return tmp.getValue();
     }
     
+    private hashEntry<K, V> getEntry(K key)
+    {
+        int hash = hash(key);
+        hashEntry<K, V> temp = new hashEntry<>(key, null);
+        hashEntry<K, V> tmp = (hashEntry) table[hash].search(table[hash].getRoot(), temp).getData();
+        return tmp;
+    }
+    
+    public void replace(K key, V value)
+    {
+        getEntry(key).setValue(value);
+    }
+    
     @Override
     public boolean containsKey(K key)
     {

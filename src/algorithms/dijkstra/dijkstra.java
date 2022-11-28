@@ -18,7 +18,7 @@ import dataStructures.pQueue.pQnode;
  */
 public class dijkstra
 {
-    private pQueue<String> unvisited;
+    private pQueue<vertex> unvisited;
     private hashMap<String, hashEntry<Integer, String>> results;
     private final int MAX_CAPACITY = 1 >> 7;
     private String start;
@@ -33,37 +33,19 @@ public class dijkstra
     
     public void shortestPath(graph graph, String src)
     {
-        dist = new int[graph.size()];
-        prev = new String[graph.size()];
-        
         dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        
         for(int i = 0; i < graph.size(); i++)
-        {            
-            if(!graph_data.returnAtIndex(i).getKey().equals(src))
-            {
-                dist[i] = Integer.MAX_VALUE;
-                prev[i] = null;
-                unvisited.enqueue(graph_data.returnAtIndex(i).getKey(), dist[i]);
-            }
-        }
-        
-        for(int i = 0; i < unvisited.size(); i++)
         {
-            String best_vertex = unvisited.peek();
-            
-            dll<hashEntry<String, Integer>> value = graph_data.returnAtIndex(i).getValue().returnData();
-            int count = 0;
-            for(hashEntry entry : value)
+            vertex vertex;
+            hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
+            if(!graph_data_at_i.getKey().equals(src))
             {
-                int alt = dist[i] + (int) entry.getValue();
-                if(alt < dist[count])
-                {
-                    dist[count] = alt;
-                    prev[count] = best_vertex;
-                    unvisited.replace((String) entry.getKey(), alt);
-                }
-                count++;
+                vertex = new vertex(graph_data_at_i.getKey(), Integer.MAX_VALUE, null);
+                unvisited.enqueue(vertex, vertex.getDistance());
+            }
+            else
+            {
+                unvisited.enqueue(new vertex(src, 0, null), 0);
             }
         }
         

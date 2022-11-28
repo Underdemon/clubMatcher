@@ -4,6 +4,7 @@
  */
 package clubmatcher;
 
+import algorithms.dijkstra.vertex;
 import algorithms.dijkstra.dijkstra;
 import algorithms.hungarian.hungarian;
 import dataStructures.BST.BST;
@@ -191,6 +192,7 @@ public class ClubMatcher
         
         
         */
+        
         graph<String> graph = new graph<>();
         graph.add("a", "b", 6);
         graph.add("a", "e", 20);
@@ -201,7 +203,6 @@ public class ClubMatcher
         
         dijkstra d = new dijkstra();
         d.shortestPath(graph, "a");
-        
     }
     
 }
