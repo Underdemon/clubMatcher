@@ -36,8 +36,7 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         https://www.javatpoint.com/operator-shifting
         https://bit-calculator.com/bit-shift-calculator
     */
-    // private final int capacity = (1 << 7);
-    private final int capacity = (5);
+    private final int capacity = (1 << 7);
     
     /*  array stores the root node for the binary tree  */
     private BST<hashEntry<K, V>>[] table = new BST[capacity];
@@ -67,7 +66,8 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         
         for(int i = 0; i < table.length; i++)
         {
-            size += table[i].size(table[i].getRoot());
+            if(table[i] != null)
+                size += table[i].size(table[i].getRoot());
         }
         
         return size;
