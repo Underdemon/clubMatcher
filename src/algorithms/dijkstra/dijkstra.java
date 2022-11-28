@@ -31,6 +31,18 @@ public class dijkstra
         unvisited = new pQueue<>();
     }
     
+    private dll<hashEntry<vertex, vertex>> res = new dll();
+    
+    private void relax(vertex u, vertex v, int weight)
+    {
+        if(u.getDistance() + weight < v.getDistance())
+        {
+            v.setDistance(u.getDistance() + weight);
+            v.setPrev(u);
+        }
+        res.addFirst(new hashEntry<vertex, vertex>(u, v));
+    }
+    
     public void shortestPath(graph graph, String src)
     {
         dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
@@ -38,7 +50,7 @@ public class dijkstra
         {
             vertex vertex;
             hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
-            if(!graph_data_at_i.getKey().equals(src))
+            if(!(graph_data_at_i.getKey().equals(src)))
             {
                 vertex = new vertex(graph_data_at_i.getKey(), Integer.MAX_VALUE, null);
                 unvisited.enqueue(vertex, vertex.getDistance());
@@ -48,6 +60,69 @@ public class dijkstra
                 unvisited.enqueue(new vertex(src, 0, null), 0);
             }
         }
+        
+        pQueue<vertex> copy = unvisited.copy();
+        
+        
+        while(!unvisited.isEmpty())
+        {
+            vertex u = unvisited.pop();
+            for(int i = 0; i < graph.size(); i++)
+            {
+                hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
+                if(graph_data_at_i.getKey().equals(u.getData()))
+                {
+                    dll<hashEntry<String, Integer>> graph_data_at_j = graph_data_at_i.getValue().returnData();
+                    // for (hashEntry entry : dll)
+                        // relax
+                    for(hashEntry entry : graph_data_at_j)
+                    {
+                        try
+                        {
+                            vertex node = copy.search((String) entry.getKey()).getData();
+                            relax(u, node, (int) entry.getValue());
+                        }
+                        catch(NullPointerException e)
+                        {
+                            
+                        }
+                        
+                        
+                        // entry.getKey is the dest node string
+                        // arg has to be the VERTEX V that is adj to U
+                    }
+                }
+            }
+        }
+        
+        /*
+        PSEUDOCODE (https://www.cs.dartmouth.edu/~thc/cs10/lectures/0509/0509.html):
+        
+void dijkstra(s) {
+  queue = new PriorityQueue<Vertex>();
+  for (each vertex v) {
+    v.dist = infinity;  // can use Integer.MAX_VALUE or Double.POSITIVE_INFINITY
+    queue.enqueue(v);
+    v.pred = null;
+  }   
+  s.dist = 0;
+
+  while (!queue.isEmpty()) {
+    u = queue.extractMin();
+    for (each vertex v adjacent to u)
+      relax(u, v);
+  }
+}
+        
+void relax(u, v) {
+  if (u.dist + w(u,v) < v.dist) {
+    v.dist = u.dist + w(u,v);
+    v.pred = u;
+  }
+}
+        
+        
+        */
         
         /*
         dist = new int[graph.size()];

@@ -193,6 +193,21 @@ public class dll<E> implements Iterable<E>
         return occurence;
     }
     
+    public dl_node find(E data)
+    {
+        dl_node temp = this.head;
+        do
+        {
+            if(temp.getData().equals(data))
+            {
+                return temp;
+            }
+        }
+        while(temp != null);
+        
+        return null;
+    }
+    
     public void concatenate(dll<E> list)
     {
         for(E value : list)

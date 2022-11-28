@@ -220,9 +220,28 @@ public class pQueue<T extends Comparable<T>>
         return count;
     }
     
+    public pQnode<T> search(String data)
+    {
+        if(isEmpty())
+            return null;
+        
+        pQnode tmp = this.head;
+        while(tmp.getData().equals(data))
+        {
+            tmp = tmp.getNext();
+        }
+        
+        return tmp;
+    }
+    
     public boolean contains(T value)
     {
         return index(value) >= 0;
+    }
+    
+    public pQueue<T> copy()
+    {
+        return this;
     }
     
     public void printQueue()
