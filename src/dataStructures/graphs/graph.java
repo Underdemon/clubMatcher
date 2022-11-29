@@ -32,8 +32,7 @@ public class graph<T extends Comparable<T>>
         }
         else if(map.get(src).containsKey(dest)) // does the source node have a connection to the destination node
         {
-            map.get(src).remove(dest);
-            map.get(src).add(dest, weight);
+            map.get(src).replace(dest, weight);
         }
         else
         {

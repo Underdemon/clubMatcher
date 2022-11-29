@@ -19,6 +19,7 @@ import dataStructures.pQueue.pQnode;
 public class dijkstra
 {
     private pQueue<edge> unvisited;
+    private pQueue<edge> visited;
     private final int MAX_CAPACITY = 1 >> 7;
     private String start;
     private int[] dist;
@@ -61,13 +62,17 @@ public class dijkstra
             {
                 if(u.getData().equals(graph_data.returnAtIndex(i).getKey()))
                 {
-                    for(hashEntry e : connection_pair)
+                    for(hashEntry<String, Integer> e : connection_pair)
                     {
-                        edge node = copy.search((String) e.getKey()).getData();
-                        relax(u, node, (int) e.getValue());
+                        if(u.getDistance() + unvisited.search(e.getKey()).getData().getDistance() < e.getValue())
+                        {
+                            unvisited.search(e.getKey()).getData().setDistance(u.getDistance() + unvisited.search(e.getKey()).getData().getDistance());
+                            unvisited.search(e.getKey()).getData().setPrev(u);
+                        }
                     }
                 }
             }
+            visited.enqueue(u, u.getDistance());
         }
         System.out.println("");
         /*

@@ -122,6 +122,18 @@ public class pQueue<T extends Comparable<T>>
         }
     }
     
+    public pQnode<T> search(T value)
+    {
+        pQnode node = this.head;
+        
+        while(!node.getData().equals(value))
+        {
+            node = node.getNext();
+        }
+        
+        return node;
+    }
+    
     public T peek() throws IllegalStateException    // peeks first element
     {
         if(!isEmpty())
@@ -248,6 +260,7 @@ public class pQueue<T extends Comparable<T>>
         return index(value) >= 0;
     }
     
+    // doesnt work
     public pQueue<T> copy()
     {
         return new pQueue<T>(this.head, this.tail, this.size);

@@ -190,33 +190,18 @@ public class ClubMatcher
         System.out.println(q.peek());
         q.printQueue();
         
+        */
+        
         graph<String> graph = new graph<>();
-        graph.add("a", "b", 6);
-        graph.add("a", "e", 20);
-        graph.add("a", "c", 4);
-        graph.add("b", "d", 1);
-        graph.add("b", "e", 2);
-        graph.add("d", "e", 3);
+        graph.add("a", "b", 6);     graph.add("a", "b", 6);
+        graph.add("a", "e", 20);    graph.add("a", "e", 20);
+        graph.add("a", "c", 4);     graph.add("a", "c", 4);
+        graph.add("b", "d", 1);     graph.add("b", "d", 1);
+        graph.add("b", "e", 2);     graph.add("b", "e", 2);
+        graph.add("d", "e", 3);     graph.add("d", "e", 3);
         
         dijkstra d = new dijkstra(graph);
         d.shortestPath("a");
-        */
-        
-        pQueue q = new pQueue();
-        q.enqueue(1, 0);
-        q.enqueue(4, 2);
-        q.enqueue(9, 9);
-        q.printQueue();
-        System.out.println("\n ORIGINAL");
-        pQueue p = q.copy();
-        p.printQueue();
-        q.pop();
-        q.pop();
-        System.out.println("\n\n ORIGINAL");
-        q.printQueue();
-        System.out.println("\n COPY");
-        p.printQueue();
-        
     }
     
 }
