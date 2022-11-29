@@ -18,54 +18,80 @@ import dataStructures.pQueue.pQnode;
  */
 public class dijkstra
 {
-    private pQueue<vertex> unvisited;
-    private hashMap<String, hashEntry<Integer, String>> results;
+    private pQueue<edge> unvisited;
     private final int MAX_CAPACITY = 1 >> 7;
     private String start;
     private int[] dist;
     private String[] prev;
+    private graph<String> graph;
     
-    public dijkstra()
+    public dijkstra(graph graph)
     {
-        results = new hashMap<>();
         unvisited = new pQueue<>();
+        this.graph = graph;
     }
     
-    private dll<hashEntry<vertex, vertex>> res = new dll();
-    
-    private void relax(vertex u, vertex v, int weight)
+    private void relax(edge u, edge v, int weight)
     {
         if(u.getDistance() + weight < v.getDistance())
         {
             v.setDistance(u.getDistance() + weight);
             v.setPrev(u);
         }
-        res.addFirst(new hashEntry<vertex, vertex>(u, v));
     }
     
-    public void shortestPath(graph graph, String src)
+    public void shortestPath(String src)
     {
         dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        for(int i = 0; i < graph.size(); i++)
+        hashMap<String, Integer> node_connections = graph.returnConnections(src);
+        dll<hashEntry<String, Integer>> connection_pair = node_connections.returnData();
+        
+        
+        for(int i = 0; i < connection_pair.getLen(); i++)
         {
-            vertex vertex;
-            hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
-            if(!(graph_data_at_i.getKey().equals(src)))
-            {
-                vertex = new vertex(graph_data_at_i.getKey(), Integer.MAX_VALUE, null);
-                unvisited.enqueue(vertex, vertex.getDistance());
-            }
-            else
-            {
-                unvisited.enqueue(new vertex(src, 0, null), 0);
-            }
+            unvisited.enqueue(new edge(connection_pair.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), connection_pair.returnAtIndex(i).getValue());
         }
         
-        pQueue<vertex> copy = unvisited.copy();
+        pQueue<edge> copy = unvisited.copy();
         
         while(!unvisited.isEmpty())
         {
-            vertex u = unvisited.pop();
+            edge u = unvisited.pop();
+            for(int i = 0; i < node_connections.size(); i++)
+            {
+                if(u.getData().equals(graph_data.returnAtIndex(i).getKey()))
+                {
+                    for(hashEntry e : connection_pair)
+                    {
+                        edge node = copy.search((String) e.getKey()).getData();
+                        relax(u, node, (int) e.getValue());
+                    }
+                }
+            }
+        }
+        System.out.println("");
+        /*
+        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
+        for(int i = 0; i < graph.size(); i++)
+        {
+            edge edge;
+            hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
+            if(!(graph_data_at_i.getKey().equals(src)))
+            {
+                edge = new edge(graph_data_at_i.getKey(), Integer.MAX_VALUE, null);
+                unvisited.enqueue(edge, edge.getDistance());
+            }
+            else
+            {
+                unvisited.enqueue(new edge(src, 0, null), 0);
+            }
+        }
+        
+        pQueue<edge> copy = unvisited.copy();
+        
+        while(!unvisited.isEmpty())
+        {
+            edge u = unvisited.pop();
             for(int i = 0; i < graph.size(); i++)
             {
                 hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
@@ -76,24 +102,13 @@ public class dijkstra
                         // relax
                     for(hashEntry entry : graph_data_at_j)
                     {
-                        try
-                        {
-                            vertex node = copy.search((String) entry.getKey()).getData();
-                            relax(u, node, (int) entry.getValue());
-                        }
-                        catch(NullPointerException e)
-                        {
-                            
-                        }
-                        
-                        
-                        // entry.getKey is the dest node string
-                        // arg has to be the VERTEX V that is adj to U
+                        edge node = copy.search((String) entry.getKey()).getData();
+                        relax(u, node, (int) entry.getValue());
                     }
                 }
             }
         }
-        
+        */
         /*
         PSEUDOCODE (https://www.cs.dartmouth.edu/~thc/cs10/lectures/0509/0509.html):
         

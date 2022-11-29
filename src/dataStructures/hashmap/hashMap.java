@@ -148,15 +148,16 @@ public class hashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     public dll returnData()
     {
         dll list = new dll(); 
-        
+        int len  = 0;
         for(int i = 0; i < table.length; ++i)
         {
             if(table[i] != null)
             {
                 list.concatenate(table[i].returnData());
+                len += table[i].returnData().getLen();
             }
         }
-        
+        list.setLen(len);
         return list;
     }
     

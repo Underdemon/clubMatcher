@@ -23,6 +23,15 @@ public class pQueue<T extends Comparable<T>>
         this.size = 0;
     }
     
+    
+    private pQueue(pQnode<T> head, pQnode<T> tail, int size)
+    {
+        this.head = head;
+        this.tail = tail;
+        this.size = size;
+    }
+    
+    
     public boolean isEmpty()
     {
         return size == 0;
@@ -241,7 +250,7 @@ public class pQueue<T extends Comparable<T>>
     
     public pQueue<T> copy()
     {
-        return this;
+        return new pQueue<T>(this.head, this.tail, this.size);
     }
     
     public void printQueue()

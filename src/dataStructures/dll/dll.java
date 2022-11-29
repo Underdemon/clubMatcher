@@ -210,6 +210,7 @@ public class dll<E> implements Iterable<E>
     
     public void concatenate(dll<E> list)
     {
+        int len = 0;
         for(E value : list)
         {
             this.append(value);

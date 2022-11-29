@@ -77,7 +77,10 @@ public class graph<T extends Comparable<T>>
     {
         return map.returnData();
     }
-    
+    public hashMap<T, Integer> returnConnections(T src)
+    {
+        return map.get(src);
+    }
     public hashMap<T, hashMap<T, Integer>> getMap()
     {
         return map;

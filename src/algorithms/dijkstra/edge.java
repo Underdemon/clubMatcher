@@ -9,13 +9,13 @@ package algorithms.dijkstra;
  *
  * @author rayan
  */
-public class vertex implements Comparable<vertex>
+public class edge implements Comparable<edge>
 {
     private String data;
     private int distance;
-    private vertex prev;
+    private edge prev;
 
-    public vertex(String data, int distance, vertex prev)
+    public edge(String data, int distance, edge prev)
     {
         this.data = data;
         this.distance = distance;
@@ -42,18 +42,18 @@ public class vertex implements Comparable<vertex>
         this.distance = distance;
     }
 
-    public vertex getPrev()
+    public edge getPrev()
     {
         return prev;
     }
 
-    public void setPrev(vertex prev)
+    public void setPrev(edge prev)
     {
         this.prev = prev;
     }
 
     @Override
-    public int compareTo(vertex o)
+    public int compareTo(edge o)
     {
         if(this.hashCode() < o.hashCode())
             return 1;
