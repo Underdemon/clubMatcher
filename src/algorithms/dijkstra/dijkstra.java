@@ -63,7 +63,6 @@ public class dijkstra
         
         pQueue<vertex> copy = unvisited.copy();
         
-        
         while(!unvisited.isEmpty())
         {
             vertex u = unvisited.pop();
