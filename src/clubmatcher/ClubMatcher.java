@@ -193,12 +193,15 @@ public class ClubMatcher
         */
         
         graph<String> graph = new graph<>();
-        graph.add("a", "b", 6);     graph.add("a", "b", 6);
-        graph.add("a", "e", 20);    graph.add("a", "e", 20);
-        graph.add("a", "c", 4);     graph.add("a", "c", 4);
-        graph.add("b", "d", 1);     graph.add("b", "d", 1);
-        graph.add("b", "e", 2);     graph.add("b", "e", 2);
-        graph.add("d", "e", 3);     graph.add("d", "e", 3);
+        graph.add("a", "b", 4);
+        graph.add("a", "c", 2);
+        graph.add("b", "c", 3);
+        graph.add("b", "d", 2);
+        graph.add("b", "e", 3);
+        graph.add("c", "b", 1);
+        graph.add("c", "d", 4);
+        graph.add("e", "d", 1);
+        
         
         dijkstra d = new dijkstra(graph);
         d.shortestPath("a");

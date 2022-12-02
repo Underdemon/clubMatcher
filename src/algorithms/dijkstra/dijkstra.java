@@ -50,10 +50,13 @@ public class dijkstra
         
         for(int i = 0; i < connection_pair.getLen(); i++)
         {
-            unvisited.enqueue(new edge(connection_pair.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), connection_pair.returnAtIndex(i).getValue());
+            if(connection_pair.returnAtIndex(i).getKey().equals(src))
+                unvisited.enqueue(new edge(src, 0, null), 0);
+            else
+                unvisited.enqueue(new edge(connection_pair.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), connection_pair.returnAtIndex(i).getValue());
         }
         
-        pQueue<edge> copy = unvisited.copy();
+        // pQueue<edge> copy = unvisited.copy();
         
         while(!unvisited.isEmpty())
         {
@@ -62,17 +65,19 @@ public class dijkstra
             {
                 if(u.getData().equals(graph_data.returnAtIndex(i).getKey()))
                 {
-                    for(hashEntry<String, Integer> e : connection_pair)
+                    for(hashEntry<String, Integer> v : connection_pair)
                     {
-                        if(u.getDistance() + unvisited.search(e.getKey()).getData().getDistance() < e.getValue())
+                        if(unvisited.search(v.getKey()) != null)
                         {
-                            unvisited.search(e.getKey()).getData().setDistance(u.getDistance() + unvisited.search(e.getKey()).getData().getDistance());
-                            unvisited.search(e.getKey()).getData().setPrev(u);
+                            if(u.getDistance() + v.getValue() < unvisited.search(v.getKey()).getData().getDistance())
+                            {
+                                unvisited.search(v.getKey()).getData().setDistance(u.getDistance() + v.getValue());
+                                unvisited.search(v.getKey()).getData().setPrev(u);
+                            }
                         }
                     }
                 }
             }
-            visited.enqueue(u, u.getDistance());
         }
         System.out.println("");
         /*
