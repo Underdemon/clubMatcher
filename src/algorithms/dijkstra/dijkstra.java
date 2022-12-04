@@ -97,6 +97,13 @@ public class dijkstra
             rs.append(u);
         }
         
+        // problem
+        // path to b is initially B to A with weight 4
+        // path to d is found to be path from b to d with weight 2
+        // total weight from a to d is 6
+        // after assigning weight, min path to b is found to be 3
+        // therefore min path to d should be 5 not 6
+        
         int i = 0;
         for(edge e : rs)
         {

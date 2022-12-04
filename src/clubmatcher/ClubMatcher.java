@@ -225,5 +225,4 @@ public class ClubMatcher
         dijkstra d = new dijkstra(graph);
         d.shortestPath("a");
     }
-    
 }
