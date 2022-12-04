@@ -103,6 +103,8 @@ public class dijkstra
         // total weight from a to d is 6
         // after assigning weight, min path to b is found to be 3
         // therefore min path to d should be 5 not 6
+        //
+        // if found in rs DLL, add node back to pQueue and then break to the while loop???
         
         int i = 0;
         for(edge e : rs)
