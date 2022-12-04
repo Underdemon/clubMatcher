@@ -12,6 +12,8 @@ import dataStructures.dll.dll;
 import dataStructures.graphs.graph;
 import dataStructures.hashmap.hashMap;
 import dataStructures.pQueue.pQueue;
+import databaseConnect.databaseConnect;
+import java.io.File;
 
 /**
  *
@@ -190,6 +192,22 @@ public class ClubMatcher
         System.out.println(q.peek());
         q.printQueue();
         
+        
+        
+        
+        
+        
+        
+        File file = new File("clubMatcher.db");
+        file.delete();
+        
+        databaseConnect db = new databaseConnect();
+        db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\club.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
         */
         
         graph<String> graph = new graph<>();
@@ -200,6 +218,7 @@ public class ClubMatcher
         graph.add("b", "e", 3);
         graph.add("c", "b", 1);
         graph.add("c", "d", 4);
+        graph.add("c", "e", 5);
         graph.add("e", "d", 1);
         
         

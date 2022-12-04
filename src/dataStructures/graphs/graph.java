@@ -22,7 +22,7 @@ public class graph<T extends Comparable<T>>
     }
     
     public void add(T src, T dest, int weight)
-    {
+    {        
         hashMap<T, Integer> destinations = new hashMap<>();  // should be of size capacity
         
         if(!map.containsKey(src)) // if the outer hashmap doesn't have the source node

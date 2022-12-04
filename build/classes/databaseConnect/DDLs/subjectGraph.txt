@@ -1,0 +1,7 @@
+CREATE TABLE SubjectGraph
+(
+StartVertex VARCHAR(255) NOT NULL,
+EndVertex VARCHAR(255) NOT NULL,
+Weight INTEGER,
+PRIMARY KEY (StartVertex, EndVertex)
+);

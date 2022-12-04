@@ -11,6 +11,7 @@ import dataStructures.graphs.graph;
 import dataStructures.hashmap.hashMap;
 import dataStructures.hashmap.hashEntry;
 import dataStructures.pQueue.pQnode;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,6 +26,7 @@ public class dijkstra
     private int[] dist;
     private String[] prev;
     private graph<String> graph;
+    dll<edge> rs = new dll<>();
     
     public dijkstra(graph graph)
     {
@@ -41,46 +43,104 @@ public class dijkstra
         }
     }
     
-    public void shortestPath(String src)
+    public edge vertexSearch(String value)
     {
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        hashMap<String, Integer> node_connections = graph.returnConnections(src);
-        dll<hashEntry<String, Integer>> connection_pair = node_connections.returnData();
+        if(unvisited.isEmpty())
+            return null;
         
+        pQnode<edge> node = unvisited.getHead();
         
-        for(int i = 0; i < connection_pair.getLen(); i++)
+        while(node.getNext() != null && !node.getData().getData().equals(value))
         {
-            if(connection_pair.returnAtIndex(i).getKey().equals(src))
-                unvisited.enqueue(new edge(src, 0, null), 0);
-            else
-                unvisited.enqueue(new edge(connection_pair.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), connection_pair.returnAtIndex(i).getValue());
+            node = node.getNext();
         }
         
-        // pQueue<edge> copy = unvisited.copy();
+        if(node.getNext() == null && !node.getData().getData().equals(value))
+        {
+            for(edge e : rs)
+            {
+                if(e.getData().equals(value))
+                    return e;
+            }
+        }
+        
+        return node.getData();
+    }
+    
+    public void shortestPath(String src)
+    {
+        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();        
+        
+        for(int i = 0; i < graph_data.getLen(); i++)
+        {
+            if(graph_data.returnAtIndex(i).getKey().equals(src))
+                unvisited.enqueue(new edge(src, 0, null), 0);
+            else
+                unvisited.enqueue(new edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
+        }
+                
+        while(!unvisited.isEmpty())
+        {
+            edge u = unvisited.pop();
+            dll<hashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
+            for(hashEntry<String, Integer> v : connection_pairs)
+            {
+                if(vertexSearch(v.getKey()) != null)
+                {
+                    if(u.getDistance() + v.getValue() < vertexSearch(v.getKey()).getDistance())
+                    {
+                        vertexSearch(v.getKey()).setDistance(u.getDistance() + v.getValue());
+                        vertexSearch(v.getKey()).setPrev(u);
+                    }
+                }
+            }
+            rs.append(u);
+        }
+        
+        int i = 0;
+        for(edge e : rs)
+        {
+            System.out.println(rs.returnAtIndex(i).getData() + " = " + rs.returnAtIndex(i).getDistance());
+            i++;
+        }
+        
+        /*
+        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();        
+        
+        for(int i = 0; i < graph_data.getLen(); i++)
+        {
+            if(graph_data.returnAtIndex(i).getKey().equals(src))
+                unvisited.enqueue(new edge(src, 0, null), 0);
+            else
+                unvisited.enqueue(new edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
+        }
         
         while(!unvisited.isEmpty())
         {
             edge u = unvisited.pop();
-            for(int i = 0; i < node_connections.size(); i++)
+            dll<hashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
+            for(hashEntry<String, Integer> v : connection_pairs)
             {
-                if(u.getData().equals(graph_data.returnAtIndex(i).getKey()))
+                if(searchQueue(unvisited, v.getKey()) != null)
                 {
-                    for(hashEntry<String, Integer> v : connection_pair)
+                    if(u.getDistance() + v.getValue() < searchQueue(unvisited, v.getKey()).getDistance())
                     {
-                        if(unvisited.search(v.getKey()) != null)
-                        {
-                            if(u.getDistance() + v.getValue() < unvisited.search(v.getKey()).getData().getDistance())
-                            {
-                                unvisited.search(v.getKey()).getData().setDistance(u.getDistance() + v.getValue());
-                                unvisited.search(v.getKey()).getData().setPrev(u);
-                            }
-                        }
+                        searchQueue(unvisited, v.getKey()).setDistance(u.getDistance() + v.getValue());
+                        searchQueue(unvisited, v.getKey()).setPrev(u);
                     }
                 }
             }
+            rs.append(u);
         }
-        System.out.println("");
-        /*
+        
+        int i = 0;
+        for(edge e : rs)
+        {
+            System.out.println(rs.returnAtIndex(i).getData() + " = " + rs.returnAtIndex(i).getDistance());
+            i++;
+        }
+        
+        
         dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
         for(int i = 0; i < graph.size(); i++)
         {

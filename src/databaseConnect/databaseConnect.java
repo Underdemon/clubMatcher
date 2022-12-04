@@ -37,11 +37,9 @@ public class databaseConnect
         try
         {
             Class.forName("org.sqlite.JDBC");//Specify the SQLite Java driver
-            conn = DriverManager.getConnection("jdbc:sqlite:aqa_movie.db");//Specify the database, since relative in the main project folder
+            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db");//Specify the database, since relative in the main project folder
             conn.setAutoCommit(false);// Important as you want control of when data is written
             System.out.println("Opened database successfully");
-            
-            databaseConnect conn = new databaseConnect();
         }
         catch (Exception e)
         {
@@ -321,7 +319,7 @@ public class databaseConnect
         return bDelete;
     }
     
-    public static String[] selectColumnNames(String tableName)
+    private static String[] selectColumnNames(String tableName)
     {
         Statement stmt = null;
         ResultSet rs = null;

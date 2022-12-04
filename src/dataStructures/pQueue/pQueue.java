@@ -65,14 +65,14 @@ public class pQueue<T extends Comparable<T>>
             this.head = temp;
             this.tail = temp;
         }
-        else if(priority >= this.head.getPriority())
+        else if(priority < this.head.getPriority())
         {
             // add node at first pos
             temp.setNext(this.head);
             this.head.setPrev(temp.getNext());
             this.head = temp;
         }
-        else if(priority < this.tail.getPriority())
+        else if(priority >= this.tail.getPriority())
         {
             // add node to last pos
             temp.setPrev(this.tail);
@@ -124,6 +124,24 @@ public class pQueue<T extends Comparable<T>>
     
     public pQnode<T> search(T value)
     {
+        if(isEmpty())
+            return null;
+        
+        pQnode node = this.head;
+        
+        while(!node.getData().equals(value))
+        {
+            node = node.getNext();
+        }
+        
+        return node;
+    }
+    
+    public pQnode<T> search(String value)
+    {
+        if(isEmpty())
+            return null;
+        
         pQnode node = this.head;
         
         while(!node.getData().equals(value))
@@ -241,20 +259,6 @@ public class pQueue<T extends Comparable<T>>
         return count;
     }
     
-    public pQnode<T> search(String data)
-    {
-        if(isEmpty())
-            return null;
-        
-        pQnode tmp = this.head;
-        while(tmp.getData().equals(data))
-        {
-            tmp = tmp.getNext();
-        }
-        
-        return tmp;
-    }
-    
     public boolean contains(T value)
     {
         return index(value) >= 0;
@@ -282,4 +286,36 @@ public class pQueue<T extends Comparable<T>>
     {
         return this.size;
     }
+
+    public pQnode<T> getHead()
+    {
+        return head;
+    }
+
+    public void setHead(pQnode<T> head)
+    {
+        this.head = head;
+    }
+
+    public pQnode<T> getTail()
+    {
+        return tail;
+    }
+
+    public void setTail(pQnode<T> tail)
+    {
+        this.tail = tail;
+    }
+
+    public int getSize()
+    {
+        return size;
+    }
+
+    public void setSize(int size)
+    {
+        this.size = size;
+    }
+    
+    
 }
