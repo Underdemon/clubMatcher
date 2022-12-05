@@ -65,7 +65,7 @@ public class pQueue<T extends Comparable<T>>
             this.head = temp;
             this.tail = temp;
         }
-        else if(priority < this.head.getPriority())
+        else if(priority <= this.head.getPriority())
         {
             // add node at first pos
             temp.setNext(this.head);

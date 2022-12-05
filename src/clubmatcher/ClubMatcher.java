@@ -192,6 +192,7 @@ public class ClubMatcher
         System.out.println(q.peek());
         q.printQueue();
         
+        
         graph<String> graph = new graph<>();
         graph.add("a", "b", 4);
         graph.add("a", "c", 2);
@@ -208,7 +209,6 @@ public class ClubMatcher
         d.shortestPath("a");
         
         
-        
         File file = new File("clubMatcher.db");
         file.delete();
         
@@ -220,5 +220,17 @@ public class ClubMatcher
         db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
         */
+        
+        graph<String> graph = new graph<>();
+        graph.add("a", "b", 5);
+        graph.add("a", "c", 3);
+        graph.add("a", "d", 10);
+        graph.add("b", "d", 6);
+        graph.add("c", "b", 1);
+        graph.add("c", "d", 4);
+        
+        
+        dijkstra d = new dijkstra(graph);
+        d.shortestPath("a");
     }
 }

@@ -56,6 +56,26 @@ public class dijkstra
         return node.getData();
     }
     
+    public boolean inQueue(String value)
+    {
+        if(unvisited.isEmpty())
+            return false;
+        
+        pQnode<edge> node = unvisited.getHead();
+        
+        while(node.getNext() != null && !node.getData().getData().equals(value))
+        {
+            node = node.getNext();
+        }
+        
+        if(node.getNext() == null && !node.getData().getData().equals(value))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
     public void shortestPath(String src)
     {
         dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();        
@@ -80,6 +100,14 @@ public class dijkstra
                     {
                         vertexSearch(v.getKey()).setDistance(u.getDistance() + v.getValue());
                         vertexSearch(v.getKey()).setPrev(u);
+                        
+                        if(inQueue(v.getKey()))
+                            unvisited.replace(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
+                        else
+                        {
+                            unvisited.enqueue(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
+                            rs.remove(vertexSearch(v.getKey()));
+                        }
                     }
                 }
             }
