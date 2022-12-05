@@ -4,14 +4,12 @@
  */
 package algorithms.dijkstra;
 
-import dataStructures.dll.dl_node;
 import dataStructures.dll.dll;
 import dataStructures.pQueue.pQueue;
 import dataStructures.graphs.graph;
 import dataStructures.hashmap.hashMap;
 import dataStructures.hashmap.hashEntry;
 import dataStructures.pQueue.pQnode;
-import java.util.ArrayList;
 
 /**
  *
@@ -32,15 +30,6 @@ public class dijkstra
     {
         unvisited = new pQueue<>();
         this.graph = graph;
-    }
-    
-    private void relax(edge u, edge v, int weight)
-    {
-        if(u.getDistance() + weight < v.getDistance())
-        {
-            v.setDistance(u.getDistance() + weight);
-            v.setPrev(u);
-        }
     }
     
     public edge vertexSearch(String value)
