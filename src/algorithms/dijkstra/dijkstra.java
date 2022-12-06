@@ -104,10 +104,7 @@ public class dijkstra
                         if(inQueue(v.getKey()))
                             unvisited.replace(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
                         else
-                        {
-                            unvisited.enqueue(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
                             rs.remove(vertexSearch(v.getKey()));
-                        }
                     }
                 }
             }

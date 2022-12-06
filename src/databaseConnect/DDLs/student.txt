@@ -1,6 +1,7 @@
 CREATE TABLE Student
 (
 StudentID INTEGER NOT NULL PRIMARY KEY,
-StudentName VARCHAR(255),
-YearGroup INTEGER
+PersonID INTEGER,
+YearGroup INTEGER,
+FOREIGN KEY (PersonID) REFERENCES Person(PersonID)
 );

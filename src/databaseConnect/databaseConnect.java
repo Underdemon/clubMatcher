@@ -37,9 +37,12 @@ public class databaseConnect
         try
         {
             Class.forName("org.sqlite.JDBC");//Specify the SQLite Java driver
+            double start_time = System.nanoTime();
             conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db");//Specify the database, since relative in the main project folder
             conn.setAutoCommit(false);// Important as you want control of when data is written
+            double end_time = System.nanoTime();
             System.out.println("Opened database successfully");
+            System.out.println("It took " + (end_time - start_time)/(1000000000) + " seconds to open the database!");
         }
         catch (Exception e)
         {
@@ -229,8 +232,9 @@ public class databaseConnect
                     }
                 }
                 
-                System.out.println(sql + sqlTemp);
-                stmt.executeUpdate(sql + sqlTemp);
+                String complete_statement = sql + sqlTemp;
+                System.out.println(complete_statement);
+                stmt.executeUpdate(complete_statement);
                 sqlTemp = "";
             }
             

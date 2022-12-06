@@ -209,18 +209,6 @@ public class ClubMatcher
         d.shortestPath("a");
         
         
-        File file = new File("clubMatcher.db");
-        file.delete();
-        
-        databaseConnect db = new databaseConnect();
-        db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
-        db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
-        db.createTable(".\\src\\databaseConnect\\DDLs\\club.txt");
-        db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
-        db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
-        db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
-        */
-        
         graph<String> graph = new graph<>();
         graph.add("a", "b", 5);
         graph.add("a", "c", 3);
@@ -232,5 +220,24 @@ public class ClubMatcher
         
         dijkstra d = new dijkstra(graph);
         d.shortestPath("a");
+        
+        
+        
+        */
+        
+        File file = new File("clubMatcher.db");
+        file.delete();
+        
+        databaseConnect db = new databaseConnect();
+        db.createTable(".\\src\\databaseConnect\\DDLs\\person.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\club.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
+        db.insert("Person", ".\\src\\databaseConnect\\CSVs\\person.csv");
+        
+        db.close();
     }
 }

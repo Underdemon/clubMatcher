@@ -1,5 +1,7 @@
 CREATE TABLE Teacher
 (
 TeacherID INTEGER NOT NULL PRIMARY KEY,
-TeacherName VARCHAR(255)
+PersonID INTEGER,
+Department VARCHAR(255),
+FOREIGN KEY (PersonID) REFERENCES Person(PersonID)
 );
