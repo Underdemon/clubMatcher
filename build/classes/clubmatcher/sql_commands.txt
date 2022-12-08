@@ -1,0 +1,29 @@
+// returns names of students
+SELECT Person.Name FROM Student, Person WHERE Student.PersonID = Person.PersonID
+
+// returns names of teachers
+SELECT Person.Name FROM Teacher, Person WHERE Teacher.PersonID = Person.PersonID
+
+// select all unnasigned students
+Select Person.Name FROM Person
+INNER JOIN Student ON Student.PersonID = Person.PersonID
+WHERE Student.isAssigned = 0;
+
+// unassigned all students
+UPDATE Student
+SET isAssigned = 0
+WHERE Student.isAssigned = 1
+
+// make a view of a specific students attendance
+
+
+// students with most attendance of clubs
+
+
+
+
+
+
+
+https://www.sqlitetutorial.net/sqlite-distinct/
+SELECT DISTINCT ensures no duplicate values

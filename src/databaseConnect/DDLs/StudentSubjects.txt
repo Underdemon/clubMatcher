@@ -2,7 +2,7 @@ CREATE TABLE StudentSubjects
 (
 StudentID INTEGER NOT NULL,
 SubjectID INTEGER NOT NULL,
-PRIMARY KEY (StudentID, SubjectID),
 FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
-FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID),
+PRIMARY KEY (StudentID, SubjectID)
 );

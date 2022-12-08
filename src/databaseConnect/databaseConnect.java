@@ -264,7 +264,7 @@ public class databaseConnect
             
             String sql = "";
             Scanner scnr = new Scanner(System.in);
-            System.out.println("\nPlease input the " + columnNames[0] + " that you want to change: ");
+            System.out.println("\nPlease input the " + columnNames[0] + " that you want to change: ");            
             int id = scnr.nextInt();
             scnr.nextLine();
             System.out.println("Please input the EXACT name of the field above you want to modify: ");
@@ -321,6 +321,23 @@ public class databaseConnect
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return bDelete;
+    }
+    
+    public boolean query(String tableName)
+    {
+        boolean bQuery = false;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return bQuery;
     }
     
     private static String[] selectColumnNames(String tableName)

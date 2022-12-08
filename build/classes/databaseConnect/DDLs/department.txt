@@ -1,0 +1,5 @@
+CREATE TABLE Department
+(
+DepartmentID INTEGER NOT NULL PRIMARY KEY,
+DepartmentName VARCHAR(255)
+);

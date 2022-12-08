@@ -229,6 +229,7 @@ public class ClubMatcher
         file.delete();
         
         databaseConnect db = new databaseConnect();
+        db.createTable(".\\src\\databaseConnect\\DDLs\\department.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\person.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
@@ -236,7 +237,17 @@ public class ClubMatcher
         db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
+        
+        db.insert("Department", ".\\src\\databaseConnect\\CSVs\\department.csv");
         db.insert("Person", ".\\src\\databaseConnect\\CSVs\\person.csv");
+        db.insert("Student", ".\\src\\databaseConnect\\CSVs\\student.csv");
+        db.insert("Teacher", ".\\src\\databaseConnect\\CSVs\\teacher.csv");
+        db.insert("Club", ".\\src\\databaseConnect\\CSVs\\club.csv");
+        db.insert("Subjects", ".\\src\\databaseConnect\\CSVs\\subjects.csv");
+        db.insert("StudentSubjects", ".\\src\\databaseConnect\\CSVs\\StudentSubjects.csv");
+        db.insert("subjectGraph", ".\\src\\databaseConnect\\CSVs\\subjectGraph.csv");
+        
+        db.update("Person");
         
         db.close();
     }

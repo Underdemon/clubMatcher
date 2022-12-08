@@ -1,7 +1,9 @@
 CREATE TABLE SubjectGraph
 (
-StartVertex VARCHAR(255) NOT NULL,
-EndVertex VARCHAR(255) NOT NULL,
+StartVertex INTEGER NOT NULL,
+EndVertex INTEGER NOT NULL,
 Weight INTEGER,
+FOREIGN KEY (StartVertex) REFERENCES Subjects(SubjectID),
+FOREIGN KEY (EndVertex) REFERENCES Subjects(SubjectID),
 PRIMARY KEY (StartVertex, EndVertex)
 );

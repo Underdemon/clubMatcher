@@ -6,6 +6,8 @@ SubjectID INTEGER,
 DayRunning INTEGER,
 BLA VARCHAR(1),
 TeacherID INTEGER,
+DepartmentID INTEGER,
 FOREIGN KEY(TeacherID) REFERENCES Teacher(TeacherID),
-FOREIGN KEY(SubjectID) REFERENCES Subject(SubjectID)
+FOREIGN KEY(SubjectID) REFERENCES Subject(SubjectID),
+FOREIGN KEY(DepartmentID) REFERENCES Department(DepartmentID)
 );
