@@ -27,17 +27,35 @@ UPDATE Student
 SET isAssigned = 0
 WHERE Student.isAssigned = 1
 
+// number of unassigned students?
+Select DISTINCT Count(*) FROM Person
+INNER JOIN Student ON Student.PersonID = Person.PersonID
+WHERE Student.isAssigned = 0;
+
+
 // make a view of a specific students attendance
+CREATE VIEW StudentLog AS
+
+SELECT Person.Name, ClubLog.Timestamp, ClubLog.Date, Club.ClubName, Club.StartTime
+FROM ClubLog
+
+INNER JOIN Student ON Student.StudentID = ClubLog.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+INNER JOIN Club ON ClubLog.ClubID = Club.ClubID
+
+WHERE Student.StudentID = 2
+
+// using student attendance view, count how many lates
 
 
 // students with most attendance of clubs
 
 
-// are there any unassigned students?
-
-
 // get StudentSubject subject names to feed into Dijkstra
 
+
+// view lates
+// create a view of all timestamps in club log more than +-10 mins before/after club starts (club start time)
 
 
 

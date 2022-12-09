@@ -1,5 +1,18 @@
-// returns names of students
-SELECT Person.Name FROM Student, Person WHERE Student.PersonID = Person.PersonID
+CRUD OPERATIONS ON ALL TABLES EXCEPT LOG
+CLUB LOG IS READ ONLY
+
+Club assigning option - assign for:
+- all students
+- all unassigned students
+- specific student
+- specific day
+- all days
+
+use teacher + time to see what club is running?
+
+
+// returns names of students in order of ID (when asking for specific student, make int they have to input to choose student = person.id OR rowID of query
+SELECT Person.Name FROM Student, Person WHERE Student.PersonID = Person.PersonID ORDER BY Person.PersonID ASC
 
 // returns names of teachers
 SELECT Person.Name FROM Teacher, Person WHERE Teacher.PersonID = Person.PersonID
@@ -14,16 +27,61 @@ UPDATE Student
 SET isAssigned = 0
 WHERE Student.isAssigned = 1
 
+// number of unassigned students?
+Select DISTINCT Count(*) FROM Person
+INNER JOIN Student ON Student.PersonID = Person.PersonID
+WHERE Student.isAssigned = 0;
+
+
 // make a view of a specific students attendance
+CREATE VIEW StudentLog AS
+
+SELECT Person.Name, ClubLog.Timestamp, ClubLog.Date, Club.ClubName, Club.StartTime
+FROM ClubLog
+
+INNER JOIN Student ON Student.StudentID = ClubLog.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+INNER JOIN Club ON ClubLog.ClubID = Club.ClubID
+
+WHERE Student.StudentID = 2
+
+// using student attendance view, count how many lates
 
 
 // students with most attendance of clubs
 
 
+// get StudentSubject subject names to feed into Dijkstra
 
 
+// view lates
+// create a view of all timestamps in club log more than +-10 mins before/after club starts (club start time)
 
 
 
 https://www.sqlitetutorial.net/sqlite-distinct/
 SELECT DISTINCT ensures no duplicate values
+
+https://www.sqlitetutorial.net/sqlite-glob/
+GLOB is case sensitive regex using UNIX wildcards
+
+https://www.sqlitetutorial.net/sqlite-having/
+https://stackoverflow.com/a/9253267
+HAVING vs WHERE
+
+https://www.sqlitetutorial.net/sqlite-intersect/
+https://stackoverflow.com/a/51775740
+INTERSECT VS INNER JOIN
+inner join = duplicates
+
+https://www.sqlitetutorial.net/sqlite-exists/
+does a subquery return any row
+eg: are there any unassigned students
+
+reverse engineer import csv to allow for backups
+
+TO LOOP THROUGH RESULTS SET:
+while (rs.next()) {
+                System.out.println(rs.getInt("id") +  "\t" + 
+                                   rs.getString("name") + "\t" +
+                                   rs.getDouble("capacity"));

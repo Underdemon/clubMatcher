@@ -231,7 +231,6 @@ public class databaseConnect
                         }
                     }
                 }
-                
                 String complete_statement = sql + sqlTemp;
                 System.out.println(complete_statement);
                 stmt.executeUpdate(complete_statement);

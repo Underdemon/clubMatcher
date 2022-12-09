@@ -237,6 +237,7 @@ public class ClubMatcher
         db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
         db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
+        db.createTable(".\\src\\databaseConnect\\DDLs\\clubLog.txt");
         
         db.insert("Department", ".\\src\\databaseConnect\\CSVs\\department.csv");
         db.insert("Person", ".\\src\\databaseConnect\\CSVs\\person.csv");
@@ -246,8 +247,9 @@ public class ClubMatcher
         db.insert("Subjects", ".\\src\\databaseConnect\\CSVs\\subjects.csv");
         db.insert("StudentSubjects", ".\\src\\databaseConnect\\CSVs\\StudentSubjects.csv");
         db.insert("subjectGraph", ".\\src\\databaseConnect\\CSVs\\subjectGraph.csv");
+        db.insert("ClubLog", ".\\src\\databaseConnect\\CSVs\\clubLog.csv");
         
-        db.update("Person");
+        //db.update("Person");
         
         db.close();
     }
