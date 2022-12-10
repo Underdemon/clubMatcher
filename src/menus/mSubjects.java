@@ -8,7 +8,7 @@ package menus;
  *
  * @author rayan
  */
-public class mSubjects
+public class MSubjects
 {
     
 }

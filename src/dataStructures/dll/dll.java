@@ -11,13 +11,13 @@ import java.util.NoSuchElementException;
  *
  * @author rayan
  */
-public class dll<E> implements Iterable<E>
+public class DLL<E> implements Iterable<E>
 {
     private int len;
     private dl_node<E> head;
     private dl_node<E> tail;
     
-    public dll()
+    public DLL()
     {      
         head = null;
         tail = null;
@@ -208,7 +208,7 @@ public class dll<E> implements Iterable<E>
         return null;
     }
     
-    public void concatenate(dll<E> list)
+    public void concatenate(DLL<E> list)
     {
         int len = 0;
         for(E value : list)

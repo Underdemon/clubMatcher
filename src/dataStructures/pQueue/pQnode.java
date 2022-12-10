@@ -8,14 +8,14 @@ package dataStructures.pQueue;
  *
  * @author rayan
  */
-public class pQnode<T extends Comparable<T>>
+public class PQnode<T extends Comparable<T>>
 {
     private T data;
-    private pQnode<T> next;
-    private pQnode<T> prev;
+    private PQnode<T> next;
+    private PQnode<T> prev;
     private int priority;
     
-    public pQnode(T data, pQnode next, pQnode prev, int priority)
+    public PQnode(T data, PQnode next, PQnode prev, int priority)
     {
         this.data       = data;
         this.next       = next;
@@ -33,12 +33,12 @@ public class pQnode<T extends Comparable<T>>
         this.data = data;
     }
 
-    public pQnode<T> getNext()
+    public PQnode<T> getNext()
     {
         return next;
     }
 
-    public void setNext(pQnode<T> next)
+    public void setNext(PQnode<T> next)
     {
         this.next = next;
     }
@@ -53,12 +53,12 @@ public class pQnode<T extends Comparable<T>>
         this.priority = priority;
     }
 
-    public pQnode<T> getPrev()
+    public PQnode<T> getPrev()
     {
         return prev;
     }
 
-    public void setPrev(pQnode<T> prev)
+    public void setPrev(PQnode<T> prev)
     {
         this.prev = prev;
     }

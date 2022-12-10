@@ -28,11 +28,11 @@ import java.util.Scanner;
  *
  * @author rayan
  */
-public class databaseConnect
+public class DatabaseConnect
 {
     private static Connection conn = null;
     
-    public databaseConnect()
+    public DatabaseConnect()
     {
         try
         {
@@ -59,7 +59,7 @@ public class databaseConnect
         } 
         catch (SQLException ex)
         {
-            Logger.getLogger(databaseConnect.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

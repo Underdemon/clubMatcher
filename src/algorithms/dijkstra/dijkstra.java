@@ -4,12 +4,12 @@
  */
 package algorithms.dijkstra;
 
-import dataStructures.dll.dll;
-import dataStructures.pQueue.pQueue;
-import dataStructures.graphs.graph;
-import dataStructures.hashmap.hashMap;
-import dataStructures.hashmap.hashEntry;
-import dataStructures.pQueue.pQnode;
+import dataStructures.dll.DLL;
+import dataStructures.pQueue.PQueue;
+import dataStructures.graphs.Graph;
+import dataStructures.hashmap.HashMap;
+import dataStructures.hashmap.HashEntry;
+import dataStructures.pQueue.PQnode;
 
 /**
  *
@@ -17,18 +17,18 @@ import dataStructures.pQueue.pQnode;
  */
 public class Dijkstra
 {
-    private pQueue<Edge> unvisited;
-    private pQueue<Edge> visited;
+    private PQueue<Edge> unvisited;
+    private PQueue<Edge> visited;
     private final int MAX_CAPACITY = 1 >> 7;
     private String start;
     private int[] dist;
     private String[] prev;
-    private graph<String> graph;
-    dll<Edge> rs = new dll<>();
+    private Graph<String> graph;
+    DLL<Edge> rs = new DLL<>();
     
-    public Dijkstra(graph graph)
+    public Dijkstra(Graph graph)
     {
-        unvisited = new pQueue<>();
+        unvisited = new PQueue<>();
         this.graph = graph;
     }
     
@@ -37,7 +37,7 @@ public class Dijkstra
         if(unvisited.isEmpty())
             return null;
         
-        pQnode<Edge> node = unvisited.getHead();
+        PQnode<Edge> node = unvisited.getHead();
         
         while(node.getNext() != null && !node.getData().getData().equals(value))
         {
@@ -61,7 +61,7 @@ public class Dijkstra
         if(unvisited.isEmpty())
             return false;
         
-        pQnode<Edge> node = unvisited.getHead();
+        PQnode<Edge> node = unvisited.getHead();
         
         while(node.getNext() != null && !node.getData().getData().equals(value))
         {
@@ -78,7 +78,7 @@ public class Dijkstra
     
     public void shortestPath(String src)
     {
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();        
+        DLL<HashEntry<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
         
         for(int i = 0; i < graph_data.getLen(); i++)
         {
@@ -91,8 +91,8 @@ public class Dijkstra
         while(!unvisited.isEmpty())
         {
             Edge u = unvisited.pop();
-            dll<hashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
-            for(hashEntry<String, Integer> v : connection_pairs)
+            DLL<HashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
+            for(HashEntry<String, Integer> v : connection_pairs)
             {
                 if(vertexSearch(v.getKey()) != null)
                 {

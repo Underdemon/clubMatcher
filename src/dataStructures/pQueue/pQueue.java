@@ -10,13 +10,13 @@ import java.util.regex.Pattern;
  *
  * @author rayan
  */
-public class pQueue<T extends Comparable<T>>
+public class PQueue<T extends Comparable<T>>
 {
-    private pQnode<T> head;
-    private pQnode<T> tail;
+    private PQnode<T> head;
+    private PQnode<T> tail;
     private int size;
     
-    public pQueue()
+    public PQueue()
     {
         this.head = null;
         this.tail = null;
@@ -24,7 +24,7 @@ public class pQueue<T extends Comparable<T>>
     }
     
     
-    private pQueue(pQnode<T> head, pQnode<T> tail, int size)
+    private PQueue(PQnode<T> head, PQnode<T> tail, int size)
     {
         this.head = head;
         this.tail = tail;
@@ -57,7 +57,7 @@ public class pQueue<T extends Comparable<T>>
     
     public void enqueue(T data, int priority)
     {
-        pQnode temp = new pQnode(data, null, null, priority);
+        PQnode temp = new PQnode(data, null, null, priority);
             
         if(head == null)
         {
@@ -81,7 +81,7 @@ public class pQueue<T extends Comparable<T>>
         }
         else
         {
-            pQnode node = this.head;
+            PQnode node = this.head;
 
             // find the point at which the inserted data has a higher priority
             while(node.getPriority() < priority)
@@ -111,7 +111,7 @@ public class pQueue<T extends Comparable<T>>
         }
         else
         {
-            pQnode node = this.head;
+            PQnode node = this.head;
             
             while(!node.getData().equals(value))
             {
@@ -122,12 +122,12 @@ public class pQueue<T extends Comparable<T>>
         }
     }
     
-    public pQnode<T> search(T value)
+    public PQnode<T> search(T value)
     {
         if(isEmpty())
             return null;
         
-        pQnode node = this.head;
+        PQnode node = this.head;
         
         while(!node.getData().equals(value))
         {
@@ -137,12 +137,12 @@ public class pQueue<T extends Comparable<T>>
         return node;
     }
     
-    public pQnode<T> search(String value)
+    public PQnode<T> search(String value)
     {
         if(isEmpty())
             return null;
         
-        pQnode node = this.head;
+        PQnode node = this.head;
         
         while(!node.getData().equals(value))
         {
@@ -166,7 +166,7 @@ public class pQueue<T extends Comparable<T>>
         if(!isEmpty())
         {
             T data = this.peek();
-            pQnode temp = this.head;
+            PQnode temp = this.head;
             if(this.head.equals(this.tail))
             {
                 this.head = null;
@@ -187,7 +187,7 @@ public class pQueue<T extends Comparable<T>>
     {
         if(!isEmpty())
         {
-            pQnode temp = this.head;
+            PQnode temp = this.head;
             if(this.head.equals(this.tail))
             {
                 this.head = null;
@@ -238,7 +238,7 @@ public class pQueue<T extends Comparable<T>>
         
         boolean isFound = false;
         
-        pQnode tmp = this.head;
+        PQnode tmp = this.head;
         int count = 0;
         
         do
@@ -265,14 +265,14 @@ public class pQueue<T extends Comparable<T>>
     }
     
     // doesnt work
-    public pQueue<T> copy()
+    public PQueue<T> copy()
     {
-        return new pQueue<T>(this.head, this.tail, this.size);
+        return new PQueue<T>(this.head, this.tail, this.size);
     }
     
     public void printQueue()
     {
-        pQnode temp = this.head;
+        PQnode temp = this.head;
         System.out.println("\n\t======== PRINTING QUEUE ========");
         while(temp != null)
         {
@@ -287,22 +287,22 @@ public class pQueue<T extends Comparable<T>>
         return this.size;
     }
 
-    public pQnode<T> getHead()
+    public PQnode<T> getHead()
     {
         return head;
     }
 
-    public void setHead(pQnode<T> head)
+    public void setHead(PQnode<T> head)
     {
         this.head = head;
     }
 
-    public pQnode<T> getTail()
+    public PQnode<T> getTail()
     {
         return tail;
     }
 
-    public void setTail(pQnode<T> tail)
+    public void setTail(PQnode<T> tail)
     {
         this.tail = tail;
     }

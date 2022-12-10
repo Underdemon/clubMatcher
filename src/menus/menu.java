@@ -11,10 +11,8 @@ import java.util.regex.Pattern;
  *
  * @author rayan
  */
-public abstract class menu
-{
-    public abstract void menu();
-    
+public abstract class Menu
+{  
     public boolean isNumeric(String str)
     {
         if(str.equals(null))

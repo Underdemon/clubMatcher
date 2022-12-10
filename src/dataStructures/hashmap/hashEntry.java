@@ -9,31 +9,31 @@ package dataStructures.hashmap;
  * @author rayan
  */
 
-public class hashEntry<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<hashEntry<K, V>>
+public class HashEntry<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<HashEntry<K, V>>
 {
     private K key;
     private V value;
     
-    public hashEntry()
+    public HashEntry()
     {
         this.key   = null;
         this.value = null;
     }
     
-    public hashEntry(K key, V value)
+    public HashEntry(K key, V value)
     {
         this.key   = key;
         this.value = value;
     }
     
-    public hashEntry(hashEntry<K,V> entry)
+    public HashEntry(HashEntry<K,V> entry)
     {
         this.key   = entry.getKey();
         this.value = entry.getValue();
     }
     
     @Override
-    public int compareTo(hashEntry<K, V> obj)
+    public int compareTo(HashEntry<K, V> obj)
     {
         return this.getKey().compareTo(obj.getKey());
         // hashEntries are compared by key values

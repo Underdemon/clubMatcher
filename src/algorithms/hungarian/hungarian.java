@@ -5,7 +5,7 @@
  */
 package algorithms.hungarian;
 
-import dataStructures.dll.dll;
+import dataStructures.dll.DLL;
 import java.util.Arrays;
 /**
  *
@@ -346,7 +346,7 @@ public class Hungarian
         int i = chosen_zero[0];
         int j = chosen_zero[1];
         
-        dll<int[]> dll = new dll<>();
+        DLL<int[]> dll = new DLL<>();
         dll.append(chosen_zero);
         boolean found = false;
         

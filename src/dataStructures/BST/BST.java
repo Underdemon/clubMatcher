@@ -5,9 +5,9 @@
  */
 package dataStructures.BST;
 
-import dataStructures.dll.dll;
+import dataStructures.dll.DLL;
 import java.util.regex.Pattern;
-import dataStructures.hashmap.hashEntry;
+import dataStructures.hashmap.HashEntry;
 
 /**
  *
@@ -195,16 +195,16 @@ public class BST<T extends Comparable<T>>
         }
     }
     
-    public dll returnData()
+    public DLL returnData()
     {
-        dll data_set = new dll();
+        DLL data_set = new DLL();
         
         returnData(this.getRoot(), data_set);
         
         return data_set;
     }
     
-    private void returnData(DL_Node temp, dll list)
+    private void returnData(DL_Node temp, DLL list)
     {
         if(temp != null)
         {
