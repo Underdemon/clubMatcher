@@ -8,7 +8,6 @@ Club assigning option - assign for:
 - specific day
 - all days
 
-use teacher + time to see what club is running?
 
 
 // returns names of students in order of ID (when asking for specific student, make int they have to input to choose student = person.id OR rowID of query
@@ -36,7 +35,8 @@ WHERE Student.isAssigned = 0;
 // make a view of a specific students attendance
 CREATE VIEW StudentLog AS
 
-SELECT Person.Name, ClubLog.Timestamp, ClubLog.Date, Club.ClubName, Club.StartTime
+SELECT Person.Name, ClubLog.Timestamp, ClubLog.Date, Club.ClubName, Club.StartTime,
+((strftime('%s', Club.StartTime) - strftime('%s', ClubLog.Timestamp)) * 1.0) / 60 AS time_delta
 FROM ClubLog
 
 INNER JOIN Student ON Student.StudentID = ClubLog.StudentID
@@ -45,18 +45,32 @@ INNER JOIN Club ON ClubLog.ClubID = Club.ClubID
 
 WHERE Student.StudentID = 2
 
-// using student attendance view, count how many lates
+// using student attendance view, show all lates
+SELECT StudentLog.Name, StudentLog.Timestamp, StudentLog.Date, StudentLog.ClubName, StudentLog.StartTime
+FROM StudentLog WHERE StudentLog.time_delta > 5
+
+
+// using student attendance view, show num of lates
+SELECT COUNT(*) AS lates
+FROM StudentLog WHERE StudentLog.time_delta > 5
 
 
 // students with most attendance of clubs
+SELECT Person.Name
+FROM ClubLog
+
+INNER JOIN Student ON Student.StudentID = ClubLog.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+
+GROUP BY ClubLog.StudentID ORDER BY COUNT(*) DESC LIMIT 1
 
 
-// get StudentSubject subject names to feed into Dijkstra
-
-
-// view lates
-// create a view of all timestamps in club log more than +-10 mins before/after club starts (club start time)
-
+// get student's subjects to feed into Dijkstra
+SELECT Subjects.SubjectName FROM Subjects
+INNER JOIN StudentSubjects ON StudentSubjects.SubjectID = Subjects.SubjectID
+INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+WHERE Person.Name = 'Antonussaltassussy'
 
 
 https://www.sqlitetutorial.net/sqlite-distinct/

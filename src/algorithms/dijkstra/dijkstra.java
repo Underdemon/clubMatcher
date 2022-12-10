@@ -15,29 +15,29 @@ import dataStructures.pQueue.pQnode;
  *
  * @author rayan
  */
-public class dijkstra
+public class Dijkstra
 {
-    private pQueue<edge> unvisited;
-    private pQueue<edge> visited;
+    private pQueue<Edge> unvisited;
+    private pQueue<Edge> visited;
     private final int MAX_CAPACITY = 1 >> 7;
     private String start;
     private int[] dist;
     private String[] prev;
     private graph<String> graph;
-    dll<edge> rs = new dll<>();
+    dll<Edge> rs = new dll<>();
     
-    public dijkstra(graph graph)
+    public Dijkstra(graph graph)
     {
         unvisited = new pQueue<>();
         this.graph = graph;
     }
     
-    public edge vertexSearch(String value)
+    public Edge vertexSearch(String value)
     {
         if(unvisited.isEmpty())
             return null;
         
-        pQnode<edge> node = unvisited.getHead();
+        pQnode<Edge> node = unvisited.getHead();
         
         while(node.getNext() != null && !node.getData().getData().equals(value))
         {
@@ -46,7 +46,7 @@ public class dijkstra
         
         if(node.getNext() == null && !node.getData().getData().equals(value))
         {
-            for(edge e : rs)
+            for(Edge e : rs)
             {
                 if(e.getData().equals(value))
                     return e;
@@ -61,7 +61,7 @@ public class dijkstra
         if(unvisited.isEmpty())
             return false;
         
-        pQnode<edge> node = unvisited.getHead();
+        pQnode<Edge> node = unvisited.getHead();
         
         while(node.getNext() != null && !node.getData().getData().equals(value))
         {
@@ -83,14 +83,14 @@ public class dijkstra
         for(int i = 0; i < graph_data.getLen(); i++)
         {
             if(graph_data.returnAtIndex(i).getKey().equals(src))
-                unvisited.enqueue(new edge(src, 0, null), 0);
+                unvisited.enqueue(new Edge(src, 0, null), 0);
             else
-                unvisited.enqueue(new edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
+                unvisited.enqueue(new Edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
         }
                 
         while(!unvisited.isEmpty())
         {
-            edge u = unvisited.pop();
+            Edge u = unvisited.pop();
             dll<hashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
             for(hashEntry<String, Integer> v : connection_pairs)
             {
@@ -121,7 +121,7 @@ public class dijkstra
         // if found in rs DLL, add node back to pQueue and then break to the while loop???
         
         int i = 0;
-        for(edge e : rs)
+        for(Edge e : rs)
         {
             System.out.println(rs.returnAtIndex(i).getData() + " = " + rs.returnAtIndex(i).getDistance());
             i++;

@@ -4,9 +4,9 @@
  */
 package clubmatcher;
 
-import algorithms.dijkstra.edge;
-import algorithms.dijkstra.dijkstra;
-import algorithms.hungarian.hungarian;
+import algorithms.dijkstra.Edge;
+import algorithms.dijkstra.Dijkstra;
+import algorithms.hungarian.Hungarian;
 import dataStructures.BST.BST;
 import dataStructures.dll.dll;
 import dataStructures.graphs.graph;

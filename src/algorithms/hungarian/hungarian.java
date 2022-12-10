@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author rayan
  */
-public class hungarian
+public class Hungarian
 {
     int[][] cost_matrix;
     int[][] original_matrix;
@@ -26,7 +26,7 @@ public class hungarian
     
     
     
-    public hungarian(int[][] matrix)
+    public Hungarian(int[][] matrix)
     {
         if(matrix.length != matrix[0].length)
         {
