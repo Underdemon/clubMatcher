@@ -16,50 +16,130 @@ import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import menus.Menu;
 
 /**
  *
  * @author rayan
  */
-public class ClubMatcher
+public class ClubMatcher extends Menu implements Runnable
 {
-
+    static DatabaseConnect db = null;
+    public void run()
+    {
+        db = new DatabaseConnect();
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        // TODO code application logic here
-        System.out.println("CLUB MATCHER\n============\n\n");
-        clrscreen();    // does not work in IDE, only in terminal
-        System.out.println("Load System Defaults?\nY/N: ");
-        
         int choice = 0;
+        String temp;
         Scanner scanner = new Scanner(System.in);
+        Thread db_thread = new Thread(new ClubMatcher());
+        System.out.print("Connecting to database");
+        
+        db_thread.start();
+        while(db_thread.isAlive())
+        {
+            System.out.print(".");
+            try
+            {
+                Thread.sleep(50);
+            }
+            catch (InterruptedException ex)
+            {
+                Logger.getLogger(ClubMatcher.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        System.out.println("\n\n============CLUB MATCHER PROGRAM============\n\n");
+        try
+        {
+            Thread.sleep(250);
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(ClubMatcher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        clrscreen();    // does not work in IDE, only in terminal
+        
+        System.out.println("Load Examplar Database Values?\nY/N: ");
+        temp = scanner.nextLine().toUpperCase();
+        if(temp.equals("Y") || temp.equals("YES"))
+        {
+            db.close();
+            File file = new File("clubMatcher.db");
+            file.delete();
+            db.reconnect();
+
+            db.createTable(".\\src\\databaseConnect\\DDLs\\department.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\person.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\club.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
+            db.createTable(".\\src\\databaseConnect\\DDLs\\clubLog.txt");
+
+            db.insert("Department", ".\\src\\databaseConnect\\CSVs\\department.csv");
+            db.insert("Person", ".\\src\\databaseConnect\\CSVs\\person.csv");
+            db.insert("Student", ".\\src\\databaseConnect\\CSVs\\student.csv");
+            db.insert("Teacher", ".\\src\\databaseConnect\\CSVs\\teacher.csv");
+            db.insert("Club", ".\\src\\databaseConnect\\CSVs\\club.csv");
+            db.insert("Subjects", ".\\src\\databaseConnect\\CSVs\\subjects.csv");
+            db.insert("StudentSubjects", ".\\src\\databaseConnect\\CSVs\\StudentSubjects.csv");
+            db.insert("subjectGraph", ".\\src\\databaseConnect\\CSVs\\subjectGraph.csv");
+            db.insert("ClubLog", ".\\src\\databaseConnect\\CSVs\\clubLog.csv");
+            
+            System.out.println("\nLoaded!");
+        }
         
         do
         {
-            System.out.println
+            choice = validateInput
             (
-                "Please input the number corresponding to the option you want to choose:"
+                "\n\nPlease input the number corresponding to the option you want to choose:"
+                + "\n\t0 - Exit the program"
                 + "\n\t1 - Student Operations"  // includes student subjects
                 + "\n\t2 - Department Operations"
                 + "\n\t3 - Teacher Operations"
                 + "\n\t4 - Subject Operations"  // includes subject graph
                 + "\n\t5 - Club Operations"
                 + "\n\t6 - Club Log Operations"
-                + "\n\t7 - Club Recommandation"
+                + "\n\t7 - Club Recommendation"
+                + "\n\t8 - Export Database Into CSVs"
             );
             
             switch(choice)
             {
                 case 1:
                     break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
             }
         }
-        while(choice != -1);
+        while(choice != 0);
     }
-    
     
     /**
      * clears the screen
