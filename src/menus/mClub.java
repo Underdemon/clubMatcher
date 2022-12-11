@@ -8,7 +8,10 @@ package menus;
  *
  * @author rayan
  */
-public class MClub
+public class MClub extends clubmatcher.ClubMatcher
 {
-    
+    public MClub()
+    {
+        
+    }
 }

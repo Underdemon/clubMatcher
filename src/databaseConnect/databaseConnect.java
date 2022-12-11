@@ -104,69 +104,6 @@ public class DatabaseConnect
         return stmt != null;
     }
     
-    public boolean insert(String tableName)
-    {
-        boolean bInsert = false;
-        Statement stmt = null;
-        ResultSet rs = null;
-        
-        try
-        {
-            stmt = conn.createStatement();
-            
-            System.out.println("The fields in the selected table are:");
-            String[] columnNames = selectColumnNames(tableName);
-            String columnNamesConcat = "";
-            for(int i = 0; i < columnNames.length; i++)
-            {
-                System.out.print("\n|\n=---" + columnNames[i]);
-                if(i == (columnNames.length - 1))
-                    columnNamesConcat += columnNames[i];
-                else
-                    columnNamesConcat += columnNames[i] + ",";
-            }
-            
-            rs = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName);
-            int rowCount = rs.getInt(1);
-            
-            System.out.println("\n");
-            Scanner scnr = new Scanner(System.in);
-            String sql = "INSERT INTO " + tableName + "(" + columnNamesConcat + ") VALUES (" + (rowCount + 1) + ",";
-            //(rowCount + 1) is the new "column"ID
-            //this assumes we aren't adding into what should be static .db (like MovieFormat)
-            String tmp = null;
-            for(int i = 1; i < columnNames.length; i++)
-            {
-                System.out.println("Please enter the value you want to insert into " + columnNames[i]);
-                tmp = scnr.nextLine();
-                if(i == (columnNames.length - 1))
-                {
-                    if(isNumeric(tmp))
-                        sql += tmp + ")";
-                    else
-                        sql += "'" + tmp + "')";
-                }
-                else
-                {
-                    if(isNumeric(tmp))
-                        sql += tmp + ",";
-                    else
-                        sql += "'" + tmp + "',";
-                }
-            }
-            stmt.execute(sql);
-            stmt.close();
-            conn.commit();
-            bInsert = true;
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
-        return bInsert;
-    }
-    
     public boolean insert(String csvName, String CSVpath)
     {
         boolean bInsert = false;
@@ -264,6 +201,69 @@ public class DatabaseConnect
         return bInsert;
     }
     
+    public boolean insert(String tableName)
+    {
+        boolean bInsert = false;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            System.out.println("\nThe fields in the " + tableName + " table are:");
+            String[] columnNames = selectColumnNames(tableName);
+            String columnNamesConcat = "";
+            for(int i = 0; i < columnNames.length; i++)
+            {
+                System.out.print("\n|\n=---" + columnNames[i]);
+                if(i == (columnNames.length - 1))
+                    columnNamesConcat += columnNames[i];
+                else
+                    columnNamesConcat += columnNames[i] + ",";
+            }
+            
+            rs = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName);
+            int rowCount = rs.getInt(1);
+            
+            System.out.println("\n");
+            Scanner scnr = new Scanner(System.in);
+            String sql = "INSERT INTO " + tableName + "(" + columnNamesConcat + ") VALUES (" + (rowCount + 1) + ",";
+            //(rowCount + 1) is the new "column"ID
+            //this assumes we aren't adding into what should be static .db (like MovieFormat)
+            String tmp = null;
+            for(int i = 1; i < columnNames.length; i++)
+            {
+                System.out.println("Please enter the value you want to insert into " + columnNames[i]);
+                tmp = scnr.nextLine();
+                if(i == (columnNames.length - 1))
+                {
+                    if(isNumeric(tmp))
+                        sql += tmp + ")";
+                    else
+                        sql += "'" + tmp + "')";
+                }
+                else
+                {
+                    if(isNumeric(tmp))
+                        sql += tmp + ",";
+                    else
+                        sql += "'" + tmp + "',";
+                }
+            }
+            stmt.execute(sql);
+            stmt.close();
+            conn.commit();
+            bInsert = true;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return bInsert;
+    }
+    
     public boolean update(String tableName)
     {
         boolean bUpdate = false;
@@ -302,6 +302,35 @@ public class DatabaseConnect
         return bUpdate;
     }
     
+    public boolean delete(String tableName)    // can be used with any table that has the "xxxName" field (club, department, person and subjects tables)
+    {
+        boolean bDelete = false;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            String sql = "";
+            Scanner scnr = new Scanner(System.in);
+            System.out.println("\nPlease input the name of the field that you want to remove: ");
+            String choice = scnr.nextLine();
+            sql = "DELETE FROM " + tableName + " WHERE " + tableName + "Name" + " = '" + choice + "'";
+            // System.out.println(sql);
+            stmt.execute(sql);
+            stmt.close();
+            conn.commit();
+            bDelete = true;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return bDelete;
+    }
+    
+    /*
     public boolean delete(String tableName)
     {
         boolean bDelete = false;
@@ -312,7 +341,7 @@ public class DatabaseConnect
         {
             stmt = conn.createStatement();
             
-            System.out.println("The fields in the selected table are:");
+            System.out.println("\nThe fields in the selected table are:");
             String[] columnNames = selectColumnNames(tableName);
             for(int i = 0; i < columnNames.length; i++)
             {
@@ -336,9 +365,11 @@ public class DatabaseConnect
         }
         return bDelete;
     }
+    */
     
-    public boolean query(String query)
+    public boolean queryOutput(String query)
     {
+        System.out.println("\n");
         boolean bQuery = false;
         Statement stmt = null;
         ResultSet rs = null;
@@ -346,12 +377,20 @@ public class DatabaseConnect
         {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
+            ResultSetMetaData metaData  = rs.getMetaData();
             
             while(rs.next())
             {
-                System.out.println(rs.getString(2));
-                
-                // for all the column names (selectColumnNames) also get column type so you can rs.getValue()
+                for(int i = 1; i <= metaData.getColumnCount(); i++)
+                {
+                    int colType = metaData.getColumnType(i);    // getColumnType returns an int corresponding to data type of column
+                    if(colType == 4)    // integer
+                        System.out.println(rs.getInt(i));
+                    else if(colType == 12)  // varchar
+                        System.out.println(rs.getString(i));
+                    else if(colType == 16)  // boolean
+                        System.out.println(rs.getBoolean(i));
+                }
             }
             stmt.close();
             conn.commit();

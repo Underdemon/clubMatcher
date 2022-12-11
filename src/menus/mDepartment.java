@@ -17,29 +17,36 @@ public class MDepartment extends clubmatcher.ClubMatcher
     private String input = null;
     
     public MDepartment()
-    {
-        choice = validateInput
-        (
-            "\n\t 0 - Exit to Main Menu"
-            + "\n\t 1 - Display all existing departments"
-            + "\n\t 2 - Add a new department"
-            + "\n\t 3 - Remove a department"
-        );
-        
-        switch(choice)
+    {      
+        do
         {
-            case 0:
-                return;
-            case 1:
-                db.query("SELECT * FROM Department");
-                break;
-            case 2:
-                //System.out.println("Please input the name of the department you want to add: ");
-                //input = scanner.nextLine();
-                db.insert("Department");
-                break;
-            case 3:
-                break;
+            choice = validateInput
+            (
+                "\n\t 0 - Exit to Main Menu"
+                + "\n\t 1 - Display all existing departments"
+                + "\n\t 2 - Add a new department"
+                + "\n\t 3 - Remove a department"
+            );
+            
+            switch(choice)
+            {
+                case 0:
+                    return;
+                case 1:
+                    db.queryOutput("SELECT Department.DepartmentName FROM Department");
+                    break;
+                case 2:
+                    //System.out.println("Please input the name of the department you want to add: ");
+                    //input = scanner.nextLine();
+                    db.insert("Department");
+                    break;
+                case 3:
+                    System.out.println("\nThe fields in the department table are:");
+                    db.queryOutput("SELECT Department.DepartmentName FROM Department");
+                    db.delete("Department");
+                    break;
+            }
         }
+        while(choice != 0);
     }
 }

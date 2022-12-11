@@ -113,7 +113,7 @@ public class ClubMatcher extends Menu implements Runnable
             switch(choice)
             {
                 case 1:
-                    Mstudent student = new Mstudent();
+                    MStudent student = new MStudent();
                     break;
                 case 2:
                     MDepartment department = new MDepartment();
@@ -122,7 +122,7 @@ public class ClubMatcher extends Menu implements Runnable
                     MTeacher teacher = new MTeacher();
                     break;
                 case 4:
-                    MSubject subject = new MSubject();
+                    MSubjects subject = new MSubjects();
                     break;
                 case 5:
                     MClub club = new MClub();

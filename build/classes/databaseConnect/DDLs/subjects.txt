@@ -1,5 +1,5 @@
 CREATE TABLE Subjects
 (
 SubjectID INTEGER NOT NULL PRIMARY KEY,
-SubjectName VARCHAR(255)
+SubjectsName VARCHAR(255)
 );
