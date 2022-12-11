@@ -337,15 +337,24 @@ public class DatabaseConnect
         return bDelete;
     }
     
-    public boolean query(String tableName)
+    public boolean query(String query)
     {
         boolean bQuery = false;
         Statement stmt = null;
         ResultSet rs = null;
-        
         try
         {
             stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            
+            while(rs.next())
+            {
+                System.out.println(rs.getString(2));
+                
+                // for all the column names (selectColumnNames) also get column type so you can rs.getValue()
+            }
+            stmt.close();
+            conn.commit();
         }
         catch (Exception e)
         {

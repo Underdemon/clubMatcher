@@ -4,21 +4,13 @@
  */
 package clubmatcher;
 
-import algorithms.dijkstra.Edge;
-import algorithms.dijkstra.Dijkstra;
-import algorithms.hungarian.Hungarian;
-import dataStructures.BST.BST;
-import dataStructures.dll.DLL;
-import dataStructures.graphs.Graph;
-import dataStructures.hashmap.HashMap;
-import dataStructures.pQueue.PQueue;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import menus.Menu;
+import menus.*;
 
 /**
  *
@@ -26,7 +18,7 @@ import menus.Menu;
  */
 public class ClubMatcher extends Menu implements Runnable
 {
-    static DatabaseConnect db = null;
+    protected static DatabaseConnect db = null;
     public void run()
     {
         db = new DatabaseConnect();
@@ -121,16 +113,22 @@ public class ClubMatcher extends Menu implements Runnable
             switch(choice)
             {
                 case 1:
+                    Mstudent student = new Mstudent();
                     break;
                 case 2:
+                    MDepartment department = new MDepartment();
                     break;
                 case 3:
+                    MTeacher teacher = new MTeacher();
                     break;
                 case 4:
+                    MSubject subject = new MSubject();
                     break;
                 case 5:
+                    MClub club = new MClub();
                     break;
                 case 6:
+                    MClubLog log = new MClubLog();
                     break;
                 case 7:
                     break;

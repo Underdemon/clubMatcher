@@ -8,7 +8,7 @@ package menus;
  *
  * @author rayan
  */
-public class Mperson
+public class MPerson
 {
     
 }
