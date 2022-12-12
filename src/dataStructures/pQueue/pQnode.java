@@ -7,6 +7,7 @@ package dataStructures.pQueue;
 /**
  *
  * @author rayan
+ * @param <T>
  */
 public class PQnode<T extends Comparable<T>>
 {

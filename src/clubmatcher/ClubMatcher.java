@@ -19,6 +19,7 @@ import menus.*;
 public class ClubMatcher extends Menu implements Runnable
 {
     protected static DatabaseConnect db = null;
+    
     public void run()
     {
         db = new DatabaseConnect();
@@ -64,7 +65,7 @@ public class ClubMatcher extends Menu implements Runnable
         
         System.out.println("Load Examplar Database Values?\nY/N: ");
         temp = scanner.nextLine().toUpperCase();
-        if(temp.equals("Y") || temp.equals("YES"))
+        if(temp.equals("Y") || temp.equals("YES") || temp.equals(Integer.toString(1)))
         {
             db.close();
             File file = new File("clubMatcher.db");

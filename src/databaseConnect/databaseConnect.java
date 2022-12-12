@@ -330,6 +330,50 @@ public class DatabaseConnect
         return bDelete;
     }
     
+    public void deleteStudentTeacher(boolean isStudentTeacher)    // can be used with any table that has the "xxxName" field (club, department, person and subjects tables)
+    {
+        Scanner scnr = new Scanner(System.in);
+        String choice = null;
+        if(isStudentTeacher)
+            System.out.println("\nPlease input the name of the student that you want to remove: ");
+        else
+            System.out.println("\nPlease input the name of the teacher that you want to remove: ");
+        
+        choice = scnr.nextLine();
+        deleteStudentTeacher(isStudentTeacher, choice);
+    }
+    
+    public boolean deleteStudentTeacher(boolean isStudentTeacher, String name)    // can be used with any table that has the "xxxName" field (club, department, person and subjects tables)
+    {
+        boolean bDelete = false;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            String sql = "";
+            Scanner scnr = new Scanner(System.in);
+            
+            int id = getNameID(name);
+            if(isStudentTeacher)
+                sql = "DELETE FROM Student WHERE PersonID" + " = '" + id + "'";
+            else
+                sql = "DELETE FROM Teacher WHERE PersonID" + " = '" + id + "'";
+            // System.out.println(sql);
+            stmt.execute(sql);
+            stmt.close();
+            conn.commit();
+            bDelete = true;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return bDelete;
+    }
+    
     public boolean queryOutput(String query)
     {
         System.out.println("\n");
@@ -483,17 +527,18 @@ public class DatabaseConnect
         return bInsert;
     }
     
-    public boolean insertStudentTeacher(boolean isStudent)    // if bool is true, insert a student, else, insert a teacher
+    public boolean insertStudentTeacher(boolean isStudentTeacher)    // if bool is true, insert a student, else, insert a teacher
     {
         boolean bInsert = false;
         Statement stmt = null;
+        ResultSet rs = null;
         Scanner scnr = new Scanner(System.in);
         
         try
         {
             stmt = conn.createStatement();
             
-            if(isStudent)
+            if(isStudentTeacher)
                 System.out.println("Please input the name of the student you want to add: ");
             else
                 System.out.println("Please input the name of the teacher you want to add: ");
@@ -502,10 +547,26 @@ public class DatabaseConnect
             if(getNameID(name) == 0)    // if student/teacher doesn't exist in person table
                 insertPerson(name);
             
+            
             int personID = getNameID(name);
             
-            if(isStudent)
+            if(isStudentTeacher)
             {
+                rs = stmt.executeQuery("SELECT COUNT(*) FROM Teacher WHERE Teacher.PersonID = " + personID);
+                if(rs.getInt(1) > 0)
+                {
+                    String choice = null;
+                    
+                    System.out.println(name + " has been found in the Teacher table."
+                                            + " Would you like to remove " + name + " from the teacher table? Y/N: ");
+                    choice = scnr.nextLine();
+                    if(choice.equals("Y") || choice.equals("y"))
+                        deleteStudentTeacher(false, name);
+                    else
+                        return false;
+                }
+                
+                // search for student in teacher table
                 int yearGroup = 0;
                 do
                 {
@@ -519,6 +580,21 @@ public class DatabaseConnect
             }
             else
             {
+                rs = stmt.executeQuery("SELECT COUNT(*) FROM Student WHERE Student.PersonID = " + personID);
+                if(rs.getInt(1) > 0)
+                {
+                    String choice = null;
+                    System.out.println(name + " has been found in the Student table."
+                                            + " Would you like to remove " + name + " from the student table? Y/N: ");
+                    
+                    choice = scnr.nextLine();
+                    if(choice.equals("Y") || choice.equals("y"))
+                        deleteStudentTeacher(true, name);
+                    else
+                        return false;
+                }
+                
+                // search for teacher in student table
                 String department_name = null;
                 do
                 {

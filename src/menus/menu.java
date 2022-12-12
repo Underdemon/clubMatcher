@@ -13,12 +13,13 @@ import java.util.regex.Pattern;
  */
 public abstract class Menu
 {  
+    final Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+    
     public boolean isNumeric(String str)
     {
         if(str.equals(null))
             return false;
-        
-        final Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+               
         /*
         -?          determines if number starts with minus
         \d+         matches one or more digits

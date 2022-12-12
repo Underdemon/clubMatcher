@@ -39,6 +39,7 @@ public class MStudent extends clubmatcher.ClubMatcher
                     db.insertStudentTeacher(true);
                     break;
                 case 3:
+                    db.deleteStudentTeacher(true);
                     break;
             }
         }

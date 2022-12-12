@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 /**
  *
  * @author rayan
+ * @param <T>
  */
 public class PQueue<T extends Comparable<T>>
 {

@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * @author rayan
+ * @param <E>
  */
 public class DLL<E> implements Iterable<E>
 {

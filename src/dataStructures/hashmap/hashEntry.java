@@ -7,6 +7,8 @@ package dataStructures.hashmap;
 /**
  *
  * @author rayan
+ * @param <K>
+ * @param <V>
  */
 
 public class HashEntry<K extends Comparable<K>, V extends Comparable<V>> implements Comparable<HashEntry<K, V>>
