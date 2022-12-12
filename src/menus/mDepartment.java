@@ -36,8 +36,6 @@ public class MDepartment extends clubmatcher.ClubMatcher
                     db.queryOutput("SELECT Department.DepartmentName FROM Department");
                     break;
                 case 2:
-                    //System.out.println("Please input the name of the department you want to add: ");
-                    //input = scanner.nextLine();
                     db.insert("Department");
                     break;
                 case 3:

@@ -330,43 +330,6 @@ public class DatabaseConnect
         return bDelete;
     }
     
-    /*
-    public boolean delete(String tableName)
-    {
-        boolean bDelete = false;
-        Statement stmt = null;
-        ResultSet rs = null;
-        
-        try
-        {
-            stmt = conn.createStatement();
-            
-            System.out.println("\nThe fields in the selected table are:");
-            String[] columnNames = selectColumnNames(tableName);
-            for(int i = 0; i < columnNames.length; i++)
-            {
-                System.out.print("\n|\n=---" + columnNames[i]);
-            }
-            
-            String sql = "";
-            Scanner scnr = new Scanner(System.in);
-            System.out.println("\nPlease input the " + columnNames[0] + " that you want to remove the data for: ");
-            int id = scnr.nextInt();
-            sql = "DELETE FROM " + tableName + " WHERE " + columnNames[0] + "=" + id;
-            System.out.println(sql);
-            stmt.execute(sql);
-            stmt.close();
-            conn.commit();
-            bDelete = true;
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-        return bDelete;
-    }
-    */
-    
     public boolean queryOutput(String query)
     {
         System.out.println("\n");
@@ -430,6 +393,162 @@ public class DatabaseConnect
         }
         
         return columnName;
+    }
+    
+    public int getNameID(String name)
+    {
+        Statement stmt = null;
+        int nameID = 0;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT Person.PersonID FROM Person WHERE Person.PersonName = '" + name + "'");
+            if(rs.next())
+                nameID = rs.getInt("PersonID");
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return nameID;
+    }
+    
+    public int getDepartmentID(String dep_name)
+    {
+        Statement stmt = null;
+        int nameID = 0;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT Department.DepartmentID FROM Department WHERE Department.DepartmentName = '" + dep_name + "'");
+            if(rs.next())
+                nameID = rs.getInt("DepartmentID");
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return nameID;
+    }
+    
+    private boolean insertPerson(String name)
+    {
+        Statement stmt = null;
+        boolean bInsert = false;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.execute("INSERT INTO PERSON (PersonName) VALUES('" + name + "')");
+            stmt.close();
+            conn.commit();
+            bInsert = true;
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return bInsert;
+    }
+    
+    private boolean insertDepartment(String name)
+    {
+        Statement stmt = null;
+        boolean bInsert = false;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Department (DepartmentName) VALUES('" + name + "')");
+            stmt.close();
+            conn.commit();
+            bInsert = true;
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return bInsert;
+    }
+    
+    public boolean insertStudentTeacher(boolean isStudent)    // if bool is true, insert a student, else, insert a teacher
+    {
+        boolean bInsert = false;
+        Statement stmt = null;
+        Scanner scnr = new Scanner(System.in);
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            if(isStudent)
+                System.out.println("Please input the name of the student you want to add: ");
+            else
+                System.out.println("Please input the name of the teacher you want to add: ");
+            String name = scnr.nextLine();
+            
+            if(getNameID(name) == 0)    // if student/teacher doesn't exist in person table
+                insertPerson(name);
+            
+            int personID = getNameID(name);
+            
+            if(isStudent)
+            {
+                int yearGroup = 0;
+                do
+                {
+                    System.out.println("Please input the year group of the student (it must be between 7-13): ");
+                    yearGroup = scnr.nextInt();
+                    scnr.nextLine();
+                }
+                while(yearGroup < 7 || yearGroup > 13);
+            
+                stmt.execute("INSERT INTO Student (PersonID, YearGroup) VALUES (" + personID + ", " + yearGroup + ")");
+            }
+            else
+            {
+                String department_name = null;
+                do
+                {
+                    System.out.println("Please input the Department of the teacher (enter \"list\" to list the departments in the database):");
+                    department_name = scnr.nextLine();
+                    
+                    if(department_name.equals("list"))
+                        queryOutput("SELECT Department.DepartmentName FROM Department");
+                    
+                    System.out.println("\n");
+                }
+                while(department_name == null || department_name.equals("list"));
+                
+                if(getDepartmentID(department_name) == 0)
+                    insertDepartment(department_name);
+                    
+                stmt.execute("INSERT INTO Teacher (PersonID, DepartmentID) VALUES (" + personID + ", " + getDepartmentID(department_name) + ")");
+            }
+            
+            
+            stmt.close();
+            conn.commit();
+            bInsert = true;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return bInsert;
     }
     
     public boolean isNumeric(String str)
