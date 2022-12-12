@@ -18,26 +18,41 @@ public class MTeacher extends clubmatcher.ClubMatcher
     
     public MTeacher()
     {
+        System.out.println("\nWelcome to the teacher menu\n===========================");
+        
         do
         {
             choice = validateInput
             (
                 "\n\t 0 - Exit to Main Menu"
-                + "\n\t 1 - Display all existing teachers"
-                + "\n\t 2 - Search for all teachers in an existing department"
-                + "\n\t 3 - Add a new teacher"
-                + "\n\t 4 - Remove a teacher"
-                + "\n\t 5 - "
+                + "\n\t 1 - Display all existing teachers with their corresponding departments"
+                + "\n\t 2 - Display all existing teachers"
+                + "\n\t 3 - Search for all teachers in an existing department"
+                + "\n\t 4 - Search for a specific teacher's details"
+                + "\n\t 5 - Add a new teacher"
+                + "\n\t 6 - Remove a teacher"
+                + "\n\t 7 - Change a teacher's department"
             );
             
             switch(choice)
             {
                 case 0:
                     return;
+                    
                 case 1:
-                    db.queryOutput("SELECT Person.PersonName FROM Teacher, Person WHERE Teacher.PersonID = Person.PersonID ORDER BY Person.PersonID ASC");
+                    db.queryOutput
+                    (
+                            "SELECT Person.PersonName, Department.DepartmentName FROM Teacher "
+                            + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
+                            + "INNER JOIN Department ON Teacher.DepartmentID = Department.DepartmentID", "Teacher"
+                    );
                     break;
+                    
                 case 2:
+                    db.queryOutput("SELECT Person.PersonName FROM Teacher, Person WHERE Teacher.PersonID = Person.PersonID ORDER BY Person.PersonID ASC", "");
+                    break;
+                    
+                case 3:
                     String department_name = null;
                     do
                     {
@@ -45,19 +60,37 @@ public class MTeacher extends clubmatcher.ClubMatcher
                         department_name = scanner.nextLine();
 
                         if(department_name.equals("list"))
-                            db.queryOutput("SELECT Department.DepartmentName FROM Department");
+                            db.queryOutput("SELECT Department.DepartmentName FROM Department", "");
                     }
                     while(department_name == null || department_name.equals("list"));
                     
-                    db.queryOutput("SELECT Person.PersonName FROM Person "
-                                    + "INNER JOIN Teacher ON Teacher.PersonID = Person.PersonID "
-                                    + "INNER JOIN Department ON Teacher.DepartmentID = Department.DepartmentID "
-                                    + "WHERE Department.DepartmentName = '" + department_name + "'");
+                    db.queryOutput
+                    (
+                            "SELECT Person.PersonName, Department.DepartmentName FROM Person "
+                            + "INNER JOIN Teacher ON Teacher.PersonID = Person.PersonID "
+                            + "INNER JOIN Department ON Teacher.DepartmentID = Department.DepartmentID "
+                            + "WHERE Department.DepartmentName = '" + department_name + "'", "Teacher"
+                    );
                     break;
-                case 3:
+                    
+                case 4:
+                    String input = null;
+                    System.out.println("Please input the name of the teacher you wish to search for: ");
+                    input = scanner.nextLine();
+                    db.queryOutput
+                    (
+                            "SELECT Person.PersonName, Department.DepartmentName FROM Teacher "
+                            + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
+                            + "INNER JOIN Department ON Teacher.DepartmentID = Department.DepartmentID "
+                            + "WHERE Person.PersonName = '" + input + "'", "Teacher"
+                    );
+                    break;
+                    
+                case 5:
                     db.insertStudentTeacher(false);
                     break;
-                case 4:
+                    
+                case 6:
                     db.deleteStudentTeacher(false);
                     break;
             }

@@ -97,6 +97,7 @@ public class ClubMatcher extends Menu implements Runnable
         
         do
         {
+            System.out.println("MAIN MENU OPTIONS\n=================\n");
             choice = validateInput
             (
                 "\n\nPlease input the number corresponding to the option you want to choose:"

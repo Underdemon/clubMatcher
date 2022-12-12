@@ -78,6 +78,22 @@ public class DatabaseConnect
         }
     }
     
+    public void executeQuery(String query)
+    {
+        Statement stmt = null;
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.execute(query);
+            stmt.close();
+            conn.commit();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+    
     public boolean createTable(String ddlPath)
     {
         Statement stmt = null;
@@ -99,7 +115,6 @@ public class DatabaseConnect
         catch (Exception e)
         {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
         return stmt != null;
     }
@@ -374,7 +389,7 @@ public class DatabaseConnect
         return bDelete;
     }
     
-    public boolean queryOutput(String query)
+    public boolean queryOutput(String query, String tableName)
     {
         System.out.println("\n");
         boolean bQuery = false;
@@ -388,15 +403,68 @@ public class DatabaseConnect
             
             while(rs.next())
             {
-                for(int i = 1; i <= metaData.getColumnCount(); i++)
+                if(tableName.equals("Student"))
                 {
-                    int colType = metaData.getColumnType(i);    // getColumnType returns an int corresponding to data type of column
-                    if(colType == 4)    // integer
-                        System.out.println(rs.getInt(i));
-                    else if(colType == 12)  // varchar
-                        System.out.println(rs.getString(i));
-                    else if(colType == 16)  // boolean
-                        System.out.println(rs.getBoolean(i));
+                    System.out.println
+                    (
+                        "Student Name: " + rs.getString(1)
+                        + "\nStudent Year Group: " + rs.getInt(2) + "\n"
+                    );
+                }
+                else if(tableName.equals("Teacher"))
+                {
+                    System.out.println
+                    (
+                        "Teacher Name: " + rs.getString(1)
+                        + "\nTeacher Department: " + rs.getString(2) + "\n"
+                    );
+                }
+                else if(tableName.equals("Club"))
+                {
+                    String day_running = null;
+                    if(rs.getInt(3) == 1)
+                        day_running = "Monday";
+                    else if(rs.getInt(3) == 2)
+                        day_running = "Tuesday";
+                    else if(rs.getInt(3) == 3)
+                        day_running = "Wednesday";
+                    else if(rs.getInt(3) == 4)
+                        day_running = "Thursday";
+                    else if(rs.getInt(3) == 5)
+                        day_running = "Friday";
+                    
+                    String BLA = null;
+                    if(rs.getString(4).equals("B"))
+                        BLA = "Before School";
+                    else if(rs.getString(4).equals("L"))
+                        BLA = "During Lunch";
+                    else if(rs.getString(4).equals("A"))
+                        BLA = "After School";
+                    
+                    System.out.println
+                    (
+                        "Club Name: " + rs.getString(1)
+                        + "\nClub Subject: " + rs.getString(2)
+                        + "\nDay Running: " + day_running
+                        + "\nTime Club Takes Place: " + BLA
+                        + "\nTeacher Running Club: " + rs.getString(5)
+                        + "\nDepartment Running Club: " + rs.getString(6)
+                        + "\nClub Start Time: " + rs.getString(7)
+                    );
+                }
+                else
+                {
+                    for(int i = 1; i <= metaData.getColumnCount(); i++)
+                    {
+                        int colType = metaData.getColumnType(i);    // getColumnType returns an int corresponding to data type of column
+
+                        if(colType == 4)    // integer
+                            System.out.println(rs.getInt(i));
+                        else if(colType == 12)  // varchar
+                            System.out.println(rs.getString(i));
+                        else if(colType == 16)  // boolean
+                            System.out.println(rs.getBoolean(i));
+                    }
                 }
             }
             stmt.close();
@@ -408,6 +476,8 @@ public class DatabaseConnect
         }
         return bQuery;
     }
+    
+    
     
     private static String[] selectColumnNames(String tableName)
     {
@@ -602,7 +672,7 @@ public class DatabaseConnect
                     department_name = scnr.nextLine();
                     
                     if(department_name.equals("list"))
-                        queryOutput("SELECT Department.DepartmentName FROM Department");
+                        queryOutput("SELECT Department.DepartmentName FROM Department", "");
                     
                     System.out.println("\n");
                 }

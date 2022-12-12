@@ -1,3 +1,18 @@
+DONE:
+======
+student
+department
+teacher
+
+TBC:
+====
+subject
+club
+club log
+CLUB RECOMMENDATIONS
+
+
+
 Create
 Read
 Update
@@ -15,6 +30,11 @@ Club assigning option - assign for:
 - specific day
 - all days
 
+
+====================
+ACTUAL CLUB MATCHING
+====================
+- select all students that have/havent been assigned (sql)
 
 =======
 PERSON:
@@ -49,7 +69,7 @@ Read:
 - select all students
 - select a specific student from their name
 - select all students in a year group
-- select all students that have/havent been assigned
+
 
 Update:
 - change a student's year group

@@ -33,14 +33,14 @@ public class MDepartment extends clubmatcher.ClubMatcher
                 case 0:
                     return;
                 case 1:
-                    db.queryOutput("SELECT Department.DepartmentName FROM Department");
+                    db.queryOutput("SELECT Department.DepartmentName FROM Department", "");
                     break;
                 case 2:
                     db.insert("Department");
                     break;
                 case 3:
                     System.out.println("\nThe fields in the department table are:");
-                    db.queryOutput("SELECT Department.DepartmentName FROM Department");
+                    db.queryOutput("SELECT Department.DepartmentName FROM Department", "");
                     db.delete("Department");
                     break;
             }

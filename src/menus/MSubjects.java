@@ -33,7 +33,7 @@ public class MSubjects extends clubmatcher.ClubMatcher
                 case 0:
                     return;
                 case 1:
-                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects");
+                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects", "");
                     break;
                 case 2:
                     //System.out.println("Please input the name of the department you want to add: ");
@@ -42,7 +42,7 @@ public class MSubjects extends clubmatcher.ClubMatcher
                     break;
                 case 3:
                     System.out.println("\nThe fields in the subject table are:");
-                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects");
+                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects", "");
                     db.delete("Subjects");
                     break;
             }
