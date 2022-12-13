@@ -26,6 +26,7 @@ public class MSubjects extends clubmatcher.ClubMatcher
                 + "\n\t 1 - Display all existing subjects"
                 + "\n\t 2 - Add a new subject"
                 + "\n\t 3 - Remove a subject"
+                + "\n\t 4 - Search for a subject"
             );
             
             switch(choice)
@@ -33,17 +34,25 @@ public class MSubjects extends clubmatcher.ClubMatcher
                 case 0:
                     return;
                 case 1:
-                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects", "");
+                    db.queryOutput("SELECT Subjects.SubjectsName FROM Subjects", "");
                     break;
                 case 2:
                     //System.out.println("Please input the name of the department you want to add: ");
                     //input = scanner.nextLine();
-                    db.insert("Subject");
+                    db.insert("Subjects");
                     break;
                 case 3:
                     System.out.println("\nThe fields in the subject table are:");
-                    db.queryOutput("SELECT Subjects.SubjectName FROM Subjects", "");
+                    System.out.println("Would you like to see the subjects in the database? Y/N: ");
+                    input = scanner.nextLine();
+                    if(input.equals("Y") || input.equals("y") || input.equals(1))
+                        db.queryOutput("SELECT Subjects.SubjectsName FROM Subjects", "");
                     db.delete("Subjects");
+                    break;
+                case 4:
+                    System.out.println("Please input the subject you want to search for in the table");
+                    input = scanner.nextLine();
+                    db.queryOutput("SELECT Subjects.SubjectsName FROM Subjects WHERE Subjects.SubjectsName = '" + input + "'", "");
                     break;
             }
         }

@@ -3,10 +3,10 @@ DONE:
 student
 department
 teacher
+subject
 
 TBC:
 ====
-subject
 club
 club log
 CLUB RECOMMENDATIONS

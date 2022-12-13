@@ -466,6 +466,7 @@ public class DatabaseConnect
                             System.out.println(rs.getBoolean(i));
                     }
                 }
+                System.out.println("\n");
             }
             stmt.close();
             conn.commit();
