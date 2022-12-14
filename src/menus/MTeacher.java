@@ -56,7 +56,7 @@ public class MTeacher extends clubmatcher.ClubMatcher
                     String department_name = null;
                     do
                     {
-                        System.out.println("Please input the Department of the teacher (enter \"list\" to list the departments in the database):");
+                        System.out.println("Please input the Department of the teacher (enter \"list\" to list the departments stored in the database):");
                         department_name = scanner.nextLine();
 
                         if(department_name.equals("list"))

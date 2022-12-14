@@ -83,7 +83,7 @@ public class MStudent extends clubmatcher.ClubMatcher
                 case 7:
                     System.out.println("Please input the name of the student you wish to search for: ");
                     input = scanner.nextLine();
-                    int ID = db.getNameID(input);
+                    int ID = db.getID(input, "Person");
                     while(ID == 0)
                     {
                         System.out.println("The student does not exist in the database\n"
@@ -91,7 +91,7 @@ public class MStudent extends clubmatcher.ClubMatcher
                         input = scanner.nextLine();
                         if(input.equals("back"))
                             return;
-                        ID = db.getNameID(input);
+                        ID = db.getID(input, "Person");
                     }
                     
                     int newYearGroup = 0;

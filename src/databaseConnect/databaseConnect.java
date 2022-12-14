@@ -329,7 +329,7 @@ public class DatabaseConnect
             
             String sql = "";
             Scanner scnr = new Scanner(System.in);
-            System.out.println("\nPlease input the name of the field that you want to remove: ");
+            System.out.println("\nPlease input the name of the " + tableName + " that you want to remove: ");
             String choice = scnr.nextLine();
             sql = "DELETE FROM " + tableName + " WHERE " + tableName + "Name" + " = '" + choice + "'";
             // System.out.println(sql);
@@ -371,7 +371,7 @@ public class DatabaseConnect
             String sql = "";
             Scanner scnr = new Scanner(System.in);
             
-            int id = getNameID(name);
+            int id = getID(name, "Person");
             if(isStudentTeacher)
                 sql = "DELETE FROM Student WHERE PersonID" + " = '" + id + "'";
             else
@@ -510,18 +510,20 @@ public class DatabaseConnect
         return columnName;
     }
     
-    public int getNameID(String name)
+    
+    
+    public int getID(String name, String table)
     {
-        Statement stmt = null;
-        int nameID = 0;
+        Statement stmt = null;;
+        int ID = 0;
         ResultSet rs = null;
         
         try
         {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT Person.PersonID FROM Person WHERE Person.PersonName = '" + name + "'");
+            rs = stmt.executeQuery("SELECT " + table + "." + table + "ID FROM " + table + " WHERE " + table + "." + table + "Name = '" + name + "'");
             if(rs.next())
-                nameID = rs.getInt("PersonID");
+                ID = rs.getInt(table + "ID");
             rs.close();
             stmt.close();
         }
@@ -530,21 +532,22 @@ public class DatabaseConnect
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         
-        return nameID;
+        return ID;
     }
     
-    public int getDepartmentID(String dep_name)
+    public int getTeacherID(String name)
     {
         Statement stmt = null;
-        int nameID = 0;
-        ResultSet rs = null;
+        ResultSet rs = null;        
+        int personID = getID(name, "Person");
+        int teacherID = 0;
         
         try
         {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT Department.DepartmentID FROM Department WHERE Department.DepartmentName = '" + dep_name + "'");
+            rs = stmt.executeQuery("SELECT Teacher.TeacherID FROM Teacher INNER JOIN Person ON Teacher.PersonID = Person.PersonID WHERE Person.PersonID = " + personID);
             if(rs.next())
-                nameID = rs.getInt("DepartmentID");
+                teacherID = rs.getInt("TeacherID");
             rs.close();
             stmt.close();
         }
@@ -552,8 +555,7 @@ public class DatabaseConnect
         {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        
-        return nameID;
+        return teacherID;
     }
     
     private boolean insertPerson(String name)
@@ -598,28 +600,58 @@ public class DatabaseConnect
         return bInsert;
     }
     
-    public boolean insertStudentTeacher(boolean isStudentTeacher)    // if bool is true, insert a student, else, insert a teacher
+    public String studentTeacherName(boolean isStudentTeacher)
     {
+        Scanner scnr = new Scanner(System.in);
+        String name = null;
+        
+        if(isStudentTeacher)
+        {
+            System.out.println("Please input the name of the student you want to add (enter \"list\" to list the students in the database): ");
+            name = scnr.nextLine();
+            while(name.equals("list"))
+            {
+                queryOutput("SELECT Person.PersonName FROM Student, Person WHERE Student.PersonID = Person.PersonID", "");
+                System.out.println("Please input the name of the student to replace the current one (enter \"list\" to list the students in the database): ");
+                name = scnr.nextLine();
+            }
+        }
+        else
+        {
+            System.out.println("Please input the name of the teacher you want to add (enter \"list\" to list the teachers in the database): ");
+            name = scnr.nextLine();
+            while(name.equals("list"))
+            {
+                queryOutput("SELECT Person.PersonName FROM Teacher, Person WHERE Teacher.PersonID = Person.PersonID", "");
+                System.out.println("Please input the name of the teacher to replace the current one (enter \"list\" to list the teachers in the database): ");
+                name = scnr.nextLine();
+            }
+        }
+        
+        return name;
+    }
+    
+    public void insertStudentTeacher(boolean isStudentTeacher)    // if bool is true, insert a student, else, insert a teacher
+    {
+        insertStudentTeacher(isStudentTeacher, studentTeacherName(isStudentTeacher));
+    }
+    
+    public boolean insertStudentTeacher(boolean isStudentTeacher, String name)    // if bool is true, insert a student, else, insert a teacher
+    {
+        Scanner scnr = new Scanner(System.in);
         boolean bInsert = false;
         Statement stmt = null;
         ResultSet rs = null;
-        Scanner scnr = new Scanner(System.in);
         
         try
         {
             stmt = conn.createStatement();
             
-            if(isStudentTeacher)
-                System.out.println("Please input the name of the student you want to add: ");
-            else
-                System.out.println("Please input the name of the teacher you want to add: ");
-            String name = scnr.nextLine();
-            
-            if(getNameID(name) == 0)    // if student/teacher doesn't exist in person table
+            if(getID(name, "Person") == 0)    // if student/teacher doesn't exist in person table
                 insertPerson(name);
             
             
-            int personID = getNameID(name);
+            int personID = getID(name, "Person");
             
             if(isStudentTeacher)
             {
@@ -679,10 +711,10 @@ public class DatabaseConnect
                 }
                 while(department_name == null || department_name.equals("list"));
                 
-                if(getDepartmentID(department_name) == 0)
+                if(getID(department_name, "Department") == 0)
                     insertDepartment(department_name);
                     
-                stmt.execute("INSERT INTO Teacher (PersonID, DepartmentID) VALUES (" + personID + ", " + getDepartmentID(department_name) + ")");
+                stmt.execute("INSERT INTO Teacher (PersonID, DepartmentID) VALUES (" + personID + ", " + getID(department_name, "Department") + ")");
             }
             
             
