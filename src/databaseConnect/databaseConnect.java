@@ -452,6 +452,14 @@ public class DatabaseConnect
                         + "\nClub Start Time: " + rs.getString(7)
                     );
                 }
+                else if(tableName.equals("ClubLog"))
+                {
+                    System.out.println
+                    (
+                        "Club: " + getName(rs.getInt("ClubID"), "Club")
+                        + "\n\tStudent: " + getName(rs.getInt("StudentID"), "")
+                    );
+                }
                 else
                 {
                     for(int i = 1; i <= metaData.getColumnCount(); i++)
@@ -533,6 +541,32 @@ public class DatabaseConnect
         }
         
         return ID;
+    }
+    
+    public String getName(int ID, String table)
+    {
+        Statement stmt = null;;
+        String name = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            if(table.equals("Club"))
+                rs = stmt.executeQuery("SELECT " + table + "." + table + "Name FROM " + table + " WHERE " + table + "." + table + "ID = '" + ID + "'");
+            else
+                rs = stmt.executeQuery("SELECT Person.PersonName FROM " + table + " INNER JOIN Person ON " + table + ".PersonID = Person.PersonID WHERE " + table + "." + table + "ID = '" + ID + "'");
+            if(rs.next())
+                name = rs.getString(table + "Name");
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return name;
     }
     
     public int getTeacherID(String name)
