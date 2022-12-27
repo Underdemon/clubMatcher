@@ -15,6 +15,7 @@ public class MSubjects extends clubmatcher.ClubMatcher
     private int choice = 0;
     private Scanner scanner = new Scanner(System.in);
     private String input = null;
+    int subject = 0;
     
     public MSubjects()
     {
@@ -24,8 +25,8 @@ public class MSubjects extends clubmatcher.ClubMatcher
             (
                 "\n\t 0 - Exit to Main Menu"
                 + "\n\t 1 - Display all existing subjects"
-                + "\n\t 2 - Add a new subject"
-                + "\n\t 3 - Remove a subject"
+                + "\n\t 2 - Add a new subject"      // add graph connections to subjects
+                + "\n\t 3 - Remove a subject"       // remove all graph connections from subject graph
                 + "\n\t 4 - Search for a subject"
             );
             
@@ -37,12 +38,23 @@ public class MSubjects extends clubmatcher.ClubMatcher
                     db.queryOutput("SELECT Subjects.SubjectsName FROM Subjects", "");
                     break;
                 case 2:
-                    //System.out.println("Please input the name of the department you want to add: ");
-                    //input = scanner.nextLine();
+                    System.out.println("Please enter the name of the subject you wish to add: ");
+                    input = scanner.nextLine();
+                    db.executeQuery("INSERT INTO Subjects (SubjectsName) VALUES (" + input + ")");
+                    
+                    System.out.println("\n");
+                    
+                    subject = validateInput("Please select the corresponding number for the subject you want to create a connection between (or type \"-1\" to list all the subjects): ");
+                    while(subject < 0 )
+                    {
+                        if(subject == -1)
+                            db.queryOutput("SELECT * FROM Subjects", "Subjects");
+                        System.out.println("Please select the corresponding number for the subject you want to create a connection between (or type \"list\" to list all the subjects): ");
+                    }
+                    
                     db.insert("Subjects");
                     break;
                 case 3:
-                    System.out.println("\nThe fields in the subject table are:");
                     System.out.println("Would you like to see the subjects in the database? Y/N: ");
                     input = scanner.nextLine();
                     if(input.equals("Y") || input.equals("y") || input.equals(1))

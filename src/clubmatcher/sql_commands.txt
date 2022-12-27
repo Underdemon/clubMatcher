@@ -99,3 +99,16 @@ while (rs.next()) {
                 System.out.println(rs.getInt("id") +  "\t" + 
                                    rs.getString("name") + "\t" +
                                    rs.getDouble("capacity"));
+
+//
+CREATE VIEW IF NOT EXISTS Attendance AS
+
+SELECT Person.PersonName, ClubLog.Timestamp, ClubLog.Date, Club.ClubName, Club.StartTime,
+((strftime('%s', Club.StartTime) - strftime('%s', ClubLog.Timestamp)) * 1.0) / 60 AS time_delta
+FROM ClubLog
+
+INNER JOIN Student ON Student.StudentID = ClubLog.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+INNER JOIN Club ON ClubLog.ClubID = Club.ClubID
+
+// DROP VIEW IF EXISTS Attendance

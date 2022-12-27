@@ -5,6 +5,7 @@
  */
 package databaseConnect;
 
+import dataStructures.dll.DLL;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
@@ -457,7 +458,9 @@ public class DatabaseConnect
                     System.out.println
                     (
                         "Club: " + getName(rs.getInt("ClubID"), "Club")
-                        + "\n\tStudent: " + getName(rs.getInt("StudentID"), "")
+                        + "\n\tStudent: " + getName(rs.getInt("StudentID"), "StudentNames")
+                        + "\n\tDate: " + rs.getString("Date")
+                        + "\n\tTimestamp: " + rs.getString("Timestamp")
                     );
                 }
                 else
@@ -485,8 +488,6 @@ public class DatabaseConnect
         }
         return bQuery;
     }
-    
-    
     
     private static String[] selectColumnNames(String tableName)
     {
@@ -517,8 +518,8 @@ public class DatabaseConnect
         
         return columnName;
     }
-    
-    
+        
+    public int table_len(String )
     
     public int getID(String name, String table)
     {
@@ -529,9 +530,18 @@ public class DatabaseConnect
         try
         {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT " + table + "." + table + "ID FROM " + table + " WHERE " + table + "." + table + "Name = '" + name + "'");
-            if(rs.next())
-                ID = rs.getInt(table + "ID");
+            if(table.equals("Student"))
+            {
+                rs = stmt.executeQuery("SELECT Student.StudentID FROM Student INNER JOIN Person ON Student.PersonID = Person.PersonID WHERE Person.PersonName = '" + name + "'");
+                if(rs.next())
+                    ID = rs.getInt(1);
+            }
+            else
+            {
+                rs = stmt.executeQuery("SELECT " + table + "." + table + "ID FROM " + table + " WHERE " + table + "." + table + "Name = '" + name + "'");
+                if(rs.next())
+                    ID = rs.getInt(table + "ID");
+            }
             rs.close();
             stmt.close();
         }
@@ -554,10 +564,16 @@ public class DatabaseConnect
             stmt = conn.createStatement();
             if(table.equals("Club"))
                 rs = stmt.executeQuery("SELECT " + table + "." + table + "Name FROM " + table + " WHERE " + table + "." + table + "ID = '" + ID + "'");
+            else if(table.equals("StudentNames"))
+                rs = stmt.executeQuery("SELECT Person.PersonName FROM Student INNER JOIN Person ON Student.PersonID = Person.PersonID WHERE Student.StudentID = " + ID);
             else
                 rs = stmt.executeQuery("SELECT Person.PersonName FROM " + table + " INNER JOIN Person ON " + table + ".PersonID = Person.PersonID WHERE " + table + "." + table + "ID = '" + ID + "'");
+            
             if(rs.next())
-                name = rs.getString(table + "Name");
+                if(table.equals("StudentNames"))
+                    name = rs.getString("PersonName");
+                else
+                    name = rs.getString(table + "Name");
             rs.close();
             stmt.close();
         }

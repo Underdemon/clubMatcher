@@ -15,6 +15,7 @@ public class MStudent extends clubmatcher.ClubMatcher
     private int choice = 0;
     private Scanner scanner = new Scanner(System.in);
     private String input = null;
+    private String name = null;
     
     public MStudent()
     {
@@ -30,6 +31,9 @@ public class MStudent extends clubmatcher.ClubMatcher
                 + "\n\t 5 - Add a new student"
                 + "\n\t 6 - Remove a student"
                 + "\n\t 7 - Change the year group of a student"
+                + "\n\t 8 - List a student's subjects"
+                + "\n\t 9 - Add a student's subject"
+                + "\n\t10 - Remove a student's subject"
             );
             
             switch(choice)
@@ -102,6 +106,56 @@ public class MStudent extends clubmatcher.ClubMatcher
                     (
                             "UPDATE Student SET YearGroup = " + newYearGroup + " WHERE Student.PersonID = " + ID
                     );
+                    break;
+                    
+                case 8:
+                    System.out.println("Please enter the name of the student you wish to list the subjects of: ");
+                    input = scanner.nextLine();
+                    db.queryOutput
+                    (
+                            "SELECT Person.PersonName, Subjects.SubjectsName FROM StudentSubjects "
+                            + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                            + "INNER JOIN Person ON Student.PersonID = Person.PersonID "
+                            + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
+                            + "WHERE Person.PersonName = '" + input + "'"
+                            , "StudentSubjects"
+                    );
+                    break;
+                    
+                case 9: 
+                    System.out.println("Please enter the name of the student you wish to add a subject to: ");
+                    name = scanner.nextLine();
+                    System.out.println("Please input the name of the subject you wish to add (type \"list\" to list the subjects): ");
+                    input = scanner.nextLine();
+                    while(input.equals("list"))
+                    {
+                        db.queryOutput("SELECT Subjects.SubjectsName FROM Subjects", "Subjects");
+                        System.out.println("Please input the name of the subject you wish to add (type \"list\" to list the subjects): ");
+                        input = scanner.nextLine();
+                    }
+                    db.executeQuery("INSERT INTO StudentSubjects VALUES(" + db.getID(name, "Student") + ", " + db.getID(input, "Subjects") + ")");
+                    break;
+                    
+                case 10:
+                    System.out.println("Please enter the name of the student you wish to remove the subjects of: ");
+                    name = scanner.nextLine();
+                    System.out.println("Please input the name of the subject you wish to remove (type \"list\" to list the subjects of the student): ");
+                    input = scanner.nextLine();
+                    while(input.equals("list"))
+                    {
+                        db.queryOutput
+                        (
+                                "SELECT Person.PersonName, Subjects.SubjectsName FROM StudentSubjects "
+                                + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                                + "INNER JOIN Person ON Student.PersonID = Person.PersonID "
+                                + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
+                                + "WHERE Person.PersonName = '" + name + "'"
+                                , "StudentSubjects"
+                        );
+                        System.out.println("Please input the name of the subject you wish to add (type \"list\" to list the subjects of the student): ");
+                        input = scanner.nextLine();
+                    }
+                    db.executeQuery("DELETE FROM StudentSubjects WHERE StudentSubjects.StudentID = " + db.getID(name, "Student") + " AND StudentSubjects.SubjectsID = " + db.getID(input, "Subjects"));
                     break;
             }
         }
