@@ -6,6 +6,7 @@
 package databaseConnect;
 
 import dataStructures.dll.DLL;
+import dataStructures.graphs.Graph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
@@ -463,6 +464,15 @@ public class DatabaseConnect
                         + "\n\tTimestamp: " + rs.getString("Timestamp")
                     );
                 }
+                else if(tableName.equals("SubjectGraph"))
+                {
+                    System.out.println
+                    (
+                        "Club 1: " + getName(rs.getInt(1), "SubjectGraph")
+                        + "\nClub 2: " + getName(rs.getInt(2), "SubjectGraph")
+                        + "\nWeight: " + rs.getInt(3)
+                    );
+                }
                 else
                 {
                     for(int i = 1; i <= metaData.getColumnCount(); i++)
@@ -519,7 +529,24 @@ public class DatabaseConnect
         return columnName;
     }
         
-    public int table_len(String )
+    public int table_len(String tableName)
+    {
+        Statement stmt = null;;
+        int len = 0;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT COUNT(*) FROM Subjects");
+            len = rs.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return len;
+    }
     
     public int getID(String name, String table)
     {
@@ -566,12 +593,18 @@ public class DatabaseConnect
                 rs = stmt.executeQuery("SELECT " + table + "." + table + "Name FROM " + table + " WHERE " + table + "." + table + "ID = '" + ID + "'");
             else if(table.equals("StudentNames"))
                 rs = stmt.executeQuery("SELECT Person.PersonName FROM Student INNER JOIN Person ON Student.PersonID = Person.PersonID WHERE Student.StudentID = " + ID);
+            else if(table.equals("Subjects"))
+                rs = stmt.executeQuery("SELECT Subjects.SubjectsName FROM Subjects WHERE Subjects.SubjectsID = " + ID);
+            else if(table.equals("SubjectGraph"))
+                rs = stmt.executeQuery("SELECT Subjects.SubjectsName FROM Subjects WHERE Subjects.SubjectsID = " + ID);
             else
                 rs = stmt.executeQuery("SELECT Person.PersonName FROM " + table + " INNER JOIN Person ON " + table + ".PersonID = Person.PersonID WHERE " + table + "." + table + "ID = '" + ID + "'");
             
             if(rs.next())
                 if(table.equals("StudentNames"))
                     name = rs.getString("PersonName");
+                else if(table.equals("SubjectGraph"))
+                    name = rs.getString(1);
                 else
                     name = rs.getString(table + "Name");
             rs.close();
@@ -778,6 +811,65 @@ public class DatabaseConnect
         }
 
         return bInsert;
+    }
+    
+    
+    // functions needed for club recommendation //
+    
+    public boolean getGraph(Graph<String> graph)
+    {
+        boolean bGraph = false;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            rs = stmt.executeQuery("SELECT * FROM SubjectGraph");
+            while(rs.next())
+                graph.add(getName(rs.getInt(1), "Subjects"), getName(rs.getInt(2), "Subjects"), rs.getInt(3));
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return bGraph;
+    }    
+    
+    /**
+     * gets the list of all distinct subjects taken by the students
+     * @param studentSubject
+     * @return 
+     */
+    public DLL<String> getStudentSubjects(DLL<String> studentSubject)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try
+        {
+            stmt = conn.createStatement();
+            
+            rs = stmt.executeQuery
+            (
+                "SELECT DISTINCT Subjects.SubjectsName FROM StudentSubjects "
+                + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
+                + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                + "WHERE Student.isAssigned = 0"
+            );
+            
+            while(rs.next())
+                studentSubject.append(rs.getString(1));
+            
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        
+        return studentSubject;
     }
     
     public boolean isNumeric(String str)

@@ -39,7 +39,7 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     private final int capacity = (1 << 7);
     
     /*  array stores the root node for the binary tree  */
-    private BST<HashEntry<K, V>>[] table = new BST[capacity];
+    private BST<Pair<K, V>>[] table = new BST[capacity];
     
     /*
         ... = VARARGS
@@ -52,9 +52,9 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         https://www.baeldung.com/java-varargs
         https://www.geeksforgeeks.org/variable-arguments-varargs-in-java/
     */
-    public HashMap(HashEntry<K, V> ... entries)
+    public HashMap(Pair<K, V> ... entries)
     {        
-        for(HashEntry<K, V> entry : entries)
+        for(Pair<K, V> entry : entries)
         {
             table[hash(entry.getKey())] = new BST<>(entry);
         }
@@ -85,7 +85,7 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
             return;
         
         int hash = hash(key);
-        HashEntry<K, V> entry = new HashEntry<>(key, value);
+        Pair<K, V> entry = new Pair<>(key, value);
         
         if(!this.containsKey(key))
         {
@@ -100,23 +100,23 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     public void remove(K key)  // renmoves hashEntry with key value matching key arg
     {
         int hash = hash(key);
-        table[hash].delete(table[hash].getRoot(), (HashEntry) key);
+        table[hash].delete(table[hash].getRoot(), (Pair) key);
     }
 
     @Override
     public V get(K key)
     {
         int hash = hash(key);
-        HashEntry<K, V> temp = new HashEntry<>(key, null);
-        HashEntry<K, V> tmp = (HashEntry) table[hash].search(table[hash].getRoot(), temp).getData();
+        Pair<K, V> temp = new Pair<>(key, null);
+        Pair<K, V> tmp = (Pair) table[hash].search(table[hash].getRoot(), temp).getData();
         return tmp.getValue();
     }
     
-    private HashEntry<K, V> getEntry(K key)
+    private Pair<K, V> getEntry(K key)
     {
         int hash = hash(key);
-        HashEntry<K, V> temp = new HashEntry<>(key, null);
-        HashEntry<K, V> tmp = (HashEntry) table[hash].search(table[hash].getRoot(), temp).getData();
+        Pair<K, V> temp = new Pair<>(key, null);
+        Pair<K, V> tmp = (Pair) table[hash].search(table[hash].getRoot(), temp).getData();
         return tmp;
     }
     
@@ -129,7 +129,7 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
     public boolean containsKey(K key)
     {
         int hash = hash(key);
-        HashEntry<K, V> tmp = new HashEntry(key, null);
+        Pair<K, V> tmp = new Pair(key, null);
         if(table[hash] != null && table[hash].search(table[hash].getRoot(), tmp) != null)
             return true;
         else

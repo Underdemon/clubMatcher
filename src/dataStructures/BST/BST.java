@@ -7,7 +7,7 @@ package dataStructures.BST;
 
 import dataStructures.dll.DLL;
 import java.util.regex.Pattern;
-import dataStructures.hashmap.HashEntry;
+import dataStructures.hashmap.Pair;
 
 /**
  *

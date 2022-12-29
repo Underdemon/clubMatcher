@@ -8,7 +8,7 @@ import dataStructures.dll.DLL;
 import dataStructures.pQueue.PQueue;
 import dataStructures.graphs.Graph;
 import dataStructures.hashmap.HashMap;
-import dataStructures.hashmap.HashEntry;
+import dataStructures.hashmap.Pair;
 import dataStructures.pQueue.PQnode;
 
 /**
@@ -25,6 +25,7 @@ public class Dijkstra
     private String[] prev;
     private Graph<String> graph;
     DLL<Edge> rs = new DLL<>();
+    DLL<Pair<String, Integer>> results;
     
     public Dijkstra(Graph graph)
     {
@@ -76,9 +77,9 @@ public class Dijkstra
         return true;
     }
     
-    public void shortestPath(String src)
+    public DLL<Pair<String, Integer>> shortestPath(String src)
     {
-        DLL<HashEntry<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
+        DLL<Pair<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
         
         for(int i = 0; i < graph_data.getLen(); i++)
         {
@@ -91,8 +92,8 @@ public class Dijkstra
         while(!unvisited.isEmpty())
         {
             Edge u = unvisited.pop();
-            DLL<HashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
-            for(HashEntry<String, Integer> v : connection_pairs)
+            DLL<Pair<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
+            for(Pair<String, Integer> v : connection_pairs)
             {
                 if(vertexSearch(v.getKey()) != null)
                 {
@@ -103,190 +104,20 @@ public class Dijkstra
                         
                         if(inQueue(v.getKey()))
                             unvisited.replace(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
-                        else
-                            rs.remove(vertexSearch(v.getKey()));
                     }
                 }
             }
             rs.append(u);
         }
-        
-        // problem
-        // path to b is initially B to A with weight 4
-        // path to d is found to be path from b to d with weight 2
-        // total weight from a to d is 6
-        // after assigning weight, min path to b is found to be 3
-        // therefore min path to d should be 5 not 6
-        //
-        // if found in rs DLL, add node back to pQueue and then break to the while loop???
-        
+                
         int i = 0;
+        results = new DLL();
         for(Edge e : rs)
         {
-            System.out.println(rs.returnAtIndex(i).getData() + " = " + rs.returnAtIndex(i).getDistance());
+            results.append(new Pair<String, Integer>(rs.returnAtIndex(i).getData(), rs.returnAtIndex(i).getDistance()));
             i++;
         }
         
-        /*
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();        
-        
-        for(int i = 0; i < graph_data.getLen(); i++)
-        {
-            if(graph_data.returnAtIndex(i).getKey().equals(src))
-                unvisited.enqueue(new edge(src, 0, null), 0);
-            else
-                unvisited.enqueue(new edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
-        }
-        
-        while(!unvisited.isEmpty())
-        {
-            edge u = unvisited.pop();
-            dll<hashEntry<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
-            for(hashEntry<String, Integer> v : connection_pairs)
-            {
-                if(searchQueue(unvisited, v.getKey()) != null)
-                {
-                    if(u.getDistance() + v.getValue() < searchQueue(unvisited, v.getKey()).getDistance())
-                    {
-                        searchQueue(unvisited, v.getKey()).setDistance(u.getDistance() + v.getValue());
-                        searchQueue(unvisited, v.getKey()).setPrev(u);
-                    }
-                }
-            }
-            rs.append(u);
-        }
-        
-        int i = 0;
-        for(edge e : rs)
-        {
-            System.out.println(rs.returnAtIndex(i).getData() + " = " + rs.returnAtIndex(i).getDistance());
-            i++;
-        }
-        
-        
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        for(int i = 0; i < graph.size(); i++)
-        {
-            edge edge;
-            hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
-            if(!(graph_data_at_i.getKey().equals(src)))
-            {
-                edge = new edge(graph_data_at_i.getKey(), Integer.MAX_VALUE, null);
-                unvisited.enqueue(edge, edge.getDistance());
-            }
-            else
-            {
-                unvisited.enqueue(new edge(src, 0, null), 0);
-            }
-        }
-        
-        pQueue<edge> copy = unvisited.copy();
-        
-        while(!unvisited.isEmpty())
-        {
-            edge u = unvisited.pop();
-            for(int i = 0; i < graph.size(); i++)
-            {
-                hashEntry<String, hashMap<String, Integer>> graph_data_at_i = graph_data.returnAtIndex(i);
-                if(graph_data_at_i.getKey().equals(u.getData()))
-                {
-                    dll<hashEntry<String, Integer>> graph_data_at_j = graph_data_at_i.getValue().returnData();
-                    // for (hashEntry entry : dll)
-                        // relax
-                    for(hashEntry entry : graph_data_at_j)
-                    {
-                        edge node = copy.search((String) entry.getKey()).getData();
-                        relax(u, node, (int) entry.getValue());
-                    }
-                }
-            }
-        }
-        */
-        /*
-        PSEUDOCODE (https://www.cs.dartmouth.edu/~thc/cs10/lectures/0509/0509.html):
-        
-void dijkstra(s) {
-  queue = new PriorityQueue<Vertex>();
-  for (each vertex v) {
-    v.dist = infinity;  // can use Integer.MAX_VALUE or Double.POSITIVE_INFINITY
-    queue.enqueue(v);
-    v.pred = null;
-  }   
-  s.dist = 0;
-
-  while (!queue.isEmpty()) {
-    u = queue.extractMin();
-    for (each vertex v adjacent to u)
-      relax(u, v);
-  }
-}
-        
-void relax(u, v) {
-  if (u.dist + w(u,v) < v.dist) {
-    v.dist = u.dist + w(u,v);
-    v.pred = u;
-  }
-}
-        
-        
-        */
-        
-        /*
-        dist = new int[graph.size()];
-        prev = new String[graph.size()];
-        
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        
-        for(int i = 0; i < graph.size(); i++)
-        {            
-            if(!graph_data.returnAtIndex(i).getKey().equals(src))
-            {
-                dist[i] = Integer.MAX_VALUE;
-                prev[i] = null;
-                unvisited.enqueue(graph_data.returnAtIndex(i).getKey(), dist[i]);
-            }
-        }
-        
-        for(int i = 0; i < unvisited.size(); i++)
-        {
-            String best_vertex = unvisited.peek();
-            
-            dll<hashEntry<String, Integer>> value = graph_data.returnAtIndex(i).getValue().returnData();
-            int count = 0;
-            for(hashEntry entry : value)
-            {
-                int alt = dist[i] + (int) entry.getValue();
-                if(alt < dist[count])
-                {
-                    dist[count] = alt;
-                    prev[count] = best_vertex;
-                    unvisited.replace((String) entry.getKey(), alt);
-                }
-                count++;
-            }
-        }
-        */
-        /*
-        GRABS AND OUTPUTS ALL SRC NODES WITH CORRESPONDING END NODES && WEIGHT
-        
-        
-        
-        dll<hashEntry<String, hashMap<String, Integer>>> graph_data = graph.returnSourceData();
-        
-        for(int i = 0; i < graph.size(); i++)
-        {
-            dll<hashEntry<String, Integer>> value = graph_data.returnAtIndex(i).getValue().returnData();
-            System.out.println(graph_data.returnAtIndex(i).getKey() + "\n============================");
-            
-            for(hashEntry entry : value)
-            {
-                System.out.println(entry.getKey() + ": " + entry.getValue());
-            }
-            
-            System.out.println("\n\n");
-        }
-        */
-        
-        
+        return results;        
     }
 }

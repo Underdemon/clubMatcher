@@ -4,6 +4,8 @@
  */
 package clubmatcher;
 
+import algorithms.dijkstra.Dijkstra;
+import dataStructures.graphs.Graph;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class ClubMatcher extends Menu implements Runnable
      * @param args the command line arguments
      */
     public static void main(String[] args)
-    {
+    {        
         int choice = 0;
         String temp;
         Scanner scanner = new Scanner(System.in);
@@ -133,6 +135,7 @@ public class ClubMatcher extends Menu implements Runnable
                     MClubLog log = new MClubLog();
                     break;
                 case 7:
+                    MRecommendation recommendation = new MRecommendation();
                     break;
                 case 8:
                     break;

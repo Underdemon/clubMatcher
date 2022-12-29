@@ -1,3 +1,10 @@
+DISPLAY ALL STUDENTS WITH RESPECTIVE SUBJECTS
+SELECT Person.PersonName, Subjects.SubjectsName FROM StudentSubjects
+INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID
+
+
 add below to options: student option 5
 
 isDetailed = validateInput("Please enter:\n\t 1 - if you only want the club name\n\t 2 - if you want the club name and the club details");                    

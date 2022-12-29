@@ -1,0 +1,124 @@
+@startuml
+!theme black-knight
+
+' avoid problems with angled crows feet
+' skinparam linetype ortho
+
+entity "Person" as pers
+{
+  * **<u>PersonID</u>** : INTEGER <<PK>>
+  --
+  PersonName : VARCHAR(255)
+}
+
+entity "Department" as dept
+{
+  * **<u>DepartmentID</u>** : INTEGER <<PK>>
+  --
+  DepartmentName: VARCHAR(255)
+}
+
+entity "Teacher" as teach
+{
+  * **<u>TeacherID</u>**: INTEGER <<PK>>
+  --
+  PersonID: INTEGER
+  DepartmentID: INTEGER
+}
+
+entity "Subjects" as subs
+{
+  * **<u>SubjectsID</u>** : INTEGER <<PK>>
+  --
+  SubjectsName : VARCHAR(255)
+}
+
+entity "Student" as stud
+{
+  * **<u>StudentID</u>** : INTEGER <<PK>>
+  --
+  //PersonID// : INTEGER <<FK>>
+  YearGroup : INTEGER
+  isAssigned : BOOLEAN
+}
+
+entity "Club" as club
+{
+  * **<u>ClubID</u>** : INTEGER <<PK>>
+  --
+  ClubName : VARCHAR(255)
+  //SubjectID// : INTEGER <<FK>>
+  DayRunning : INTEGER
+  BLA : VARCHAR(1)
+  //TeacherID// : INTEGER <<FK>>
+  //DepartmentID// : INTEGER <<FK>>
+  StartTime : VARCHAR(255)
+}
+
+entity "ClubLog" as log
+{
+  * **<u>Timestamp</u>** : VARCHAR(255) <<PK>>
+  --
+  Date: VARCHAR(255)
+  //StudentID// : INTEGER <<FK>>
+  //ClubID// : INTEGER <<FK>>
+}
+
+entity "StudentSubjects" as studSubs
+{
+  --
+  * **<u>//StudentID//</u>** : INTEGER <<PK>> <<FK>>
+  * **<u>//SubjectsID//</u>** : INTEGER <<PK>> <<FK>>
+}
+
+entity "SubjectGraph" as subGraph
+{
+  * **<u>//StartVertex//</u>** : INTEGER <<PK>> <<FK>>
+  * **<u>//EndVertex//</u>** : INTEGER <<PK>> <<FK>>
+  --
+  Weight : INTEGER
+}
+
+
+pers ||-- stud
+stud ||-- pers
+
+pers  ||-- teach
+teach ||-- pers
+
+' a teacher can only have one department, but a department can have multiple teachers
+teach }|-- dept
+dept  ||-- teach
+
+' a student only has one set of subjects
+subs     ||-- studSubs
+studSubs }|-- subs
+
+' a student can have one set of subjects but a set of subjects can have multiple students
+studSubs }|-- stud
+stud     ||-- studSubs
+
+' a club can have one subject but a subject can have multiple clubs
+club }|-- subs
+subs ||-- club
+
+' a club can have one subject but a subject can have multiple clubs
+club  }|-- teach
+teach ||-- club
+
+' a club can have one department but a department can have multiple clubs
+club  }|-- dept
+dept  ||-- club
+
+' a record in the club log can have one student, but a student can have multiple records in a club log
+log  }|-- stud
+stud ||-- log
+
+' a record in the club log can have one club, but a club can have multiple records in the club log
+log  }|-- club
+club ||-- log
+
+' an entry in the subject graph can have 1 pair of subjects, but subjects can have many entries in the subject graph
+subGraph }|-- subs
+subs     ||-- subGraph
+@enduml
