@@ -38,9 +38,9 @@ public class DatabaseConnect
     {
         try
         {
-            Class.forName("org.sqlite.JDBC");//Specify the SQLite Java driver
+            Class.forName("org.sqlite.JDBC"); //Specify the SQLite Java driver
             double start_time = System.nanoTime();
-            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db");//Specify the database, since relative in the main project folder
+            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db"); //Specify the database, since relative in the main project folder
             conn.setAutoCommit(false);// Important as you want control of when data is written
             double end_time = System.nanoTime();
             System.out.println("\nOpened database successfully");
@@ -57,9 +57,9 @@ public class DatabaseConnect
     {
         try
         {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db");
-            conn.setAutoCommit(false);
+            Class.forName("org.sqlite.JDBC"); // Specify the SQLite Java driver
+            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db"); // Specify the database, path relative in the main project folder
+            conn.setAutoCommit(false); // gives program of when data is written
         }
         catch (Exception e)
         {
@@ -814,8 +814,7 @@ public class DatabaseConnect
     }
     
     
-    // functions needed for club recommendation //
-    
+    // functions needed for club recommendation //    
     public boolean getGraph(Graph<String> graph)
     {
         boolean bGraph = false;
@@ -828,7 +827,10 @@ public class DatabaseConnect
             
             rs = stmt.executeQuery("SELECT * FROM SubjectGraph");
             while(rs.next())
-                graph.add(getName(rs.getInt(1), "Subjects"), getName(rs.getInt(2), "Subjects"), rs.getInt(3));
+                graph.add(rs.getString(1), rs.getString(2), rs.getInt(3));
+                // var x = getName(rs.getInt(1), "Subjects");
+                // var y = getName(rs.getInt(2), "Subjects");
+                // var z = rs.getInt(3);
         }
         catch (Exception e)
         {
@@ -836,7 +838,7 @@ public class DatabaseConnect
         }
         
         return bGraph;
-    }    
+    }
     
     /**
      * gets the list of all distinct subjects taken by the students
@@ -854,12 +856,12 @@ public class DatabaseConnect
             
             rs = stmt.executeQuery
             (
-                "SELECT DISTINCT Subjects.SubjectsName FROM StudentSubjects "
-                + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
+                "SELECT DISTINCT StudentSubjects.SubjectsID FROM StudentSubjects "
                 + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
                 + "WHERE Student.isAssigned = 0"
             );
             
+            Object x = null;
             while(rs.next())
                 studentSubject.append(rs.getString(1));
             

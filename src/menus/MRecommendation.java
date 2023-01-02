@@ -8,6 +8,8 @@ import algorithms.dijkstra.Dijkstra;
 import algorithms.dijkstra.Edge;
 import dataStructures.dll.DLL;
 import dataStructures.graphs.Graph;
+import dataStructures.hashmap.Pair;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -28,7 +30,8 @@ public class MRecommendation extends clubmatcher.ClubMatcher
         graph = new Graph();
         studentSubjects = new DLL();
         dijkstra = new Dijkstra(graph);
-        int[][] m = new int[10][10];
+        int size = db.table_len("Subjects");
+        int[][] m = new int[size][size];
         
         do
         {
@@ -53,10 +56,32 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                 case 2:
                     db.getGraph(graph); // inserts the subjectGraph table from the db into the graph object
                     db.getStudentSubjects(studentSubjects); // gets all the subjects being done by the selected (unassigned) students
-                    for(String s : studentSubjects) // for all the subjects being done by the student, run dijkstra and add the weights to the cost matrix
+                    int i = 0; 
+                    int j = 0;
+                    
+                    for(String s : studentSubjects)
                     {
+                        var x = dijkstra.shortestPath(s).getLen();
                         
+                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s))
+                        {
+                            m[i][j] = pair.getValue();
+                            j++;
+                        }
+                        
+                        i++;
+                        j = 0;
                     }
+                    
+                    for (int[] x : m)
+                    {
+                       for (int y : x)
+                       {
+                            System.out.print(y + " ");
+                       }
+                       System.out.println();
+                    }
+                    
                     break;
 
                 case 3:
@@ -102,4 +127,11 @@ if unhappy with subjects, allow user to increase cost for that subject to infini
 Select all distinct subjects to run dijkstra from
 SELECT DISTINCT Subjects.SubjectsName FROM StudentSubjects
 INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID
+*/
+
+/*
+user login system:
+
+user logs in
+based on usertype, you have either restricted access (just an if statement that changes what is output and the switch cases in the menu to only allow for that access level) or you have full access
 */

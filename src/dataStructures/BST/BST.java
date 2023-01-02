@@ -145,7 +145,7 @@ public class BST<T extends Comparable<T>>
             return null;
         else if(temp.getData() == null)
             return null;
-        else if(temp.getData().toString() == value.toString())
+        else if(temp.getData().toString().equals(value.toString()))
             return temp;
         
         if(isNumeric(temp.getData().toString()))

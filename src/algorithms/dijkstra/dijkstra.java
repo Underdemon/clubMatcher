@@ -18,11 +18,6 @@ import dataStructures.pQueue.PQnode;
 public class Dijkstra
 {
     private PQueue<Edge> unvisited;
-    private PQueue<Edge> visited;
-    private final int MAX_CAPACITY = 1 >> 7;
-    private String start;
-    private int[] dist;
-    private String[] prev;
     private Graph<String> graph;
     DLL<Edge> rs = new DLL<>();
     DLL<Pair<String, Integer>> results;
@@ -104,6 +99,8 @@ public class Dijkstra
                         
                         if(inQueue(v.getKey()))
                             unvisited.replace(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
+                        else
+                            rs.remove(vertexSearch(v.getKey()));
                     }
                 }
             }
@@ -117,7 +114,7 @@ public class Dijkstra
             results.append(new Pair<String, Integer>(rs.returnAtIndex(i).getData(), rs.returnAtIndex(i).getDistance()));
             i++;
         }
-        
+        results.setLen(i);
         return results;        
     }
 }

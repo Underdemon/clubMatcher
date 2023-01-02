@@ -46,7 +46,6 @@ public abstract class Menu
         {
             //provides details on the exception that is thrown and also provides a more concise, readable error message
             System.out.println("\n" + x + "\n\nYou have entered an illegal value, please provide a valid input\n");
-            //isIllegalInput = true;
             return validateInput(message);
         }
         return choice;

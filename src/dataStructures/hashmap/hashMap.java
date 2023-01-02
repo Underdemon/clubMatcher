@@ -5,9 +5,11 @@
 package dataStructures.hashmap;
 
 import dataStructures.BST.BST;
+import dataStructures.BST.DL_Node;
 import dataStructures.dll.DLL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 /**
  *
  * @author rayan
@@ -103,13 +105,54 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
         table[hash].delete(table[hash].getRoot(), (Pair) key);
     }
 
+    private Pair<K, V> searchBST(DL_Node<Pair<K, V>> temp, K key)
+    {
+        if(temp == null)
+            return null;
+        else if(temp.getData() == null)
+            return null;
+        else if(temp.getData().getKey().toString().equals(key.toString()))
+            return temp.getData();
+        
+        if(isNumeric(temp.getData().getKey().toString()))
+        {
+            if(Integer.parseInt(key.toString()) > Integer.parseInt(temp.getData().getKey().toString()))    // traverse to right child
+            {
+                searchBST(temp.getNext(), key);
+            }
+            else if(Integer.parseInt(key.toString()) < Integer.parseInt(temp.getData().getKey().toString()))   // traverse to left child
+            {
+                searchBST(temp.getPrev(), key);
+            }
+        }
+        else
+        {
+            if(key.toString().compareTo(temp.getData().getKey().toString()) > 0)    // traverse to right child
+            {
+                searchBST(temp.getNext(), key);
+            }
+            else if(key.toString().compareTo(temp.getData().getKey().toString()) < 0)   // traverse to left child
+            {
+                searchBST(temp.getPrev(), key);
+            }
+        }
+        
+        return null;
+    }
+    
     @Override
     public V get(K key)
     {
+        
         int hash = hash(key);
         Pair<K, V> temp = new Pair<>(key, null);
+        table[hash].search(table[hash].getRoot(), temp).getData();
         Pair<K, V> tmp = (Pair) table[hash].search(table[hash].getRoot(), temp).getData();
         return tmp.getValue();
+        /*
+        int hash = hash(key);
+        return (V) searchBST(table[hash].getRoot(), key).getValue();
+        */
     }
     
     private Pair<K, V> getEntry(K key)
@@ -215,6 +258,24 @@ public class HashMap<K extends Comparable<K>, V extends Comparable<V>> implement
 //        }
 //    }
 
+    public boolean isNumeric(String str)
+    {
+        // used as compareTo() compares values lexicographically and only strings should be compared that way
+        // https://chortle.ccsu.edu/java5/Notes/chap92/ch92_2.html
+        if(str.equals(null))
+            return false;
+        
+        final Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        
+        /*
+        -?          determines if number starts with minus
+        \d+         matches one or more digits
+        (\.\d+)?    matches for decimal point and digits following
+        */
+        
+        return pattern.matcher(str).matches();
+    }
+    
     @Override
     public int compareTo(HashMap<K, V> o)
     {
