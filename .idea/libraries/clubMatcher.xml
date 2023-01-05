@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="clubMatcher">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/clubMatcher.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

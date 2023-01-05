@@ -4,8 +4,6 @@
  */
 package clubmatcher;
 
-import algorithms.dijkstra.Dijkstra;
-import dataStructures.graphs.Graph;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;

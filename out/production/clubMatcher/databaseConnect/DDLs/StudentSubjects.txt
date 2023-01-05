@@ -1,0 +1,8 @@
+CREATE TABLE StudentSubjects
+(
+StudentID INTEGER NOT NULL,
+SubjectsID INTEGER NOT NULL,
+FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+FOREIGN KEY (SubjectsID) REFERENCES Subjects(SubjectsID),
+PRIMARY KEY (StudentID, SubjectsID)
+);

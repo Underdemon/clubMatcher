@@ -1,0 +1,8 @@
+CREATE TABLE Teacher
+(
+TeacherID INTEGER NOT NULL PRIMARY KEY,
+PersonID INTEGER,
+DepartmentID INTEGER,
+FOREIGN KEY (PersonID) REFERENCES Person(PersonID),
+FOREIGN KEY(DepartmentID) REFERENCES Department(DepartmentID)
+);

@@ -1,0 +1,246 @@
+DISPLAY ALL STUDENTS WITH RESPECTIVE SUBJECTS
+SELECT Person.PersonName, Subjects.SubjectsName FROM StudentSubjects
+INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID
+INNER JOIN Person ON Student.PersonID = Person.PersonID
+INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID
+
+
+add below to options: student option 5
+
+isDetailed = validateInput("Please enter:\n\t 1 - if you only want the club name\n\t 2 - if you want the club name and the club details");                    
+                    while(isDetailed < 1 || isDetailed > 2)
+                    {
+                        System.out.println("The number entered was out of the specified range");
+                        isDetailed = validateInput("Please enter:\n\t 1 - if you only want the club name\n\t 2 - if you want the club name and the club details");  
+                    }
+
+DONE:
+======
+student
+department
+teacher
+subject
+
+TBC:
+====
+club
+club log
+CLUB RECOMMENDATIONS
+
+
+
+Create
+Read
+Update
+Delete
+
+
+
+CRUD OPERATIONS ON ALL TABLES EXCEPT LOG
+CLUB LOG IS READ ONLY
+
+Club assigning option - assign for:
+- all students
+- all unassigned students
+- specific student
+- specific day
+- all days
+
+
+====================
+ACTUAL CLUB MATCHING
+====================
+- select all students that have/havent been assigned (sql)
+
+=======
+PERSON:
+=======
+Create:
+- insert a new person
+    - user inputs the name of new person
+
+Read:
+- select all people
+- select a specific person from their name
+
+Update:
+- change a person's name
+    - search for UID associated with person's name and then change that record's name entry
+
+Delete:
+- delete a user by searching for their name
+
+
+=======
+STUDENT:
+=======
+Create:
+- insert a new student
+    - user inputs a person's name, the personID associated to the name is found in the person table (person table: READ)
+    - user inputs the year group
+        - year group is an integer from 7-13
+    - isAssigned is by default false
+
+Read:
+- select all students
+- select a specific student from their name
+- select all students in a year group
+
+
+Update:
+- change a student's year group
+- change if a student is assigned
+- to change a students name use the operation UPDATE on the PERSON table
+
+Delete:
+- delete a student specified student by name
+- delete all unassigned/assigned students
+- delete all students in a year group
+
+
+===========
+DEPARTMENT:
+===========
+Create:
+- insert a new department
+
+Read:
+- search all exisiting departments
+
+Update:
+- N/A
+
+Delete:
+- delete a department
+
+
+=======
+TEACHER:
+=======
+Create:
+- insert a new teacher
+    - checks:
+        - if ("name" is in student table)
+            - do you want to remove the student from the student table and add them to the teacher table
+                - yes: DELETE "name" from STUDENT
+                - no: BREAK
+        - if ("name" is in person table)
+            - "a person with that name has already been found in the database, should they be added?"
+                - yes: insert with personID = personID found in PERSON table
+                - no: BREAK
+        - if("department_name" is not found in department table)
+            - "would you like to add this department to the database"
+                - yes: use DEPARTMENT Create function
+
+    - user input:
+        - personID
+        - departmentID
+
+Read:
+- look at names of all teachers
+- look at names of teachers from a specific department
+- all departments without teachers
+
+Update:
+- change the department of a teacher
+
+Delete:
+- remove a teacher from the table
+
+
+=========
+SUBJECTS:
+=========
+Create:
+- insert a new subject
+
+Read:
+- list all subjects
+- search for a specific subject
+
+Update:
+- N/A
+
+Delete:
+- remove a specific subject
+
+
+=====
+CLUB:
+=====
+Create:
+- insert a new club into the table
+    - if subject name input exists in table:
+        - use subject ID
+        - otherwise ask to insert a new subject
+    - if teacher name input exists in table:
+        - use teacher ID
+        - otherwise ask to add a new teacher
+    - start time
+        - HH:MM     OR      HH:MM:ss.sss
+    
+
+Read:
+- list all clubs
+- search for a sepcific club
+- look at all clubs in BLA
+- look at all clubs in the same department
+- look at all clubs that run on a specific day
+
+Update:
+- update BLA
+- update day running
+    - do you also want to update the start time
+- update teacher running club
+- update the start time
+
+Delete:
+- remove a club
+- remove all clubs running on a day
+- remove all clubs B/L/A
+- remove all clubs in department
+
+
+=================
+STUDENT SUBJECTS:
+=================
+Create:
+- insert a new student-subject pair (student is doing xxx subject)
+- if subject doesn't exist, ask whether they want to add the subject
+
+
+Read:
+- see all subjects a student is doing
+- see all students that are taking a specific subject
+
+Update:
+- change a subject to another subject
+
+Delete:
+- remove a subject from a student
+
+
+=========
+CLUB LOG:
+=========
+Create:
+- ask the user if they want to sign people into the club
+- batch sign in (sign all students doing the club in)
+
+Read:
+- read the club log
+- look at lates
+- look at attendance
+
+Update:
+- N/A
+
+Delete:
+- N/A
+
+
+==============
+SUBJECT GRAPH:
+==============
+import and export graph from db to use dijkstra when recommending
+updating graph in program and exporting updated graph to table

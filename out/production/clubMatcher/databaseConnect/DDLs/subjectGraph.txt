@@ -1,0 +1,9 @@
+CREATE TABLE SubjectGraph
+(
+StartVertex INTEGER NOT NULL,
+EndVertex INTEGER NOT NULL CHECK(EndVertex <> StartVertex), /* ensures 2 columns are different (refuses a connection between same subject) */
+Weight INTEGER,
+FOREIGN KEY (StartVertex) REFERENCES Subjects(SubjectsID),
+FOREIGN KEY (EndVertex) REFERENCES Subjects(SubjectsID),
+PRIMARY KEY (StartVertex, EndVertex)
+);
