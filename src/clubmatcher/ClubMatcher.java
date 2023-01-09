@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import encryption_api.JSON_Parser;
 import menus.*;
 
 /**
@@ -19,17 +21,56 @@ import menus.*;
 public class ClubMatcher extends Menu implements Runnable
 {
     protected static DatabaseConnect db = null;
-    
+
     public void run()
     {
-        db = new DatabaseConnect();
+        db = new DatabaseConnect("clubMatcher.db");
     }
-    
+
+    public static int login()
+    {
+        int hasLoggedIn = -1;
+        Scanner scanner = new Scanner(System.in);
+        JSON_Parser parser = new JSON_Parser();
+        System.out.println("Please input your username: ");
+        String username = scanner.nextLine();
+        System.out.println("Please input your password: ");
+        String password = scanner.nextLine();
+        String rot47 = parser.encrypt(password, 1);
+        String base64 = parser.encrypt(rot47, 2);
+        System.out.print("Connecting to database");
+        DatabaseConnect users_db = new DatabaseConnect("users.db");
+        if(users_db.correctUser(username, base64))
+        {
+            System.out.println("\n");
+            if (users_db.getUACLevel(username, base64) == 0)
+            {
+                System.out.println("student " + username + " has logged in");
+                hasLoggedIn = 0;
+            }
+            else
+            {
+                System.out.println("admin " + username + " has logged in");
+                hasLoggedIn = 1;
+            }
+            System.out.println("\n");
+        }
+
+        return hasLoggedIn;
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
-    {        
+    {
+        int uac = login();
+        if(uac == -1)
+        {
+            System.out.println("Failed to login. Exiting program...");
+            System.exit(0);
+        }
+
         int choice = 0;
         String temp;
         Scanner scanner = new Scanner(System.in);
