@@ -149,9 +149,9 @@ public class ClubMatcher extends Menu implements Runnable
             }
             
             System.out.println("\nLoaded!");
+        }
 
-
-            /*
+        /*
             the student/admin menu functions will be overridden for each menu subclass
             java does not allow for overriding static methods at runtime since method overriding is dynamically bounded  (method call is bounded to method body at runtime)
             this means the menu functions cannot be static
@@ -161,12 +161,11 @@ public class ClubMatcher extends Menu implements Runnable
             since static fields and methods are shared with all instances and is connected to the class itself, the main class is also shared with the newly instantiated clubMatcher class
             however, the non-static functionality (i.e. the student and admin menus) is now accessible to the new instance of the class and so the function can be called
              */
-            // outputs the correct menu for the user access level
-            if(uac == 0)
-                new ClubMatcher().studentMenu();
-            else
-                new ClubMatcher().adminMenu();
-        }
+        // outputs the correct menu for the user access level
+        if(uac == 0)
+            new ClubMatcher().studentMenu();
+        else
+            new ClubMatcher().adminMenu();
     }
     
     /**

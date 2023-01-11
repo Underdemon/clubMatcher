@@ -17,18 +17,7 @@ import dataStructures.pQueue.PQnode;
  */
 public class Dijkstra
 {
-    private PQueue<Edge> unvisited;
-    private Graph<String> graph;
-    DLL<Edge> rs = new DLL<>();
-    DLL<Pair<String, Integer>> results;
-    
-    public Dijkstra(Graph graph)
-    {
-        unvisited = new PQueue<>();
-        this.graph = graph;
-    }
-    
-    public Edge vertexSearch(String value)
+    public Edge vertexSearch(String value, PQueue unvisited, DLL<Edge> rs)
     {
         if(unvisited.isEmpty())
             return null;
@@ -52,7 +41,7 @@ public class Dijkstra
         return node.getData();
     }
     
-    public boolean inQueue(String value)
+    public boolean inQueue(String value, PQueue unvisited)
     {
         if(unvisited.isEmpty())
             return false;
@@ -72,8 +61,12 @@ public class Dijkstra
         return true;
     }
     
-    public DLL<Pair<String, Integer>> shortestPath(String src)
+    public DLL<Pair<String, Integer>> shortestPath(String src, Graph graph)
     {
+        PQueue<Edge> unvisited = new PQueue<>();
+        DLL<Edge> rs = new DLL<>();
+        DLL<Pair<String, Integer>> results;
+
         DLL<Pair<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
         
         for(int i = 0; i < graph_data.getLen(); i++)
@@ -87,24 +80,23 @@ public class Dijkstra
         while(!unvisited.isEmpty())
         {
             Edge u = unvisited.pop();
+            rs.append(u);
             DLL<Pair<String, Integer>> connection_pairs = graph.returnConnections(u.getData()).returnData();
             for(Pair<String, Integer> v : connection_pairs)
             {
-                if(vertexSearch(v.getKey()) != null)
+                if(vertexSearch(v.getKey(), unvisited, rs) != null)     // where vertex, v, has not yet been removed from the queue
                 {
-                    if(u.getDistance() + v.getValue() < vertexSearch(v.getKey()).getDistance())
+                    int alt_dist = u.getDistance() + v.getValue();
+                    if(alt_dist < vertexSearch(v.getKey(), unvisited, rs).getDistance())
                     {
-                        vertexSearch(v.getKey()).setDistance(u.getDistance() + v.getValue());
-                        vertexSearch(v.getKey()).setPrev(u);
+                        vertexSearch(v.getKey(), unvisited, rs).setDistance(alt_dist);
+                        vertexSearch(v.getKey(), unvisited, rs).setPrev(u);
                         
-                        if(inQueue(v.getKey()))
-                            unvisited.replace(vertexSearch(v.getKey()), vertexSearch(v.getKey()).getDistance());
-                        else
-                            rs.remove(vertexSearch(v.getKey()));
+                        if(inQueue(v.getKey(), unvisited))
+                            unvisited.replace(vertexSearch(v.getKey(), unvisited, rs), vertexSearch(v.getKey(), unvisited, rs).getDistance());
                     }
                 }
             }
-            rs.append(u);
         }
                 
         int i = 0;

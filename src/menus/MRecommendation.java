@@ -29,7 +29,7 @@ public class MRecommendation extends clubmatcher.ClubMatcher
     {
         graph = new Graph();
         studentSubjects = new DLL();
-        dijkstra = new Dijkstra(graph);
+        dijkstra = new Dijkstra();
         int size = db.table_len("Subjects");
         int[][] m = new int[size][size];
         
@@ -56,30 +56,28 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                 case 2:
                     db.getGraph(graph); // inserts the subjectGraph table from the db into the graph object
                     db.getStudentSubjects(studentSubjects); // gets all the subjects being done by the selected (unassigned) students
-                    int i = 0; 
+                    int i = 0;
                     int j = 0;
-                    
+
+                    dijkstra.shortestPath("3", graph);
                     for(String s : studentSubjects)
                     {
-                        var x = dijkstra.shortestPath(s).getLen();
-                        
-                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s))
-                        {
-                            m[i][j] = pair.getValue();
-                            j++;
-                        }
-                        
-                        i++;
-                        j = 0;
-                    }
-                    
-                    for (int[] x : m)
-                    {
-                       for (int y : x)
-                       {
-                            System.out.print(y + " ");
-                       }
-                       System.out.println();
+//                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s))
+//                        {
+//                            m[i][j] = pair.getValue();
+//                            j++;
+//                        }
+//
+//                        i++;
+//                        j = 0;
+
+//                        if(Integer.parseInt(s) == 3)
+//                            dijkstra.shortestPath(s, graph);
+//                        System.out.println("\n========== PRINTING LIST ==========");
+//                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s,graph))
+//                            System.out.println(db.getName(Integer.parseInt(pair.getKey()), "Subjects") + ": " + pair.getValue());
+
+
                     }
                     
                     break;
