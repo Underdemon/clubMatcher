@@ -4,6 +4,7 @@
  */
 package clubmatcher;
 
+import dataStructures.dll.DLL;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import encryption_api.JSON_Parser;
+import encryption_api.REST_API_Connect;
 import menus.*;
 
 /**
@@ -21,7 +22,10 @@ import menus.*;
 public class ClubMatcher extends Menu implements Runnable
 {
     protected static DatabaseConnect db = null;
-
+    protected static int uac;
+    protected static String username;
+    protected static String encrypted_pass;
+    protected static String plaintext_pass;
     public void run()
     {
         db = new DatabaseConnect("clubMatcher.db");
@@ -31,19 +35,18 @@ public class ClubMatcher extends Menu implements Runnable
     {
         int hasLoggedIn = -1;
         Scanner scanner = new Scanner(System.in);
-        JSON_Parser parser = new JSON_Parser();
+        REST_API_Connect parser = new REST_API_Connect();
         System.out.println("Please input your username: ");
-        String username = scanner.nextLine();
+        username = scanner.nextLine();
         System.out.println("Please input your password: ");
-        String password = scanner.nextLine();
-        String rot47 = parser.encrypt(password, 1);
-        String base64 = parser.encrypt(rot47, 2);
+        plaintext_pass = scanner.nextLine();
+        encrypted_pass = parser.encrypt(parser.encrypt(plaintext_pass, 1), 2);
         System.out.print("Connecting to database");
         DatabaseConnect users_db = new DatabaseConnect("users.db");
-        if(users_db.correctUser(username, base64))
+        if(users_db.correctUser(username, encrypted_pass))
         {
             System.out.println("\n");
-            if (users_db.getUACLevel(username, base64) == 0)
+            if (users_db.getUACLevel(username, encrypted_pass) == 0)
             {
                 System.out.println("student " + username + " has logged in");
                 hasLoggedIn = 0;
@@ -59,19 +62,31 @@ public class ClubMatcher extends Menu implements Runnable
         return hasLoggedIn;
     }
 
+    public DLL<String> returnFileNamesInDirectory(File[] files, int index, int level, DLL<String> names)
+    {
+        if(index == files.length)   // recursion base case (if there are no more files in the directory)
+            return names;
+
+        if(files[index].isFile())   // checks if the object is a file
+            names.append(files[index].getName());
+
+        returnFileNamesInDirectory(files, index + 1, level, names);
+
+        return null;
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        int uac = login();
+        uac = login();
         if(uac == -1)
         {
             System.out.println("Failed to login. Exiting program...");
             System.exit(0);
         }
 
-        int choice = 0;
         String temp;
         Scanner scanner = new Scanner(System.in);
         Thread db_thread = new Thread(new ClubMatcher());
@@ -100,9 +115,8 @@ public class ClubMatcher extends Menu implements Runnable
         {
             Logger.getLogger(ClubMatcher.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        clrscreen();    // does not work in IDE, only in terminal
+
+        clrscreen();    // cls command cannot be executed in the IDE, only in the OS terminal
         
         System.out.println("Load Examplar Database Values?\nY/N: ");
         temp = scanner.nextLine().toUpperCase();
@@ -113,46 +127,136 @@ public class ClubMatcher extends Menu implements Runnable
             file.delete();
             db.reconnect();
 
-            db.createTable(".\\src\\databaseConnect\\DDLs\\department.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\person.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\student.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\teacher.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\club.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\subjects.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\StudentSubjects.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\subjectGraph.txt");
-            db.createTable(".\\src\\databaseConnect\\DDLs\\clubLog.txt");
-
-            db.insert("Department", ".\\src\\databaseConnect\\CSVs\\department.csv");
-            db.insert("Person", ".\\src\\databaseConnect\\CSVs\\person.csv");
-            db.insert("Student", ".\\src\\databaseConnect\\CSVs\\student.csv");
-            db.insert("Teacher", ".\\src\\databaseConnect\\CSVs\\teacher.csv");
-            db.insert("Club", ".\\src\\databaseConnect\\CSVs\\club.csv");
-            db.insert("Subjects", ".\\src\\databaseConnect\\CSVs\\subjects.csv");
-            db.insert("StudentSubjects", ".\\src\\databaseConnect\\CSVs\\StudentSubjects.csv");
-            db.insert("subjectGraph", ".\\src\\databaseConnect\\CSVs\\subjectGraph.csv");
-            db.insert("ClubLog", ".\\src\\databaseConnect\\CSVs\\clubLog.csv");
+            String ddlPath = ".\\src\\databaseConnect\\DDLs";
+            String csvPath = ".\\src\\databaseConnect\\CSVs";
+            File ddl = new File(ddlPath);
+            File csv = new File(csvPath);
+            DLL<String> DDLfileNames = new DLL<>();
+            DLL<String> CSVfileNames = new DLL<>();
+            if(ddl.exists() && ddl.isDirectory())
+            {
+                File[] files = ddl.listFiles();
+                new ClubMatcher().returnFileNamesInDirectory(files, 0, 0, DDLfileNames);
+                for(String s : DDLfileNames)
+                    db.createTable(ddlPath + "\\" + s);
+            }
+            if(csv.exists() && csv.isDirectory())
+            {
+                File[] files = csv.listFiles();
+                new ClubMatcher().returnFileNamesInDirectory(files, 0, 0, CSVfileNames);
+                for(String s : CSVfileNames)
+                    db.insert(s.substring(0, s.lastIndexOf('.')), csvPath + "\\" + s);
+            }
             
             System.out.println("\nLoaded!");
+
+
+            /*
+            the student/admin menu functions will be overridden for each menu subclass
+            java does not allow for overriding static methods at runtime since method overriding is dynamically bounded  (method call is bounded to method body at runtime)
+            this means the menu functions cannot be static
+            however, static methods are statically bounded at compile-time (static methods resolved before any objects instantiated)
+            since the main function is static and thereby statically bounded, the student/admin menu functions cannot be referenced from the static context of the program's main function
+            in order to circumvent this, I create a new instance of the main class the program is running from (ClubMatcher)
+            since static fields and methods are shared with all instances and is connected to the class itself, the main class is also shared with the newly instantiated clubMatcher class
+            however, the non-static functionality (i.e. the student and admin menus) is now accessible to the new instance of the class and so the function can be called
+             */
+            // outputs the correct menu for the user access level
+            if(uac == 0)
+                new ClubMatcher().studentMenu();
+            else
+                new ClubMatcher().adminMenu();
         }
-        
+    }
+    
+    /**
+     * clears the screen
+     */
+    public static void clrscreen()
+    {
+        try
+        {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        }
+        catch (IOException | InterruptedException ex) {}
+    }
+
+    @Override
+    public void studentMenu()
+    {
+        int choice = 0;
+        Scanner scanner = new Scanner(System.in);
+
         do
         {
             System.out.println("MAIN MENU OPTIONS\n=================\n");
             choice = validateInput
-            (
-                "\n\nPlease input the number corresponding to the option you want to choose:"
-                + "\n\t0 - Exit the program"
-                + "\n\t1 - Student Operations"  // includes student subjects
-                + "\n\t2 - Department Operations"
-                + "\n\t3 - Teacher Operations"
-                + "\n\t4 - Subject Operations"  // includes subject graph
-                + "\n\t5 - Club Operations"
-                + "\n\t6 - Club Log Operations"
-                + "\n\t7 - Club Recommendation"
-                + "\n\t8 - Export Database Into CSVs"
-            );
-            
+                    (
+                            "\n\nPlease input the number corresponding to the option you want to choose:"
+                                    + "\n\t0 - Exit the program"
+                                    + "\n\t1 - Student Operations"  // includes student subjects
+                                    + "\n\t2 - Department Operations"
+                                    + "\n\t3 - Teacher Operations"
+                                    + "\n\t4 - Subject Operations"  // includes subject graph
+                                    + "\n\t5 - Club Operations"
+                                    + "\n\t6 - Club Log Operations"
+                                    + "\n\t7 - Club Recommendation"
+                    );
+
+            switch(choice)
+            {
+                case 1:
+                    MStudent student = new MStudent();
+                    break;
+                case 2:
+                    MDepartment department = new MDepartment();
+                    break;
+                case 3:
+                    MTeacher teacher = new MTeacher();
+                    break;
+                case 4:
+                    MSubjects subject = new MSubjects();
+                    break;
+                case 5:
+                    MClub club = new MClub();
+                    break;
+                case 6:
+                    MClubLog log = new MClubLog();
+                    break;
+                case 7:
+                    MRecommendation recommendation = new MRecommendation();
+                    break;
+            }
+        }
+        while(choice != 0);
+    }
+
+    @Override
+    public void adminMenu()
+    {
+        int choice = 0;
+        Scanner scanner = new Scanner(System.in);
+
+        do
+        {
+            System.out.println("MAIN MENU OPTIONS\n=================\n");
+            choice = validateInput
+                    (
+                            "\n\nPlease input the number corresponding to the option you want to choose:"
+                                    + "\n\t0 - Exit the program"
+                                    + "\n\t1 - Student Operations"  // includes student subjects
+                                    + "\n\t2 - Department Operations"
+                                    + "\n\t3 - Teacher Operations"
+                                    + "\n\t4 - Subject Operations"  // includes subject graph
+                                    + "\n\t5 - Club Operations"
+                                    + "\n\t6 - Club Log Operations"
+                                    + "\n\t7 - Club Recommendation"
+                                    + "\n\t8 - Misc Operations"   // exporting db to csv, login db management
+                    );
+
             switch(choice)
             {
                 case 1:
@@ -177,25 +281,11 @@ public class ClubMatcher extends Menu implements Runnable
                     MRecommendation recommendation = new MRecommendation();
                     break;
                 case 8:
+                    MMisc misc = new MMisc();
                     break;
             }
         }
         while(choice != 0);
-    }
-    
-    /**
-     * clears the screen
-     */
-    public static void clrscreen()
-    {
-        try
-        {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        }
-        catch (IOException | InterruptedException ex) {}
     }
 }
 

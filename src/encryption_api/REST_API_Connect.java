@@ -3,13 +3,14 @@ package encryption_api;
 import java.net.URL;
 import java.util.Scanner;
 import java.net.HttpURLConnection;
+import java.util.logging.Logger;
 
-public class JSON_Parser
+public class REST_API_Connect
 {
     private String inline;
     private URL url;
 
-    public JSON_Parser()
+    public REST_API_Connect()
     {
         inline = "";
     }
@@ -22,6 +23,7 @@ public class JSON_Parser
      */
     public String encrypt(String data, int encryption_type)
     {
+        Logger log = Logger.getLogger(REST_API_Connect.class.getName());
         inline = "";
         try
         {
@@ -35,16 +37,19 @@ public class JSON_Parser
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             //Set the request to GET or POST as per the requirements
             conn.setRequestMethod("GET");
+            log.info("Request Method Set: GET");
             //Use the connect method to create the connection bridge
             conn.connect();
             //Get the response status of the Rest API
             int responsecode = conn.getResponseCode();
-            System.out.println("Response code is: " + responsecode);
-
+            log.info("Response code: " + responsecode);
             //Iterating condition to if response code is not 200 then throw a runtime exception
             //else continue the actual process of getting the JSON data
             if(responsecode != 200)
-                throw new RuntimeException("HttpResponseCode: " +responsecode);
+            {
+                log.severe("API Response Unsuccessful");
+                throw new RuntimeException("HttpResponseCode: " + responsecode);
+            }
             else
             {
                 //Scanner functionality will read the JSON data from the stream
@@ -65,6 +70,7 @@ public class JSON_Parser
         }
         catch(Exception e)
         {
+            log.severe("Connection Failed");
             System.out.println(e.toString());
         }
 

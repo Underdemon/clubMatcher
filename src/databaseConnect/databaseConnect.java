@@ -34,17 +34,17 @@ public class DatabaseConnect
 {
     private static Connection conn = null;
     
-    public DatabaseConnect()
+    public DatabaseConnect(String db_name)
     {
         try
         {
             Class.forName("org.sqlite.JDBC"); //Specify the SQLite Java driver
             double start_time = System.nanoTime();
-            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db"); //Specify the database, since relative in the main project folder
+            conn = DriverManager.getConnection("jdbc:sqlite:" + db_name); //Specify the database, since relative in the main project folder
             conn.setAutoCommit(false);// Important as you want control of when data is written
             double end_time = System.nanoTime();
             System.out.println("\nOpened database successfully");
-            System.out.println("It took " + (end_time - start_time)/(1000000000) + " seconds to open the database!");
+            System.out.println("It took " + (end_time - start_time)/(1000000000) + " seconds to open the database (" + db_name + ")!");
         }
         catch (Exception e)
         {
@@ -873,7 +873,60 @@ public class DatabaseConnect
         
         return studentSubject;
     }
-    
+
+    /**
+     * for user db checks
+     * @param str
+     * @return
+     */
+    public boolean correctUser(String username, String password)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        boolean bSearch = false;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Users WHERE Users.Username = '" + username + "' AND Users.Password = '" + password + "'");
+            if(rs.next())
+                bSearch = true;
+            else
+                bSearch = false;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return bSearch;
+    }
+
+    /**
+     * get user access level
+     * @param str
+     * @return
+     */
+    public int getUACLevel(String username, String password)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        int uac = -1;
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT Users.isAdmin FROM Users WHERE Users.Username = '" + username + "' AND Users.Password = '" + password + "'");
+            if(rs.next())
+                uac = rs.getInt(1);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return uac;
+    }
+
     public boolean isNumeric(String str)
     {
         if(str.equals(null))

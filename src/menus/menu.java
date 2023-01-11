@@ -50,4 +50,15 @@ public abstract class Menu
         }
         return choice;
     }
+
+    public void studentMenu()
+    {
+        System.out.println("This functionality has not yet been implemented");
+        // dummy message in case function is not overridden
+    }
+    public void adminMenu()
+    {
+        System.out.println("This functionality has not yet been implemented");
+        // dummy message in case function is not overridden
+    }
 }
