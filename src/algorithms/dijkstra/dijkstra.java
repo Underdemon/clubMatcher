@@ -74,9 +74,9 @@ public class Dijkstra
             if(graph_data.returnAtIndex(i).getKey().equals(src))
                 unvisited.enqueue(new Edge(src, 0, null), 0);
             else
-                unvisited.enqueue(new Edge(graph_data.returnAtIndex(i).getKey(), Integer.MAX_VALUE, null), Integer.MAX_VALUE);
+                unvisited.enqueue(new Edge(graph_data.returnAtIndex(i).getKey(), 2000000000, null), 2000000000);
         }
-                
+
         while(!unvisited.isEmpty())
         {
             Edge u = unvisited.pop();
@@ -91,9 +91,6 @@ public class Dijkstra
                     {
                         vertexSearch(v.getKey(), unvisited, rs).setDistance(alt_dist);
                         vertexSearch(v.getKey(), unvisited, rs).setPrev(u);
-                        
-                        if(inQueue(v.getKey(), unvisited))
-                            unvisited.replace(vertexSearch(v.getKey(), unvisited, rs), vertexSearch(v.getKey(), unvisited, rs).getDistance());
                     }
                 }
             }

@@ -71,11 +71,11 @@ public class MRecommendation extends clubmatcher.ClubMatcher
 //                        i++;
 //                        j = 0;
 
-//                        if(Integer.parseInt(s) == 3)
-//                            dijkstra.shortestPath(s, graph);
-//                        System.out.println("\n========== PRINTING LIST ==========");
-//                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s,graph))
-//                            System.out.println(db.getName(Integer.parseInt(pair.getKey()), "Subjects") + ": " + pair.getValue());
+                        if(Integer.parseInt(s) == 3)
+                            dijkstra.shortestPath(s, graph);
+                        System.out.println("\n========== PRINTING LIST ==========");
+                        for(Pair<String, Integer> pair : dijkstra.shortestPath(s,graph))
+                            System.out.println(db.getName(Integer.parseInt(pair.getKey()), "Subjects") + ": " + pair.getValue());
 
 
                     }

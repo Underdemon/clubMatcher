@@ -254,11 +254,12 @@ public class DLL<E> implements Iterable<E>
         }
         else
         {
-            while(currNode != null)
+            do
             {
                 System.out.println("\t" + currNode.getData() + ", ");
                 currNode = currNode.getNext();
             }
+            while(currNode != null);
         }
     }
     
