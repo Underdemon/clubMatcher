@@ -78,6 +78,15 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                             System.out.println(db.getName(Integer.parseInt(pair.getKey()), "Subjects") + ": " + pair.getValue());
 
 
+                        /*
+                        SELECT SubjectsID, COUNT(*) FROM StudentSubjects GROUP BY StudentSubjects.SubjectsID ORDER BY COUNT(*) DESC
+/*
+if the no of unassigned students > the no of subjects in the subjectGraph
+selects the no of students doing each subject
+since each row is distinct, students cannot do the same subject
+select the 1st subject with the highest count (the subject taken by the most people)
+and search for the first X no of people who take it (where X = the no of subjects to ensure a square matrix) using the LIMIT and then subquery no of subjects
+                         */
                     }
                     
                     break;
