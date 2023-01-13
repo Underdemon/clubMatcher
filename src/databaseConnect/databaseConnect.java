@@ -7,8 +7,8 @@ package databaseConnect;
 
 import dataStructures.dll.DLL;
 import dataStructures.graphs.Graph;
-import java.io.BufferedReader;
-import java.io.FileReader;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1078,6 +1078,121 @@ public class DatabaseConnect
         }
 
         return password;
+    }
+
+    public void exportClubMatcherToCSV()
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        ResultSetMetaData metaData = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery
+            (
+            "SELECT COUNT(*) FROM sqlite_master "
+                + "WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' "
+                + "UNION ALL "
+                + "SELECT name FROM sqlite_temp_master "
+                + "WHERE type IN ('table','view') "
+                + "ORDER BY 1;"
+            );
+
+            String[] tableNames = tableNames = new String[rs.getInt(1)];
+
+            rs = stmt.executeQuery
+            (
+            "SELECT name FROM sqlite_master "
+                + "WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' "
+                + "UNION ALL "
+                + "SELECT name FROM sqlite_temp_master "
+                + "WHERE type IN ('table','view') "
+                + "ORDER BY 1;"
+            );
+            int i = 0;
+            while(rs.next())
+            {
+                tableNames[i] = rs.getString(1);
+                i++;
+            }
+
+            exportDBtoCSV(tableNames);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    private void exportDBtoCSV(String[] table_names)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        BufferedWriter fileWriter;
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What would you like to call this backup: ");
+        String backupName = scanner.nextLine();
+        try
+        {
+            Files.createDirectories(Paths.get(".\\src\\databaseConnect\\data\\" + backupName));
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            for(String table_name : table_names)
+            {
+                Path newFilePath = Paths.get(".\\src\\databaseConnect\\data\\" + backupName + "\\" + table_name + ".csv");
+                Files.createFile(newFilePath);
+                File csvFile = new File(".\\src\\databaseConnect\\data\\" + backupName + "\\" + table_name + ".csv");
+                fileWriter = new BufferedWriter(new FileWriter(csvFile));
+
+                rs = stmt.executeQuery("SELECT * FROM " + table_name);
+                ResultSetMetaData metaData = rs.getMetaData();
+                String header = "";
+                int colCount = metaData.getColumnCount();
+                for(int i = 1; i <= metaData.getColumnCount(); i++)
+                    header = header.concat(metaData.getColumnLabel(i).concat(","));
+
+                fileWriter.write(header);
+
+                while(rs.next())
+                {
+                    String line = "";
+
+                    for(int i = 1; i <= metaData.getColumnCount(); i++)
+                    {
+                        String value = "";
+                        Object obj = rs.getObject(i);
+                        if(obj != null)
+                            value = obj.toString();
+
+                        if(obj instanceof String)
+                            value = "\"" + value.replaceAll("\"", "\"\"") + "\"";
+
+                        line = line.concat(value);
+
+                        if(i != metaData.getColumnCount())
+                            line = line.concat(",");
+                    }
+                    fileWriter.newLine();
+                    fileWriter.write(line);
+                }
+                stmt.close();
+                fileWriter.close();
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
     public boolean isNumeric(String str)

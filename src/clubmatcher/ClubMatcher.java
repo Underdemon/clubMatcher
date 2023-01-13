@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import encryption_api.REST_API_Connect;
 import menus.*;
 
@@ -120,7 +120,7 @@ public class ClubMatcher extends Menu implements Runnable
 
         clrscreen();    // cls command cannot be executed in the IDE, only in the OS terminal
         
-        System.out.println("Load Examplar Database Values?\nY/N: ");
+        System.out.println("Load Database Values?\nY/N: ");
         temp = scanner.nextLine().toUpperCase();
         if(temp.equals("Y") || temp.equals("YES") || temp.equals(Integer.toString(1)))
         {
@@ -129,28 +129,44 @@ public class ClubMatcher extends Menu implements Runnable
             file.delete();
             db.reconnect("clubMatcher");
 
+            String selectedFolder = null;
             File f  = new File(".\\src\\databaseConnect\\data");
-            System.out.println();
+            File[] backupsList = f.listFiles(); // gets a list of all files and folders in the directory
+
+            int choice = -1;
+            while(choice < 0 || choice > backupsList.length + 1)
+            {
+                System.out.println("\nPlease input the number corresponding to the backup you wish to restore\n0: restore the latest backup");
+                for (int i = 0; i < backupsList.length; i++)
+                    System.out.println((i + 1) + ": " + backupsList[i].getName());
+                choice = validateInput("");
+            }
+
+            if(choice == 0)
+            {
+                Arrays.sort(backupsList, LastModifiedFileComparator.LASTMODIFIED_REVERSE);  // sorts the files by last modified
+                selectedFolder = backupsList[0].getName();
+            }
+            else
+                selectedFolder = backupsList[choice - 1].getName();
+
 
             String ddlPath = ".\\src\\databaseConnect\\DDLs";
-            String csvPath = ".\\src\\databaseConnect\\CSVs";
+            String csvPath = ".\\src\\databaseConnect\\data\\" + selectedFolder;
             File ddl = new File(ddlPath);
             File csv = new File(csvPath);
             DLL<String> DDLfileNames = new DLL<>();
             DLL<String> CSVfileNames = new DLL<>();
-            if(ddl.exists() && ddl.isDirectory())
+
+            File[] filesDDL = ddl.listFiles();
+            for(int i = 0; i < filesDDL.length; i++)
+                db.createTable(filesDDL[i].getPath());
+
+            File[] filesCSV = csv.listFiles();
+            for(int i = 0; i < filesCSV.length; i++)
             {
-                File[] files = ddl.listFiles();
-                new ClubMatcher().returnFileNamesInDirectory(files, 0, 0, DDLfileNames);
-                for(String s : DDLfileNames)
-                    db.createTable(ddlPath + "\\" + s);
-            }
-            if(csv.exists() && csv.isDirectory())
-            {
-                File[] files = csv.listFiles();
-                new ClubMatcher().returnFileNamesInDirectory(files, 0, 0, CSVfileNames);
-                for(String s : CSVfileNames)
-                    db.insert(s.substring(0, s.lastIndexOf('.')), csvPath + "\\" + s);
+                String s = filesCSV[i].getName();
+                db.insert(s.substring(0, s.lastIndexOf('.')), csvPath + "\\" + s);
             }
             
             System.out.println("\nLoaded!");
@@ -260,7 +276,8 @@ public class ClubMatcher extends Menu implements Runnable
                                     + "\n\t5 - Club Operations"
                                     + "\n\t6 - Club Log Operations"
                                     + "\n\t7 - Club Recommendation"
-                                    + "\n\t8 - Misc Operations"   // exporting db to csv, login db management
+                                    + "\n\t8 - User Management Operations"   // login db management
+                                    + "\n\t9 - Export Database to CSV"
                     );
 
             switch(choice)
@@ -288,6 +305,9 @@ public class ClubMatcher extends Menu implements Runnable
                     break;
                 case 8:
                     MMisc misc = new MMisc();
+                    break;
+                case 9:
+                    db.exportClubMatcherToCSV();
                     break;
             }
         }
