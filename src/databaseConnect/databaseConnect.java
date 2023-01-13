@@ -856,14 +856,16 @@ public class DatabaseConnect
             
             rs = stmt.executeQuery
             (
-                "SELECT DISTINCT StudentSubjects.SubjectsID FROM StudentSubjects "
+                "SELECT DISTINCT Subjects.SubjectsName FROM StudentSubjects "
                 + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
                 + "WHERE Student.isAssigned = 0"
             );
             
-            Object x = null;
             while(rs.next())
+            {
                 studentSubject.append(rs.getString(1));
+            }
             
         }
         catch (Exception e)
@@ -872,6 +874,108 @@ public class DatabaseConnect
         }
         
         return studentSubject;
+    }
+
+    public DLL<Integer> getUnassignedStudents(DLL<Integer> students)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery
+                    (
+                            "SELECT DISTINCT StudentSubjects.StudentID FROM StudentSubjects "
+                                    + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                                    + "WHERE Student.isAssigned = 0"
+                    );
+
+            while(rs.next())
+                students.append(rs.getInt(1));
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return students;
+    }
+
+    public void SubjectsStudent(int studentID, DLL<Integer> subjects)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery
+                    (
+                            "SELECT DISTINCT StudentSubjects.SubjectsID FROM StudentSubjects "
+                                    + "WHERE StudentSubjects.StudentID = " + studentID
+                    );
+
+            while(rs.next())
+                subjects.append(rs.getInt(1));
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+    public int getUnassignedStudentSubjectsCount()
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        int count = -1;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery
+            (
+            "SELECT COUNT(DISTINCT StudentSubjects.StudentID) FROM StudentSubjects "
+                + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                + "WHERE Student.isAssigned = 0"
+            );
+
+            count = rs.getInt(1);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return count;
+    }
+
+    public int getDistinctSubjectsCountForAssignment()
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        int count = -1;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery("SELECT COUNT(DISTINCT StartVertex) FROM SubjectGraph");
+
+            count = rs.getInt(1);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return count;
     }
 
     /**

@@ -61,11 +61,11 @@ public class Dijkstra
         return true;
     }
     
-    public DLL<Pair<String, Integer>> shortestPath(String src, Graph graph)
+    public DLL<Integer> shortestPath(String src, Graph graph)
     {
         PQueue<Edge> unvisited = new PQueue<>();
         DLL<Edge> rs = new DLL<>();
-        DLL<Pair<String, Integer>> results;
+        DLL<Integer> results;
 
         DLL<Pair<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
         
@@ -100,7 +100,7 @@ public class Dijkstra
         results = new DLL();
         for(Edge e : rs)
         {
-            results.append(new Pair<String, Integer>(rs.returnAtIndex(i).getData(), rs.returnAtIndex(i).getDistance()));
+            results.append(rs.returnAtIndex(i).getDistance());
             i++;
         }
         results.setLen(i);

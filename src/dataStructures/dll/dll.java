@@ -243,7 +243,34 @@ public class DLL<E> implements Iterable<E>
         
         return temp.getData();
     }
-    
+
+    /**
+     * adds the values at each node in the current DLL and the DLL argument
+     * assumes both DLLs are the same size
+     */
+    public void combine(DLL<Integer> values_to_add)
+    {
+        dl_node<Integer> alt = values_to_add.head;
+        dl_node<Integer> main = (dl_node<Integer>) this.head;
+
+        while(main != null)
+        {
+            main.setData(main.getData() + alt.getData());
+            main = main.getNext();
+            alt = alt.getNext();
+        }
+    }
+
+    public void clone(DLL copy)
+    {
+        dl_node<E> node = this.head;
+        while(node != null)
+        {
+            copy.append(node);
+            node = node.getNext();
+        }
+    }
+
     public void printList()
     {
         dl_node currNode = this.head;
@@ -295,6 +322,14 @@ public class DLL<E> implements Iterable<E>
 
     public int getLen()
     {
+        dl_node node = this.head;
+        int len = 0;
+        while(node != null)
+        {
+            len++;
+            node = node.getNext();
+        }
+
         return len;
     }
 

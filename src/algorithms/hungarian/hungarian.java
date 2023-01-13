@@ -6,6 +6,8 @@
 package algorithms.hungarian;
 
 import dataStructures.dll.DLL;
+import dataStructures.hashmap.Pair;
+
 import java.util.Arrays;
 /**
  *
@@ -40,7 +42,7 @@ public class Hungarian
                 System.exit(1);
             }
         }
-        this.cost_matrix = matrix;        
+        this.cost_matrix = matrix;
         
         original_matrix = Arrays.stream(cost_matrix).map(int[]::clone).toArray(int[][]::new);
         
@@ -60,7 +62,7 @@ public class Hungarian
     
     
     
-    public int optimalAssignment()
+    public DLL<Pair<Integer, Integer>> optimalAssignment()
     {
         row_reduction();
         
@@ -92,23 +94,15 @@ public class Hungarian
                 post_reduction(); 
            }
         }
-        
-        int optimalAssignment = 0;
-        
-        
+
+        DLL<Pair<Integer, Integer>> optimalAssignment = new DLL<>();
+
         System.out.println("\n");
         for(int i = 0; i < cost_matrix.length; i++)
         {
-//            if(i == cost_matrix.length - 1)
-//                System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]]);
-//            else
-//                System.out.print(original_matrix[row_star[i]][col_star[row_star[i]]] + " + ");
-            //optimalAssignment += original_matrix[row_star[i]][col_star[row_star[i]]];
-            optimalAssignment += original_matrix[col_star[i]][row_star[col_star[i]]];
+            optimalAssignment.append(new Pair<Integer, Integer>(col_star[i], row_star[col_star[i]]));
         }
-        
-        System.out.println(" = " + optimalAssignment);
-        
+
         // System.out.println(Arrays.deepToString(optimalAssignment));
         return optimalAssignment;
     }
