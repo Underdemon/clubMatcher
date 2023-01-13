@@ -53,12 +53,12 @@ public class DatabaseConnect
         }
     }
     
-    public void reconnect()
+    public void reconnect(String dbName)
     {
         try
         {
             Class.forName("org.sqlite.JDBC"); // Specify the SQLite Java driver
-            conn = DriverManager.getConnection("jdbc:sqlite:clubMatcher.db"); // Specify the database, path relative in the main project folder
+            conn = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db"); // Specify the database, path relative in the main project folder
             conn.setAutoCommit(false); // gives program of when data is written
         }
         catch (Exception e)
@@ -904,6 +904,34 @@ public class DatabaseConnect
         return students;
     }
 
+    public DLL<Integer> getUnassignedStudents(DLL<Integer> students, int offset, int rowCount)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery
+                    (
+                            "SELECT DISTINCT StudentSubjects.StudentID FROM StudentSubjects "
+                                    + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                                    + "WHERE Student.isAssigned = 0 LIMIT " + offset + ", " + rowCount
+                    );
+
+            while(rs.next())
+                students.append(rs.getInt(1));
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return students;
+    }
+
     public void SubjectsStudent(int studentID, DLL<Integer> subjects)
     {
         Statement stmt = null;
@@ -1029,6 +1057,27 @@ public class DatabaseConnect
         }
 
         return uac;
+    }
+
+    public String getCurrentUserPassword(String username)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        String password = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT Users.Password FROM Users WHERE Users.Username = '" + username + "'");
+            if(rs.next())
+                password = rs.getString(1);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return password;
     }
 
     public boolean isNumeric(String str)

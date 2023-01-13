@@ -60,7 +60,7 @@ public class ClubMatcher extends Menu implements Runnable
             }
             System.out.println("\n");
         }
-
+        users_db.close();
         return hasLoggedIn;
     }
 
@@ -127,7 +127,10 @@ public class ClubMatcher extends Menu implements Runnable
             db.close();
             File file = new File("clubMatcher.db");
             file.delete();
-            db.reconnect();
+            db.reconnect("clubMatcher");
+
+            File f  = new File(".\\src\\databaseConnect\\data");
+            System.out.println();
 
             String ddlPath = ".\\src\\databaseConnect\\DDLs";
             String csvPath = ".\\src\\databaseConnect\\CSVs";
@@ -228,7 +231,9 @@ public class ClubMatcher extends Menu implements Runnable
                     MClubLog log = new MClubLog();
                     break;
                 case 7:
+                    db.close();
                     MRecommendation recommendation = new MRecommendation();
+                    db.reconnect("clubMatcher");
                     break;
             }
         }

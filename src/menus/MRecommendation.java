@@ -127,7 +127,10 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                             /*              outputs the student name with the suggested subject                   */
                         }
 
-                        System.out.println("Would you like to commit these students as assigned?");
+                        System.out.println("Would you like to accept these changes and commit these students as assigned in the database?");
+                        input = scanner.nextLine();
+                        if(input.equals("Y") || input.equals("y") || input.equals("1"))
+                            db.executeQuery("UPDATE Student SET isAssigned = 1");
                     }
                     else // if there are too many students to assign
                     {
@@ -135,15 +138,77 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                         int noOfAssignments = unassignedStudents.getLen() % distinctSubjects;
                         for(int i = 0; i < noOfAssignments; i++)
                         {
+                            /*
+                            SELECT Student.StudentID FROM Student LIMIT 5, 1
+                                where the limit command has 2 args
+                                LIMIT offset, row_count
 
+                            limit --> subjects length * i, no of subjects
+                            */
+                            DLL<Integer> unassignedStudentsGroup = new DLL<>();
+                            db.getUnassignedStudents(unassignedStudentsGroup, distinctSubjects * i, distinctSubjects);
+
+                            for(int j = 0; j < unassignedStudentsGroup.getLen(); j++)  // for each student in the list of unassigned students
+                            {
+                                studentNamesMask[j] = db.getName(unassignedStudentsGroup.returnAtIndex(j), "StudentNames");
+                                DLL<Integer> subjectsOfStudent = new DLL<>();
+                                db.SubjectsStudent(unassignedStudentsGroup.returnAtIndex(j), subjectsOfStudent);
+
+                                DLL<Integer> individual_cost = new DLL<>();
+                                for(int k = 0; k < distinctSubjects; k++)
+                                {
+                                    individual_cost.append(0);  // defaults the DLL to have 0 values, which will be combined with the weights from dijkstra
+                                }
+
+                                for(int k = 0; k < subjectsOfStudent.getLen(); k++)
+                                {
+                                    individual_cost.combine(dijkstra.shortestPath(Integer.toString(subjectsOfStudent.returnAtIndex(k)), graph));
+                                }
+
+                                int k = 0;
+                                for(int l : individual_cost)
+                                {
+                                    cost_matrix[j][k] = round(l/(subjectsOfStudent.getLen())) + (int)Math.floor(Math.random() * 3);
+                                    k++;
+                                }
+                            }
+
+                            DLL<String> subjects = new DLL<>();
+                            db.getStudentSubjects(subjects);
+                            int l = 0;
+                            for(String s : subjects)
+                            {
+                                cost_mask[l] = s;
+                                l++;
+                            }
+
+                            if(unassignedStudentsGroup.getLen() < distinctSubjects)    // fill matrices dummy values so they are square
+                            {
+                                for(int j = unassignedStudentsGroup.getLen(); j < distinctSubjects; j++)
+                                {
+                                    for(int k = 0; k < distinctSubjects; k++)
+                                        cost_matrix[j][k] = 0;
+                                }
+                            }
+
+                            hungarian = new Hungarian(cost_matrix);
+                            DLL<Pair<Integer, Integer>> assignment = hungarian.optimalAssignment();
+                            for(Pair<Integer, Integer> pair : hungarian.optimalAssignment())
+                            {
+                                System.out.println(studentNamesMask[pair.getKey()] + ": " + cost_mask[pair.getValue()]);
+                                /*              outputs the student name with the suggested subject                   */
+                            }
                         }
+                        System.out.println("Would you like to accept these changes and commit these students as assigned in the database?");
+                        input = scanner.nextLine();
+                        if(input.equals("Y") || input.equals("y") || input.equals("1"))
+                            db.executeQuery("UPDATE Student SET isAssigned = 1");
                     }
                     break;
             }
         }
         while(choice != 0);
     }
-
 }
 
 /*
