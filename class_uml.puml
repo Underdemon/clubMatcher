@@ -24,6 +24,8 @@ class menus.MClub {
 - int min
 - String start_time
 - String BLA
++ void studentMenu()
++ void adminMenu()
 }
 class algorithms.hungarian.Hungarian {
 ~ int[][] cost_matrix
@@ -31,7 +33,7 @@ class algorithms.hungarian.Hungarian {
 ~ int[] row_star
 ~ int[] row_prime
 ~ boolean[] rowCovered
-+ int optimalAssignment()
++ DLL<Pair<Integer,Integer>> optimalAssignment()
 - void row_reduction()
 - void col_reduction()
 - void init_task_assign()
@@ -59,13 +61,9 @@ class dataStructures.hashmap.HashMap {
 + int compareTo(HashMap<K,V>)
 }
 class algorithms.dijkstra.Dijkstra {
-- PQueue<Edge> unvisited
-- Graph<String> graph
-~ DLL<Edge> rs
-~ DLL<Pair<String,Integer>> results
-+ Edge vertexSearch(String)
-+ boolean inQueue(String)
-+ DLL<Pair<String,Integer>> shortestPath(String)
++ Edge vertexSearch(String,PQueue,DLL<Edge>)
++ boolean inQueue(String,PQueue)
++ DLL<Integer> shortestPath(String,Graph)
 }
 class dataStructures.BST.BST {
 - DL_Node<T> root
@@ -92,6 +90,8 @@ class menus.MDepartment {
 - int choice
 - Scanner scanner
 - String input
++ void studentMenu()
++ void adminMenu()
 }
 class dataStructures.dll.dl_node {
 - E data
@@ -103,6 +103,15 @@ class dataStructures.dll.dl_node {
 + void setNext(dl_node<E>)
 + dl_node<E> getPrev()
 + void setPrev(dl_node<E>)
+}
+class menus.MMisc {
+- int choice
+- Scanner scanner
+- String input
+- String name
+- String password
+- String isAdmin
+- {static} DatabaseConnect usersDB
 }
 class hungarian.HungarianAlgorithm {
 ~ int[][] matrix
@@ -126,6 +135,14 @@ class menus.MTeacher {
 - int choice
 - Scanner scanner
 - String input
+- String department_name
++ void studentMenu()
++ void adminMenu()
+}
+class encryption_api.REST_API_Connect {
+- String inline
+- URL url
++ String encrypt(String,int)
 }
 class algorithms.dijkstra.Edge {
 - String data
@@ -152,9 +169,17 @@ class dataStructures.BST.DL_Node {
 }
 class clubmatcher.ClubMatcher {
 # {static} DatabaseConnect db
+# {static} int uac
+# {static} String username
+# {static} String encrypted_pass
+# {static} String plaintext_pass
 + void run()
++ {static} int login()
++ DLL<String> returnFileNamesInDirectory(File[],int,int,DLL<String>)
 + {static} void main(String[])
 + {static} void clrscreen()
++ void studentMenu()
++ void adminMenu()
 }
 class dataStructures.graphs.Graph {
 - HashMap<T,HashMap<T,Integer>> map
@@ -171,7 +196,7 @@ class dataStructures.graphs.Graph {
 }
 class databaseConnect.DatabaseConnect {
 - {static} Connection conn
-+ void reconnect()
++ void reconnect(String)
 + void close()
 + void executeQuery(String)
 + boolean createTable(String)
@@ -194,6 +219,16 @@ class databaseConnect.DatabaseConnect {
 + boolean insertStudentTeacher(boolean,String)
 + boolean getGraph(Graph<String>)
 + DLL<String> getStudentSubjects(DLL<String>)
++ DLL<Integer> getUnassignedStudents(DLL<Integer>)
++ DLL<Integer> getUnassignedStudents(DLL<Integer>,int,int)
++ void SubjectsStudent(int,DLL<Integer>)
++ int getUnassignedStudentSubjectsCount()
++ int getDistinctSubjectsCountForAssignment()
++ boolean correctUser(String,String)
++ int getUACLevel(String,String)
++ String getCurrentUserPassword(String)
++ void exportClubMatcherToCSV()
+- void exportDBtoCSV(String[])
 + boolean isNumeric(String)
 }
 class dataStructures.dll.DLL {
@@ -215,6 +250,8 @@ class dataStructures.dll.DLL {
 + void concatenate(DLL<E>)
 + void index(E)
 + E returnAtIndex(int)
++ void combine(DLL<Integer>)
++ void clone(DLL)
 + void printList()
 + int getCount()
 + void setCount(int)
@@ -245,6 +282,8 @@ class menus.MSubjects {
 - int subject2
 - int weight
 - int table_size
++ void studentMenu()
++ void adminMenu()
 }
 class dataStructures.pQueue.PQnode {
 - T data
@@ -264,6 +303,8 @@ abstract class menus.Menu {
 ~ Pattern pattern
 + boolean isNumeric(String)
 + {static} int validateInput(String)
++ void studentMenu()
++ void adminMenu()
 }
 class menus.MRecommendation {
 - int choice
@@ -272,6 +313,7 @@ class menus.MRecommendation {
 - Graph graph
 - DLL<String> studentSubjects
 - Dijkstra dijkstra
+- Hungarian hungarian
 }
 class dataStructures.pQueue.PQueue {
 - PQnode<T> head
@@ -303,6 +345,8 @@ class menus.MStudent {
 - Scanner scanner
 - String input
 - String name
++ void studentMenu()
++ void adminMenu()
 }
 
 
@@ -311,6 +355,7 @@ menus.ClubMatcher <|-- menus.MClub
 dataStructures.hashmap.Map <|.. dataStructures.hashmap.HashMap
 dataStructures.hashmap.Comparable <|.. dataStructures.hashmap.HashMap
 menus.ClubMatcher <|-- menus.MDepartment
+menus.ClubMatcher <|-- menus.MMisc
 menus.ClubMatcher <|-- menus.MClubLog
 menus.ClubMatcher <|-- menus.MTeacher
 algorithms.dijkstra.Comparable <|.. algorithms.dijkstra.Edge

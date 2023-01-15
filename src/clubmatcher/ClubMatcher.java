@@ -4,7 +4,6 @@
  */
 package clubmatcher;
 
-import algorithms.hungarian.Hungarian;
 import dataStructures.dll.DLL;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
@@ -480,20 +479,29 @@ System.out.println(q.peek());
 q.printQueue();
 
 
-graph<String> graph = new graph<>();
-graph.add("a", "b", 4);
-graph.add("a", "c", 2);
-graph.add("b", "c", 3);
-graph.add("b", "d", 2);
-graph.add("b", "e", 3);
-graph.add("c", "b", 1);
-graph.add("c", "d", 4);
-graph.add("c", "e", 5);
-graph.add("e", "d", 1);
+Graph<String> graph = new Graph<>();
+        graph.add("a", "b", 4);
+        graph.add("a", "c", 2);
+        graph.add("b", "a", 4);
+        graph.add("b", "c", 3);
+        graph.add("b", "d", 2);
+        graph.add("b", "e", 3);
+        graph.add("c", "a", 2);
+        graph.add("c", "b", 3);
+        graph.add("c", "d", 4);
+        graph.add("c", "e", 5);
+        graph.add("d", "b", 2);
+        graph.add("d", "c", 4);
+        graph.add("d", "e", 1);
+        graph.add("e", "b", 3);
+        graph.add("e", "c", 5);
+        graph.add("e", "d", 1);
 
 
-dijkstra d = new dijkstra(graph);
-d.shortestPath("a");
+
+        Dijkstra d = new Dijkstra();
+        d.shortestPath("a", graph).printList();
+
 
 
 graph<String> graph = new graph<>();

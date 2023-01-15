@@ -127,28 +127,19 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                             /*              outputs the student name with the suggested subject                   */
                         }
 
-                        System.out.println("Would you like to accept these changes and commit these students as assigned in the database?");
-                        input = scanner.nextLine();
-                        if(input.equals("Y") || input.equals("y") || input.equals("1"))
-                            db.executeQuery("UPDATE Student SET isAssigned = 1");
+                        db.executeQuery("UPDATE Student SET isAssigned = 1");
                     }
-                    else // if there are too many students to assign
+                    else // if there are too many students to assign, then get the first x students that keep the matrix square, run it normally, set students as assigned to club, and continue getting sets of x students until all students assigned
                     {
                         // find out how many assignment iterations will have to be done
                         int noOfAssignments = unassignedStudents.getLen() % distinctSubjects;
-                        for(int i = 0; i < noOfAssignments; i++)
+                        for(int i = 0; i <= noOfAssignments; i++)
                         {
-                            /*
-                            SELECT Student.StudentID FROM Student LIMIT 5, 1
-                                where the limit command has 2 args
-                                LIMIT offset, row_count
-
-                            limit --> subjects length * i, no of subjects
-                            */
                             DLL<Integer> unassignedStudentsGroup = new DLL<>();
                             db.getUnassignedStudents(unassignedStudentsGroup, distinctSubjects * i, distinctSubjects);
 
                             for(int j = 0; j < unassignedStudentsGroup.getLen(); j++)  // for each student in the list of unassigned students
+                        // the list of unassigned students seperates fine but when more students than subjects it reassigns twice, excluding 1 person on 2nd assignment
                             {
                                 studentNamesMask[j] = db.getName(unassignedStudentsGroup.returnAtIndex(j), "StudentNames");
                                 DLL<Integer> subjectsOfStudent = new DLL<>();
@@ -199,10 +190,11 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                                 /*              outputs the student name with the suggested subject                   */
                             }
                         }
-                        System.out.println("Would you like to accept these changes and commit these students as assigned in the database?");
-                        input = scanner.nextLine();
-                        if(input.equals("Y") || input.equals("y") || input.equals("1"))
-                            db.executeQuery("UPDATE Student SET isAssigned = 1");
+                        Arrays.fill(studentNamesMask, null);
+                        Arrays.fill(cost_matrix, null);
+                        Arrays.fill(cost_mask, null);
+
+                        db.executeQuery("UPDATE Student SET isAssigned = 1");
                     }
                     break;
             }

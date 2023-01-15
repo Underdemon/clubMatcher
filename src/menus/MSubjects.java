@@ -185,6 +185,8 @@ public class MSubjects extends clubmatcher.ClubMatcher
                         weight = validateInput("Invalid weight\nPlease input a weight between 0-10: ");
 
                     db.executeQuery("INSERT INTO SubjectGraph VALUES(" + subject + ", " + subject2 + ", " + weight + ")");
+                    db.executeQuery("INSERT INTO SubjectGraph VALUES(" + subject2 + ", " + subject + ", " + weight + ")");
+
                     break;
 
                 case 7:
@@ -211,33 +213,34 @@ public class MSubjects extends clubmatcher.ClubMatcher
                     break;
 
                 case 8:
-                    subject = validateInput("Please input a subject ID that corresponds to the the first subject in the connection (or type \"list\" to list the current graph connections)");
+                    subject = validateInput("Please input a subject ID that corresponds to the the first subject in the connection (or type \"0\" to list the current graph connections)");
                     table_size = db.table_len("Subjects");
                     while(subject < 1 || subject > table_size)
                     {
                         if(subject == 0)
-                            db.queryOutput("SELECT * FROM SubjectGraph", "SubjectGraph");
-                        subject = validateInput("Please input a subject ID that corresponds to the the first subject in the connection (or type \"list\" to list the current graph connections)");
+                            db.queryOutput("SELECT * FROM Subjects", "Subjects");
+                        subject = validateInput("Please input a subject ID that corresponds to the the first subject in the connection (or type \"0\" to list the current graph connections)");
                     }
 
-                    subject2 = validateInput("Please input a subject ID that corresponds to the the second subject in the connection (or type \"list\" to list the current graph connections)");
+                    subject2 = validateInput("Please input a subject ID that corresponds to the the second subject in the connection (or type \"0\" to list the current graph connections)");
                     while(subject2 < 1 || subject2 > table_size || subject == subject2)
                     {
                         if(subject2 == 0)
-                            db.queryOutput("SELECT * FROM SubjectGraph", "SubjectGraph");
+                            db.queryOutput("SELECT * FROM Subjects", "Subjects");
                         else if(subject == subject2)
                             System.out.println("The subject cannot have a connection to itself");
-                        subject2 = validateInput("Please input a subject ID that corresponds to the the second subject in the connection (or type \"list\" to list the current graph connections)");
+                        subject2 = validateInput("Please input a subject ID that corresponds to the the second subject in the connection (or type \"0\" to list the current graph connections)");
                     }
 
                     System.out.println("Data about selected subjects: ");
-                    db.queryOutput("SELECT * FROM SubjectGraph", "SubjectGraph");
+                    db.queryOutput("SELECT * FROM SubjectGraph WHERE StartVertex = " + subject + " AND EndVertex = " + subject2, "SubjectGraph");
 
                     weight = validateInput("Please input what you want to change the weight to between the subjects (it should be between 0-10): ");
                     while(weight < 0 || weight > 10)
                         weight = validateInput("Invalid weight\nPlease input a weight between 0-10: ");
 
                     db.executeQuery("UPDATE SubjectGraph SET Weight = " + weight + " WHERE StartVertex = " + subject + " AND EndVertex = " + subject2);
+                    db.executeQuery("UPDATE SubjectGraph SET Weight = " + weight + " WHERE StartVertex = " + subject2 + " AND EndVertex = " + subject);
                     break;
             }
         }
