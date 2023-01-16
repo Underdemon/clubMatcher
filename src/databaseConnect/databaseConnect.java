@@ -1164,7 +1164,7 @@ public class DatabaseConnect
                             value = obj.toString();
 
                         if(obj instanceof String)
-                            value = "\"" + value.replaceAll("\"", "\"\"") + "\"";
+                            value = value.replaceAll("\"", "\"\"") ;
 
                         line = line.concat(value);
 

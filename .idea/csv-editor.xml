@@ -129,63 +129,252 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Club.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Club.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\ClubLog.csv">
+        <entry key="\src\databaseConnect\data\Backup2\ClubLog.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Department.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Department.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Person.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Person.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Student.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Student.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\StudentSubjects.csv">
+        <entry key="\src\databaseConnect\data\Backup2\StudentSubjects.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\SubjectGraph.csv">
+        <entry key="\src\databaseConnect\data\Backup2\SubjectGraph.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Subjects.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Subjects.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\databaseConnect\data\changed weights\Teacher.csv">
+        <entry key="\src\databaseConnect\data\Backup2\Teacher.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Club.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\ClubLog.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Department.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Person.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Student.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\StudentSubjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\SubjectGraph.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Subjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Backup3 INVALID\Teacher.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Club.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\ClubLog.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Department.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Person.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Student.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\StudentSubjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\SubjectGraph.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Subjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\Removed Sign\Teacher.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Club.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\ClubLog.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Department.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Person.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Student.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\StudentSubjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\SubjectGraph.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Subjects.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\databaseConnect\data\testing\Teacher.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

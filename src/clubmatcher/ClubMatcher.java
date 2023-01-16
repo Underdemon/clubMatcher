@@ -251,6 +251,8 @@ public class ClubMatcher extends Menu implements Runnable
             however, the non-static functionality (i.e. the student and admin menus) is now accessible to the new instance of the class and so the function can be called
              */
         // outputs the correct menu for the user access level
+
+
         if(uac == 0)
             new ClubMatcher().studentMenu();
         else
@@ -368,7 +370,9 @@ public class ClubMatcher extends Menu implements Runnable
                     MClubLog log = new MClubLog();
                     break;
                 case 7:
+                    db.close();
                     MRecommendation recommendation = new MRecommendation();
+                    db.reconnect("clubMatcher");
                     break;
                 case 8:
                     MMisc misc = new MMisc();
