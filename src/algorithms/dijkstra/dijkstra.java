@@ -11,6 +11,9 @@ import dataStructures.hashmap.HashMap;
 import dataStructures.hashmap.Pair;
 import dataStructures.pQueue.PQnode;
 
+import java.awt.event.PaintEvent;
+import java.lang.reflect.Parameter;
+
 /**
  *
  * @author rayan
@@ -40,32 +43,37 @@ public class Dijkstra
         
         return node.getData();
     }
-    
-    public boolean inQueue(String value, PQueue unvisited)
+
+    public void removeFromQueue(String value, PQueue queue)
     {
-        if(unvisited.isEmpty())
-            return false;
-        
-        PQnode<Edge> node = unvisited.getHead();
-        
-        while(node.getNext() != null && !node.getData().getData().equals(value))
+        PQnode<Edge> temp = queue.getHead();
+
+        while(!temp.getData().getData().equals(value))
+            temp = temp.getNext();
+
+        if(temp.getData().getData().equals(value))
         {
-            node = node.getNext();
+            if(temp == queue.getHead())
+            {
+                queue.setHead(temp.getNext());
+            }
+            else if(temp == queue.getTail())
+            {
+                queue.setTail(temp.getPrev());
+            }
+            else
+            {
+                temp.getPrev().setNext(temp.getNext());
+                temp.getNext().setPrev(temp.getPrev());
+            }
         }
-        
-        if(node.getNext() == null && !node.getData().getData().equals(value))
-        {
-            return false;
-        }
-        
-        return true;
+        queue.setSize(queue.getSize() - 1);
     }
-    
-    public DLL<Integer> shortestPath(String src, Graph graph)
+
+    public DLL shortestPath(String src, Graph graph, boolean returnNames)
     {
         PQueue<Edge> unvisited = new PQueue<>();
         DLL<Edge> rs = new DLL<>();
-        DLL<Integer> results;
 
         DLL<Pair<String, HashMap<String, Integer>>> graph_data = graph.returnSourceData();        
         
@@ -89,21 +97,35 @@ public class Dijkstra
                     int alt_dist = u.getDistance() + v.getValue();
                     if(alt_dist < vertexSearch(v.getKey(), unvisited, rs).getDistance())
                     {
-                        vertexSearch(v.getKey(), unvisited, rs).setDistance(alt_dist);
-                        vertexSearch(v.getKey(), unvisited, rs).setPrev(u);
+                        removeFromQueue(v.getKey(), unvisited);
+                        unvisited.enqueue(new Edge(v.getKey(), alt_dist, vertexSearch(u.getData(), unvisited, rs)), alt_dist);
                     }
                 }
             }
         }
                 
         int i = 0;
-        results = new DLL();
-        for(Edge e : rs)
+        DLL results;
+        if(returnNames)
         {
-            results.append(rs.returnAtIndex(i).getDistance());
-            i++;
+            results = new DLL<Pair<String, Integer>>();
+            for(Edge e : rs)
+            {
+                results.append(new Pair<>(e.getData(), e.getDistance()));
+                i++;
+            }
+            results.setLen(i);
+        }
+        else
+        {
+            results = new DLL<Integer>();
+            for (Edge e : rs)
+            {
+                results.append(e.getDistance());
+                i++;
+            }
         }
         results.setLen(i);
-        return results;        
+        return results;
     }
 }

@@ -59,7 +59,7 @@ public class Hungarian
         Arrays.fill(rowCovered, false);
         Arrays.fill(colCovered, false);
     }
-    
+
     
     
     public DLL<Pair<Integer, Integer>> optimalAssignment()
@@ -79,7 +79,6 @@ public class Hungarian
             {
                 post_reduction();
                 chosen_zero = prime_uncovered();
-                System.out.println(Arrays.deepToString(cost_matrix));
             }
 
             if(row_star[chosen_zero[0]] == -1)
@@ -97,13 +96,11 @@ public class Hungarian
 
         DLL<Pair<Integer, Integer>> optimalAssignment = new DLL<>();
 
-        System.out.println("\n");
         for(int i = 0; i < cost_matrix.length; i++)
         {
             optimalAssignment.append(new Pair<Integer, Integer>(col_star[i], row_star[col_star[i]]));
         }
 
-        // System.out.println(Arrays.deepToString(optimalAssignment));
         return optimalAssignment;
     }
     
@@ -131,8 +128,6 @@ public class Hungarian
                 cost_matrix[i][j] -= rowMin;
             }
         }
-        
-        System.out.println(Arrays.deepToString(cost_matrix));
     }
     
     
@@ -404,6 +399,76 @@ public class Hungarian
                 return false;
         }
         return true;
+    }
+
+    public int[][] getCost_matrix()
+    {
+        return cost_matrix;
+    }
+
+    public void setCost_matrix(int[][] cost_matrix)
+    {
+        this.cost_matrix = cost_matrix;
+    }
+
+    public int[][] getOriginal_matrix()
+    {
+        return original_matrix;
+    }
+
+    public void setOriginal_matrix(int[][] original_matrix)
+    {
+        this.original_matrix = original_matrix;
+    }
+
+    public int[] getRow_star()
+    {
+        return row_star;
+    }
+
+    public void setRow_star(int[] row_star)
+    {
+        this.row_star = row_star;
+    }
+
+    public int[] getCol_star()
+    {
+        return col_star;
+    }
+
+    public void setCol_star(int[] col_star)
+    {
+        this.col_star = col_star;
+    }
+
+    public int[] getRow_prime()
+    {
+        return row_prime;
+    }
+
+    public void setRow_prime(int[] row_prime)
+    {
+        this.row_prime = row_prime;
+    }
+
+    public boolean[] getRowCovered()
+    {
+        return rowCovered;
+    }
+
+    public void setRowCovered(boolean[] rowCovered)
+    {
+        this.rowCovered = rowCovered;
+    }
+
+    public boolean[] getColCovered()
+    {
+        return colCovered;
+    }
+
+    public void setColCovered(boolean[] colCovered)
+    {
+        this.colCovered = colCovered;
     }
 }
 

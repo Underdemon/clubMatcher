@@ -19,6 +19,8 @@ public class MAttendance extends clubmatcher.ClubMatcher
     
     public MAttendance()
     {
+        System.out.println("\n===============\nATTENDANCE VIEW\n===============\n");
+
         db.executeQuery("DROP VIEW IF EXISTS Attendance");
         
         db.executeQuery
@@ -37,7 +39,7 @@ public class MAttendance extends clubmatcher.ClubMatcher
             choice = validateInput
             (
                 "\n\t 0 - Exit to ClubLog Menu"
-                + "\n\t 1 - View all lates"
+                + "\n\t 1 - View all lates ordered by lateness"
                 + "\n\t 2 - View the total number of lates"
                 + "\n\t 3 - View the attendance of a specific student"
                 + "\n\t 4 - Show the number of lates of a specific student"
@@ -51,8 +53,9 @@ public class MAttendance extends clubmatcher.ClubMatcher
                 case 1:
                     db.queryOutput
                     (
-                            "SELECT Attendance.PersonName, Attendance.Timestamp, Attendance.Date, Attendance.ClubName, Attendance.StartTime "
-                            + "FROM Attendance WHERE Attendance.time_delta > 5 OR Attendance.time_delta < -5", ""
+                            "SELECT Attendance.PersonName, Attendance.ClubName, Attendance.Timestamp, Attendance.StartTime, Attendance.time_delta, Attendance.Date "
+                            + "FROM Attendance WHERE Attendance.time_delta > 5 OR Attendance.time_delta < -5 "
+                            + "ORDER BY ABS(time_delta) ASC", ""
                     );
                     break;
                     

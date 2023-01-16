@@ -4,7 +4,12 @@
  */
 package clubmatcher;
 
+import algorithms.dijkstra.Dijkstra;
+import algorithms.hungarian.Hungarian;
 import dataStructures.dll.DLL;
+import dataStructures.graphs.Graph;
+import dataStructures.hashmap.Pair;
+import dataStructures.pQueue.PQueue;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
@@ -81,6 +86,49 @@ public class ClubMatcher extends Menu implements Runnable
      */
     public static void main(String[] args)
     {
+        int[][] m = new int[3][3];
+        m[0][0] = 95;
+        m[0][1] = 33;
+        m[0][2] = 88;
+
+        m[1][0] = 98;
+        m[1][1] = 72;
+        m[1][2] = 82;
+
+        m[2][0] = 44;
+        m[2][1] = 2;
+        m[2][2] = 24;
+
+        Hungarian h = new Hungarian(m);
+        int sum = 0;
+        for(Pair<Integer, Integer> pair : h.optimalAssignment())
+        {
+            System.out.println("Value: " + h.getOriginal_matrix()[pair.getValue()][pair.getKey()]);
+            sum += h.getOriginal_matrix()[pair.getValue()][pair.getKey()];
+        }
+
+        System.out.println("TOTAL COST: " + sum);
+
+        Graph<String> graph = new Graph<>();
+        graph.add("Maths", "Physics", 2);
+        graph.add("Maths", "Further Maths", 1);
+        graph.add("Physics", "Maths", 2);
+        graph.add("Physics", "Comp Sci", 6);
+        graph.add("Physics", "Music", 4);
+        graph.add("Further Maths", "Maths", 1);
+        graph.add("Music", "Comp Sci", 1);
+        graph.add("Music", "Physics", 4);
+        graph.add("Comp Sci", "Music", 1);
+        graph.add("Comp Sci", "Physics", 6);
+
+        Dijkstra dijkstra = new Dijkstra();
+        DLL<Pair<String, Integer>> dijk = dijkstra.shortestPath("Maths", graph, true);
+        for(int i = 0; i < dijk.getLen(); i++)
+        {
+            System.out.println(dijk.returnAtIndex(i).getKey() + ": " + dijk.returnAtIndex(i).getValue());
+        }
+
+
         uac = login();
         if(uac == -1)
         {
@@ -107,7 +155,7 @@ public class ClubMatcher extends Menu implements Runnable
             }
         }
         
-        System.out.println("\n\n============CLUB MATCHER PROGRAM============\n\n");
+        System.out.println("\n\n============ CLUB MATCHER PROGRAM ============\n\n");
         try
         {
             Thread.sleep(250);
@@ -154,17 +202,15 @@ public class ClubMatcher extends Menu implements Runnable
             String csvPath = ".\\src\\databaseConnect\\data\\" + selectedFolder;
             File ddl = new File(ddlPath);
             File csv = new File(csvPath);
-            DLL<String> DDLfileNames = new DLL<>();
-            DLL<String> CSVfileNames = new DLL<>();
 
             File[] filesDDL = ddl.listFiles();
             for(int i = 0; i < filesDDL.length; i++)
                 db.createTable(filesDDL[i].getPath());
 
             File[] filesCSV = csv.listFiles();
-            for(int i = 0; i < filesCSV.length; i++)
+            for (File value : filesCSV)
             {
-                String s = filesCSV[i].getName();
+                String s = value.getName();
                 db.insert(s.substring(0, s.lastIndexOf('.')), csvPath + "\\" + s);
             }
             
@@ -207,22 +253,21 @@ public class ClubMatcher extends Menu implements Runnable
     public void studentMenu()
     {
         int choice = 0;
-        Scanner scanner = new Scanner(System.in);
 
         do
         {
-            System.out.println("MAIN MENU OPTIONS\n=================\n");
+            System.out.println("\n=================\nMAIN MENU OPTIONS\n=================\n");
             choice = validateInput
                     (
                             "\n\nPlease input the number corresponding to the option you want to choose:"
-                                    + "\n\t0 - Exit the program"
-                                    + "\n\t1 - Student Operations"  // includes student subjects
-                                    + "\n\t2 - Department Operations"
-                                    + "\n\t3 - Teacher Operations"
-                                    + "\n\t4 - Subject Operations"  // includes subject graph
-                                    + "\n\t5 - Club Operations"
-                                    + "\n\t6 - Club Log Operations"
-                                    + "\n\t7 - Club Recommendation"
+                            + "\n\t0 - Exit the program"
+                            + "\n\t1 - Student Operations"  // includes student subjects
+                            + "\n\t2 - Department Operations"
+                            + "\n\t3 - Teacher Operations"
+                            + "\n\t4 - Subject Operations"  // includes subject graph
+                            + "\n\t5 - Club Operations"
+                            + "\n\t6 - Club Log Operations"
+                            + "\n\t7 - Club Recommendation"
                     );
 
             switch(choice)
@@ -263,20 +308,20 @@ public class ClubMatcher extends Menu implements Runnable
 
         do
         {
-            System.out.println("MAIN MENU OPTIONS\n=================\n");
+            System.out.println("\n=================\nMAIN MENU OPTIONS\n=================\n");
             choice = validateInput
                     (
                             "\n\nPlease input the number corresponding to the option you want to choose:"
-                                    + "\n\t0 - Exit the program"
-                                    + "\n\t1 - Student Operations"  // includes student subjects
-                                    + "\n\t2 - Department Operations"
-                                    + "\n\t3 - Teacher Operations"
-                                    + "\n\t4 - Subject Operations"  // includes subject graph
-                                    + "\n\t5 - Club Operations"
-                                    + "\n\t6 - Club Log Operations"
-                                    + "\n\t7 - Club Recommendation"
-                                    + "\n\t8 - User Management Operations"   // login db management
-                                    + "\n\t9 - Export Database to CSV"
+                            + "\n\t0 - Exit the program"
+                            + "\n\t1 - Student Operations"  // includes student subjects
+                            + "\n\t2 - Department Operations"
+                            + "\n\t3 - Teacher Operations"
+                            + "\n\t4 - Subject Operations"  // includes subject graph
+                            + "\n\t5 - Club Operations"
+                            + "\n\t6 - Club Log Operations"
+                            + "\n\t7 - Club Recommendation"
+                            + "\n\t8 - User Management Operations"   // login db management
+                            + "\n\t9 - Export Database to CSV"
                     );
 
             switch(choice)
@@ -544,4 +589,61 @@ db.insert("ClubLog", ".\\src\\databaseConnect\\CSVs\\clubLog.csv");
 
 db.close();
 
+
+
+//        Graph<String> graph = new Graph<>();
+//        graph.add("a", "b", 2);
+//        graph.add("a", "c", 1);
+//        graph.add("b", "a", 2);
+//        graph.add("b", "d", 4);
+//        graph.add("b", "e", 5);
+//        graph.add("c", "a", 1);
+//        graph.add("d", "b", 4);
+//        graph.add("d", "e", 7);
+//        graph.add("e", "b", 5);
+//        graph.add("e", "d", 7);
+//
+//
+//
+//        Dijkstra d = new Dijkstra();
+//        d.shortestPath("e", graph).printList();
+
+//        int[][] m = new int[5][5];
+//        m[0][0] = 0;
+//        m[0][1] = 2;
+//        m[0][2] = 4;
+//        m[0][3] = 5;
+//        m[0][4] = 6;
+//
+//        m[1][0] = 0;
+//        m[1][1] = 2;
+//        m[1][2] = 3;
+//        m[1][3] = 6;
+//        m[1][4] = 7;
+//
+//        m[2][0] = 0;
+//        m[2][1] = 2;
+//        m[2][2] = 3;
+//        m[2][3] = 6;
+//        m[2][4] = 7;
+//
+//        m[3][0] = 0;
+//        m[3][1] = 2;
+//        m[3][2] = 4;
+//        m[3][3] = 6;
+//        m[3][4] = 7;
+//
+//        m[4][0] = 0;
+//        m[4][1] = 2;
+//        m[4][2] = 4;
+//        m[4][3] = 6;
+//        m[4][4] = 7;
+//
+//        Hungarian h = new Hungarian(m);
+//        for(Pair<Integer, Integer> p : h.optimalAssignment())
+//        {
+//            System.out.println(h.getOriginal_matrix()[p.getKey()][p.getValue()]);
+//        }
+
+//        PQueue<String> pQueue = new PQueue<>();
 */

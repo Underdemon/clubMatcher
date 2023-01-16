@@ -19,6 +19,7 @@ public class MTeacher extends clubmatcher.ClubMatcher
     
     public MTeacher()
     {
+        System.out.println("\n============\nTEACHER MENU\n============\n");
         if(uac == 0)
             studentMenu();
         else

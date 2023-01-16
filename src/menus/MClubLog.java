@@ -22,6 +22,8 @@ public class MClubLog extends clubmatcher.ClubMatcher
     
     public MClubLog()
     {
+        System.out.println("\n=============\nCLUB LOG MENU\n=============\n");
+
         do
         {
             choice = validateInput

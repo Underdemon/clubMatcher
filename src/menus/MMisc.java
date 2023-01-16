@@ -18,6 +18,7 @@ public class MMisc extends clubmatcher.ClubMatcher
     private static DatabaseConnect usersDB = null;
     public MMisc()
     {
+        System.out.println("\n====================\nUSER MANAGEMENT MENU\n====================\n");
         Logger log = Logger.getLogger(MMisc.class.getName());
         REST_API_Connect parser = new REST_API_Connect();
         usersDB = new DatabaseConnect("Users.db");

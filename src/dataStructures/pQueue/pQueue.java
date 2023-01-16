@@ -70,7 +70,7 @@ public class PQueue<T extends Comparable<T>>
         {
             // add node at first pos
             temp.setNext(this.head);
-            this.head.setPrev(temp.getNext());
+            this.head.setPrev(temp);
             this.head = temp;
         }
         else if(priority >= this.tail.getPriority())
@@ -91,8 +91,8 @@ public class PQueue<T extends Comparable<T>>
             }
             
             // code to actually add the node
-            temp.setNext(node);
             temp.setPrev(node.getPrev());
+            temp.setNext(node);
             node.getPrev().setNext(temp);
             node.setPrev(temp);
         }

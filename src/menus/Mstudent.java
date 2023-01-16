@@ -19,6 +19,7 @@ public class MStudent extends clubmatcher.ClubMatcher
     
     public MStudent()
     {
+        System.out.println("\n============\nSTUDENT MENU\n============\n");
         if(uac == 0)
             studentMenu();
         else

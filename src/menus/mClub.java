@@ -23,11 +23,12 @@ public class MClub extends clubmatcher.ClubMatcher
     
     public MClub()
     {
+        System.out.println("\n=========\nCLUB MENU\n=========\n");
+
         if(uac == 0)
             studentMenu();
         else
             adminMenu();
-
     }
 
     @Override

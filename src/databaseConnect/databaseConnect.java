@@ -531,7 +531,7 @@ public class DatabaseConnect
         
     public int table_len(String tableName)
     {
-        Statement stmt = null;;
+        Statement stmt = null;
         int len = 0;
         ResultSet rs = null;
         
@@ -550,7 +550,7 @@ public class DatabaseConnect
     
     public int getID(String name, String table)
     {
-        Statement stmt = null;;
+        Statement stmt = null;
         int ID = 0;
         ResultSet rs = null;
         
@@ -582,7 +582,7 @@ public class DatabaseConnect
     
     public String getName(int ID, String table)
     {
-        Statement stmt = null;;
+        Statement stmt = null;
         String name = null;
         ResultSet rs = null;
         
@@ -839,44 +839,8 @@ public class DatabaseConnect
         
         return bGraph;
     }
-    
-    /**
-     * gets the list of all distinct subjects taken by the students
-     * @param studentSubject
-     * @return 
-     */
-    public DLL<String> getStudentSubjects(DLL<String> studentSubject)
-    {
-        Statement stmt = null;
-        ResultSet rs = null;
-        
-        try
-        {
-            stmt = conn.createStatement();
-            
-            rs = stmt.executeQuery
-            (
-                "SELECT DISTINCT Subjects.SubjectsName FROM StudentSubjects "
-                + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
-                + "INNER JOIN Subjects ON StudentSubjects.SubjectsID = Subjects.SubjectsID "
-                + "WHERE Student.isAssigned = 0"
-            );
-            
-            while(rs.next())
-            {
-                studentSubject.append(rs.getString(1));
-            }
-            
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-        
-        return studentSubject;
-    }
 
-    public DLL<Integer> getUnassignedStudents(DLL<Integer> students)
+    public DLL<Integer> getUnassignedStudents(DLL<Integer> students, int limit)
     {
         Statement stmt = null;
         ResultSet rs = null;
@@ -889,35 +853,8 @@ public class DatabaseConnect
                     (
                             "SELECT DISTINCT StudentSubjects.StudentID FROM StudentSubjects "
                                     + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
-                                    + "WHERE Student.isAssigned = 0"
-                    );
-
-            while(rs.next())
-                students.append(rs.getInt(1));
-
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
-        return students;
-    }
-
-    public DLL<Integer> getUnassignedStudents(DLL<Integer> students, int offset, int rowCount)
-    {
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try
-        {
-            stmt = conn.createStatement();
-
-            rs = stmt.executeQuery
-                    (
-                            "SELECT DISTINCT StudentSubjects.StudentID FROM StudentSubjects "
-                                    + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
-                                    + "WHERE Student.isAssigned = 0 LIMIT " + offset + ", " + rowCount
+                                    + "WHERE Student.isAssigned = 0 "
+                                    + "LIMIT " + limit  // only takes in the first X studentIDs where X = limit
                     );
 
             while(rs.next())
@@ -957,7 +894,7 @@ public class DatabaseConnect
         }
     }
 
-    public int getUnassignedStudentSubjectsCount()
+    public int getUnassignedStudentSubjectsCount(int limit)
     {
         Statement stmt = null;
         ResultSet rs = null;
@@ -971,7 +908,8 @@ public class DatabaseConnect
             (
             "SELECT COUNT(DISTINCT StudentSubjects.StudentID) FROM StudentSubjects "
                 + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
-                + "WHERE Student.isAssigned = 0"
+                + "WHERE Student.isAssigned = 0 "
+                + "LIMIT " + limit
             );
 
             count = rs.getInt(1);
@@ -982,6 +920,35 @@ public class DatabaseConnect
         }
 
         return count;
+    }
+
+    public DLL<String> getUnassignedStudentSubjectsName(int limit)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        DLL<String> names = new DLL<>();
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery
+                    (
+                            "SELECT DISTINCT StudentSubjects.SubjectsID FROM StudentSubjects "
+                                    + "INNER JOIN Student ON StudentSubjects.StudentID = Student.StudentID "
+                                    + "WHERE Student.isAssigned = 0 "
+                                    + "LIMIT " + limit
+                    );
+
+            while(rs.next())
+                names.append(rs.getString(1));
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return names;
     }
 
     public int getDistinctSubjectsCountForAssignment()
@@ -996,7 +963,8 @@ public class DatabaseConnect
 
             rs = stmt.executeQuery("SELECT COUNT(DISTINCT StartVertex) FROM SubjectGraph");
 
-            count = rs.getInt(1);
+            if(rs.next())
+                count = rs.getInt(1);
         }
         catch (Exception e)
         {
@@ -1006,9 +974,32 @@ public class DatabaseConnect
         return count;
     }
 
+    public boolean isUnassignedStudentsLeft()
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        boolean isUnassignedStudentsLeft = true;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery("SELECT COUNT(*) FROM Student WHERE Student.isAssigned = 0");
+
+            if(rs.next())
+                if(rs.getInt(1) == 0)
+                    isUnassignedStudentsLeft = false;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return isUnassignedStudentsLeft;
+    }
+
     /**
      * for user db checks
-     * @param str
      * @return
      */
     public boolean correctUser(String username, String password)
@@ -1036,8 +1027,6 @@ public class DatabaseConnect
 
     /**
      * get user access level
-     * @param str
-     * @return
      */
     public int getUACLevel(String username, String password)
     {
@@ -1099,7 +1088,7 @@ public class DatabaseConnect
                 + "ORDER BY 1;"
             );
 
-            String[] tableNames = tableNames = new String[rs.getInt(1)];
+            String[] tableNames = new String[rs.getInt(1)];
 
             rs = stmt.executeQuery
             (

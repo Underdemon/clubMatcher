@@ -22,11 +22,11 @@ public class MSubjects extends clubmatcher.ClubMatcher
     
     public MSubjects()
     {
+        System.out.println("\n=============\nSUBJECTS MENU\n=============\n");
         if(uac == 0)
             studentMenu();
         else
             adminMenu();
-
     }
 
     @Override

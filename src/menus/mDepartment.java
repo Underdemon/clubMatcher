@@ -18,6 +18,7 @@ public class MDepartment extends clubmatcher.ClubMatcher
     
     public MDepartment()
     {
+        System.out.println("\n===============\nDEPARTMENT MENU\n===============\n");
         if(uac == 0)
             studentMenu();
         else

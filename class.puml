@@ -1,0 +1,373 @@
+@startuml
+class dataStructures.hashmap.Pair {
+- K key
+- V value
++ int compareTo(Pair<K,V>)
++ K getKey()
++ void setKey(K)
++ V getValue()
++ void setValue(V)
++ String toString()
+}
+interface dataStructures.hashmap.Map {
++ void add(K,V)
++ void remove(K)
++ V get(K)
++ boolean containsKey(K)
+}
+class menus.MClub {
+- int choice
+- int isDetailed
+- Scanner scanner
+- String input
+- int hour
+- int min
+- String start_time
+- String BLA
++ void studentMenu()
++ void adminMenu()
+}
+class algorithms.hungarian.Hungarian {
+~ int[][] cost_matrix
+~ int[][] original_matrix
+~ int[] row_star
+~ int[] row_prime
+~ boolean[] rowCovered
++ DLL<Pair<Integer,Integer>> optimalAssignment()
+- void row_reduction()
+- void col_reduction()
+- void init_task_assign()
+- void cover_zero_col()
+- int[] prime_uncovered()
+- void post_reduction()
+- void zero_pathing(int[])
+- boolean is_all_columns_covered()
++ int[][] getCost_matrix()
++ void setCost_matrix(int[][])
++ int[][] getOriginal_matrix()
++ void setOriginal_matrix(int[][])
++ int[] getRow_star()
++ void setRow_star(int[])
++ int[] getCol_star()
++ void setCol_star(int[])
++ int[] getRow_prime()
++ void setRow_prime(int[])
++ boolean[] getRowCovered()
++ void setRowCovered(boolean[])
++ boolean[] getColCovered()
++ void setColCovered(boolean[])
+}
+class dataStructures.hashmap.HashMap {
+- int capacity
+- BST<Pair<K,V>>[] table
++ int size()
++ int hash(K)
++ void add(K,V)
++ void remove(K)
+- Pair<K,V> searchBST(DL_Node<Pair<K,V>>,K)
++ V get(K)
+- Pair<K,V> getEntry(K)
++ void replace(K,V)
++ boolean containsKey(K)
++ void print()
++ DLL returnData()
++ boolean isNumeric(String)
++ int compareTo(HashMap<K,V>)
+}
+class algorithms.dijkstra.Dijkstra {
++ Edge vertexSearch(String,PQueue,DLL<Edge>)
++ void removeFromQueue(String,PQueue)
++ DLL<Integer> shortestPath(String,Graph)
+}
+class dataStructures.BST.BST {
+- DL_Node<T> root
+- int size
++ void insert(DL_Node,T)
++ DL_Node delete(DL_Node,T)
++ DL_Node search(DL_Node,T)
+- T minValue(DL_Node)
++ void preOrder(DL_Node)
++ DLL returnData()
+- void returnData(DL_Node,DLL)
++ void inOrder(DL_Node)
++ void postOrder(DL_Node)
++ void prettyPrint(DL_Node,int)
++ void printBFS()
++ int height(DL_Node)
++ int size(DL_Node)
+- void printCurrLevel(DL_Node,int)
++ boolean isNumeric(String)
++ DL_Node getRoot()
++ void setRoot(DL_Node)
+}
+class menus.MDepartment {
+- int choice
+- Scanner scanner
+- String input
++ void studentMenu()
++ void adminMenu()
+}
+class dataStructures.dll.dl_node {
+- E data
+- dl_node<E> next
+- dl_node<E> prev
++ E getData()
++ void setData(E)
++ dl_node<E> getNext()
++ void setNext(dl_node<E>)
++ dl_node<E> getPrev()
++ void setPrev(dl_node<E>)
+}
+class menus.MMisc {
+- int choice
+- Scanner scanner
+- String input
+- String name
+- String password
+- String isAdmin
+- {static} DatabaseConnect usersDB
+}
+class menus.MClubLog {
+- int choice
+- Scanner scanner
+- String input
+- String club_name
+}
+class menus.MTeacher {
+- int choice
+- Scanner scanner
+- String input
+- String department_name
++ void studentMenu()
++ void adminMenu()
+}
+class encryption_api.REST_API_Connect {
+- String inline
+- URL url
++ String encrypt(String,int)
+}
+class algorithms.dijkstra.Edge {
+- String data
+- int distance
+- Edge prev
++ String getData()
++ void setData(String)
++ int getDistance()
++ void setDistance(int)
++ Edge getPrev()
++ void setPrev(Edge)
++ int compareTo(Edge)
+}
+class dataStructures.BST.DL_Node {
+# E data
+# DL_Node<E> next
+# DL_Node<E> prev
++ E getData()
++ void setData(E)
++ DL_Node<E> getNext()
++ void setNext(DL_Node<E>)
++ DL_Node<E> getPrev()
++ void setPrev(DL_Node<E>)
+}
+class clubmatcher.ClubMatcher {
+# {static} DatabaseConnect db
+# {static} int uac
+# {static} String username
+# {static} String encrypted_pass
+# {static} String plaintext_pass
++ void run()
++ {static} int login()
++ DLL<String> returnFileNamesInDirectory(File[],int,int,DLL<String>)
++ {static} void main(String[])
++ {static} void clrscreen()
++ void studentMenu()
++ void adminMenu()
+}
+class dataStructures.graphs.Graph {
+- HashMap<T,HashMap<T,Integer>> map
+- int capacity
++ void add(T,T,int)
++ void delete(T)
++ void removeConnections(T,T)
++ int size()
++ void print()
++ DLL returnSourceData()
++ HashMap<T,Integer> returnConnections(T)
++ HashMap<T,HashMap<T,Integer>> getMap()
++ void setMap(HashMap<T,HashMap<T,Integer>>)
+}
+class databaseConnect.DatabaseConnect {
+- {static} Connection conn
++ void reconnect(String)
++ void close()
++ void executeQuery(String)
++ boolean createTable(String)
++ boolean insert(String,String)
++ boolean insert(String)
++ boolean update(String)
++ boolean delete(String)
++ void deleteStudentTeacher(boolean)
++ boolean deleteStudentTeacher(boolean,String)
++ boolean queryOutput(String,String)
+- {static} String[] selectColumnNames(String)
++ int table_len(String)
++ int getID(String,String)
++ String getName(int,String)
++ int getTeacherID(String)
+- boolean insertPerson(String)
+- boolean insertDepartment(String)
++ String studentTeacherName(boolean)
++ void insertStudentTeacher(boolean)
++ boolean insertStudentTeacher(boolean,String)
++ boolean getGraph(Graph<String>)
++ DLL<Integer> getUnassignedStudents(DLL<Integer>,int)
++ void SubjectsStudent(int,DLL<Integer>)
++ int getUnassignedStudentSubjectsCount(int)
++ DLL<String> getUnassignedStudentSubjectsName(int)
++ int getDistinctSubjectsCountForAssignment()
++ boolean isUnassignedStudentsLeft()
++ boolean correctUser(String,String)
++ int getUACLevel(String,String)
++ String getCurrentUserPassword(String)
++ void exportClubMatcherToCSV()
+- void exportDBtoCSV(String[])
++ boolean isNumeric(String)
+}
+class dataStructures.dll.DLL {
+- int len
+- dl_node<E> head
+- dl_node<E> tail
++ boolean isEmpty()
++ void addFirst(E)
++ void append(E)
++ void insert(E,int)
++ E peek()
++ E pop()
++ E removeLast()
++ void remove(E)
++ void deletePos(int)
++ boolean contains(E)
++ int count(E)
++ dl_node find(E)
++ void concatenate(DLL<E>)
++ void index(E)
++ E returnAtIndex(int)
++ void combine(DLL<Integer>)
++ void clone(DLL)
++ void printList()
++ int getCount()
++ void setCount(int)
++ dl_node<E> getHead()
++ void setHead(dl_node<E>)
++ dl_node<E> getTail()
++ void setTail(dl_node<E>)
++ int getLen()
++ void setLen(int)
++ Iterator<E> iterator()
+}
+class dataStructures.dll.DLL.dllIterator {
+- dl_node<E> curr
++ boolean hasNext()
++ E next()
++ E getData()
+}
+class menus.MAttendance {
+- int choice
+- Scanner scanner
+- String input
+}
+class menus.MSubjects {
+- int choice
+- Scanner scanner
+- String input
+- int subject
+- int subject2
+- int weight
+- int table_size
++ void studentMenu()
++ void adminMenu()
+}
+class dataStructures.pQueue.PQnode {
+- T data
+- PQnode<T> next
+- PQnode<T> prev
+- int priority
++ T getData()
++ void setData(T)
++ PQnode<T> getNext()
++ void setNext(PQnode<T>)
++ int getPriority()
++ void setPriority(int)
++ PQnode<T> getPrev()
++ void setPrev(PQnode<T>)
+}
+abstract class menus.Menu {
+~ Pattern pattern
++ boolean isNumeric(String)
++ {static} int validateInput(String)
++ void studentMenu()
++ void adminMenu()
+}
+class menus.MRecommendation {
+- int choice
+- Scanner scanner
+- String input
+- Graph graph
+- DLL<String> studentSubjects
+- Dijkstra dijkstra
+- Hungarian hungarian
+}
+class dataStructures.pQueue.PQueue {
+- PQnode<T> head
+- PQnode<T> tail
+- int size
++ boolean isEmpty()
++ boolean isNumeric(String)
++ void enqueue(T,int)
++ void replace(T,int)
++ PQnode<T> search(T)
++ PQnode<T> search(String)
++ T peek()
++ T pop()
++ void remove(T)
++ int index(T)
++ boolean contains(T)
++ PQueue<T> copy()
++ void printQueue()
++ int size()
++ PQnode<T> getHead()
++ void setHead(PQnode<T>)
++ PQnode<T> getTail()
++ void setTail(PQnode<T>)
++ int getSize()
++ void setSize(int)
+}
+class menus.MStudent {
+- int choice
+- Scanner scanner
+- String input
+- String name
++ void studentMenu()
++ void adminMenu()
+}
+
+
+dataStructures.hashmap.Comparable <|.. dataStructures.hashmap.Pair
+menus.ClubMatcher <|-- menus.MClub
+dataStructures.hashmap.Map <|.. dataStructures.hashmap.HashMap
+dataStructures.hashmap.Comparable <|.. dataStructures.hashmap.HashMap
+menus.ClubMatcher <|-- menus.MDepartment
+menus.ClubMatcher <|-- menus.MMisc
+menus.ClubMatcher <|-- menus.MClubLog
+menus.ClubMatcher <|-- menus.MTeacher
+algorithms.dijkstra.Comparable <|.. algorithms.dijkstra.Edge
+clubmatcher.Runnable <|.. clubmatcher.ClubMatcher
+clubmatcher.Menu <|-- clubmatcher.ClubMatcher
+dataStructures.dll.Iterable <|.. dataStructures.dll.DLL
+dataStructures.dll.DLL +.. dataStructures.dll.DLL.dllIterator
+dataStructures.dll.Iterator <|.. dataStructures.dll.DLL.dllIterator
+menus.ClubMatcher <|-- menus.MAttendance
+menus.ClubMatcher <|-- menus.MSubjects
+menus.ClubMatcher <|-- menus.MRecommendation
+menus.ClubMatcher <|-- menus.MStudent
+@enduml
