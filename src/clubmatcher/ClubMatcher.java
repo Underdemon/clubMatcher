@@ -9,7 +9,6 @@ import algorithms.hungarian.Hungarian;
 import dataStructures.dll.DLL;
 import dataStructures.graphs.Graph;
 import dataStructures.hashmap.Pair;
-import dataStructures.pQueue.PQueue;
 import databaseConnect.DatabaseConnect;
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +41,7 @@ public class ClubMatcher extends Menu implements Runnable
         int hasLoggedIn = -1;
         Scanner scanner = new Scanner(System.in);
         REST_API_Connect parser = new REST_API_Connect();
+        // System.out.println(parser.encrypt(parser.encrypt("Nj80XzViNXNgRVg=", 3),1 ));
         System.out.println("Please input your username: ");
         username = scanner.nextLine();
         System.out.println("Please input your password: ");
@@ -86,47 +86,70 @@ public class ClubMatcher extends Menu implements Runnable
      */
     public static void main(String[] args)
     {
-        int[][] m = new int[3][3];
-        m[0][0] = 95;
-        m[0][1] = 33;
-        m[0][2] = 88;
+//        int[][] m = new int[3][3];
+//        m[0][0] = 95;
+//        m[0][1] = 33;
+//        m[0][2] = 88;
+//
+//        m[1][0] = 98;
+//        m[1][1] = 72;
+//        m[1][2] = 82;
+//
+//        m[2][0] = 44;
+//        m[2][1] = 2;
+//        m[2][2] = 24;
+//
+//        Hungarian h = new Hungarian(m);
+//        int sum = 0;
+//        for(Pair<Integer, Integer> pair : h.optimalAssignment())
+//        {
+//            System.out.println("Value: " + h.getOriginal_matrix()[pair.getValue()][pair.getKey()]);
+//            sum += h.getOriginal_matrix()[pair.getValue()][pair.getKey()];
+//        }
+//
+//        System.out.println("TOTAL COST: " + sum);
 
-        m[1][0] = 98;
-        m[1][1] = 72;
-        m[1][2] = 82;
 
-        m[2][0] = 44;
-        m[2][1] = 2;
-        m[2][2] = 24;
 
-        Hungarian h = new Hungarian(m);
-        int sum = 0;
-        for(Pair<Integer, Integer> pair : h.optimalAssignment())
-        {
-            System.out.println("Value: " + h.getOriginal_matrix()[pair.getValue()][pair.getKey()]);
-            sum += h.getOriginal_matrix()[pair.getValue()][pair.getKey()];
-        }
 
-        System.out.println("TOTAL COST: " + sum);
 
-        Graph<String> graph = new Graph<>();
-        graph.add("Maths", "Physics", 2);
-        graph.add("Maths", "Further Maths", 1);
-        graph.add("Physics", "Maths", 2);
-        graph.add("Physics", "Comp Sci", 6);
-        graph.add("Physics", "Music", 4);
-        graph.add("Further Maths", "Maths", 1);
-        graph.add("Music", "Comp Sci", 1);
-        graph.add("Music", "Physics", 4);
-        graph.add("Comp Sci", "Music", 1);
-        graph.add("Comp Sci", "Physics", 6);
 
-        Dijkstra dijkstra = new Dijkstra();
-        DLL<Pair<String, Integer>> dijk = dijkstra.shortestPath("Maths", graph, true);
-        for(int i = 0; i < dijk.getLen(); i++)
-        {
-            System.out.println(dijk.returnAtIndex(i).getKey() + ": " + dijk.returnAtIndex(i).getValue());
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        Graph<String> graph = new Graph<>();
+//        graph.add("Maths", "Physics", 2);
+//        graph.add("Maths", "Further Maths", 1);
+//        graph.add("Physics", "Maths", 2);
+//        graph.add("Physics", "Comp Sci", 6);
+//        graph.add("Physics", "Music", 4);
+//        graph.add("Further Maths", "Maths", 1);
+//        graph.add("Music", "Comp Sci", 1);
+//        graph.add("Music", "Physics", 4);
+//        graph.add("Comp Sci", "Music", 1);
+//        graph.add("Comp Sci", "Physics", 6);
+//
+//        Dijkstra dijkstra = new Dijkstra();
+//        DLL<Pair<String, Integer>> dijk = dijkstra.shortestPath("Maths", graph, true);
+//        for(int i = 0; i < dijk.getLen(); i++)
+//        {
+//            System.out.println(dijk.returnAtIndex(i).getKey() + ": " + dijk.returnAtIndex(i).getValue());
+//        }
+
+
+
+
+
 
 
         uac = login();
