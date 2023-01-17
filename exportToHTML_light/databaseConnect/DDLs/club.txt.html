@@ -17,14 +17,14 @@ club.txt</font>
 <a name="l2"><span class="ln">2    </span></a><span class="s0">(</span>
 <a name="l3"><span class="ln">3    </span></a><span class="s0">ClubID INTEGER NOT NULL PRIMARY KEY,</span>
 <a name="l4"><span class="ln">4    </span></a><span class="s0">ClubName VARCHAR(255),</span>
-<a name="l5"><span class="ln">5    </span></a><span class="s0">SubjectID INTEGER,</span>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">SubjectsID INTEGER,</span>
 <a name="l6"><span class="ln">6    </span></a><span class="s0">DayRunning INTEGER,</span>
 <a name="l7"><span class="ln">7    </span></a><span class="s0">BLA VARCHAR(1),</span>
 <a name="l8"><span class="ln">8    </span></a><span class="s0">TeacherID INTEGER,</span>
 <a name="l9"><span class="ln">9    </span></a><span class="s0">DepartmentID INTEGER,</span>
 <a name="l10"><span class="ln">10   </span></a><span class="s0">StartTime VARCHAR(255),</span>
 <a name="l11"><span class="ln">11   </span></a><span class="s0">FOREIGN KEY(TeacherID) REFERENCES Teacher(TeacherID),</span>
-<a name="l12"><span class="ln">12   </span></a><span class="s0">FOREIGN KEY(SubjectID) REFERENCES Subject(SubjectID),</span>
+<a name="l12"><span class="ln">12   </span></a><span class="s0">FOREIGN KEY(SubjectsID) REFERENCES Subject(SubjectsID),</span>
 <a name="l13"><span class="ln">13   </span></a><span class="s0">FOREIGN KEY(DepartmentID) REFERENCES Department(DepartmentID)</span>
 <a name="l14"><span class="ln">14   </span></a><span class="s0">);</span></pre>
 </body>

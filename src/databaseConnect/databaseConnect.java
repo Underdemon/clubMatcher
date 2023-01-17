@@ -446,7 +446,7 @@ public class DatabaseConnect
                     System.out.println
                     (
                         "Club Name: " + rs.getString(1)
-                        + "\nClub Subject: " + rs.getString(2)
+                        + "\nSubject Associated to Club: " + rs.getString(2)
                         + "\nDay Running: " + day_running
                         + "\nTime Club Takes Place: " + BLA
                         + "\nTeacher Running Club: " + rs.getString(5)
@@ -998,6 +998,30 @@ public class DatabaseConnect
         return isUnassignedStudentsLeft;
     }
 
+    public String getRandomClub(int subjects)
+    {
+        Statement stmt = null;
+        ResultSet rs = null;
+        String club = null;
+
+        try
+        {
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery("SELECT Club.ClubName FROM Club WHERE Club.SubjectsID = " + subjects + " ORDER BY RANDOM() LIMIT 1");
+
+            if (rs.next())
+                club = rs.getString(1);
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return club;
+    }
+
     /**
      * for user db checks
      * @return
@@ -1164,7 +1188,7 @@ public class DatabaseConnect
                             value = obj.toString();
 
                         if(obj instanceof String)
-                            value = value.replaceAll("\"", "\"\"") ;
+                            value = value.replaceAll("\"", "\"\"") ;    // add string literal
 
                         line = line.concat(value);
 

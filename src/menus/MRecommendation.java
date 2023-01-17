@@ -125,8 +125,8 @@ public class MRecommendation extends clubmatcher.ClubMatcher
                         for(Pair<Integer, Integer> pair : assignment)
                         {
                             if(studentNamesMask[pair.getValue()] != null)
-                                System.out.println(studentNamesMask[pair.getValue()] + ": " + cost_mask[pair.getKey()]);
-                            /*              outputs the student name with the suggested subject                   */
+                                System.out.println(studentNamesMask[pair.getValue()] + ": " + db.getRandomClub(db.getID(cost_mask[pair.getKey()], "Subjects")));
+                            /*              outputs the student name with the suggested subject                       */
                         }
 
                         String limit = " WHERE ";

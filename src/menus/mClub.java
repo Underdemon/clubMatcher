@@ -57,7 +57,7 @@ public class MClub extends clubmatcher.ClubMatcher
                             (
                                     "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                             + "FROM Club "
-                                            + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                            + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                             + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                             + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                             + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID"
@@ -80,7 +80,7 @@ public class MClub extends clubmatcher.ClubMatcher
                             (
                                     "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                             + "FROM Club "
-                                            + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                            + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                             + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                             + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                             + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -136,7 +136,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -191,7 +191,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -233,7 +233,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -281,7 +281,7 @@ public class MClub extends clubmatcher.ClubMatcher
                             (
                                     "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                             + "FROM Club "
-                                            + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                            + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                             + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                             + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                             + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID"
@@ -304,7 +304,7 @@ public class MClub extends clubmatcher.ClubMatcher
                             (
                                     "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                             + "FROM Club "
-                                            + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                            + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                             + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                             + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                             + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -360,7 +360,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -415,7 +415,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -457,7 +457,7 @@ public class MClub extends clubmatcher.ClubMatcher
                                 (
                                         "SELECT Club.ClubName, Subjects.SubjectsName, Club.DayRunning, Club.BLA, Person.PersonName, Department.DepartmentName, Club.StartTime "
                                                 + "FROM Club "
-                                                + "INNER JOIN Subjects ON Club.SubjectID = Subjects.SubjectsID "
+                                                + "INNER JOIN Subjects ON Club.SubjectsID = Subjects.SubjectsID "
                                                 + "INNER JOIN Department ON Club.DepartmentID = Department.DepartmentID "
                                                 + "INNER JOIN Teacher ON Club.TeacherID = Teacher.TeacherID "
                                                 + "INNER JOIN Person ON Teacher.PersonID = Person.PersonID "
@@ -719,7 +719,7 @@ public class MClub extends clubmatcher.ClubMatcher
 
                     db.executeQuery
                             (
-                                    "INSERT INTO Club (ClubName, SubjectID, DayRunning, BLA, TeacherID, DepartmentID, StartTime) "
+                                    "INSERT INTO Club (ClubName, SubjectsID, DayRunning, BLA, TeacherID, DepartmentID, StartTime) "
                                             + "VALUES ('" + club_name + "', " + subjectID + ", " + day_running + ", '" + BLA + "', " + teacherID + ", " + depID + ", '" + start_time + "')"
                             );
 

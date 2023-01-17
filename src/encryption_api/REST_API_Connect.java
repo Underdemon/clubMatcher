@@ -34,7 +34,7 @@ public class REST_API_Connect
             else
                 url = new URL("https://str.justyy.workers.dev/atob/?s=" + data);    // decrypt from base64
             //Parse URL into HttpURLConnection in order to open the connection in order to get the JSON data
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             //Set the request to GET or POST as per the requirements
             conn.setRequestMethod("GET");
             log.info("Request Method Set: GET");
@@ -59,8 +59,7 @@ public class REST_API_Connect
                     inline += sc.nextLine();
                 }
                 inline = inline.replaceAll("^\"|\"$", "");
-                System.out.println("\nJSON Response in String format");
-                System.out.println(inline);
+                log.info("\nJSON Response in String format" + inline);
                 //Close the stream when reading the data has been finished
                 sc.close();
             }

@@ -120,7 +120,7 @@ MRecommendation.java</font>
 <a name="l99"><span class="ln">99   </span></a>
 <a name="l100"><span class="ln">100  </span></a>                            <span class="s2">for</span><span class="s1">(</span><span class="s2">int </span><span class="s1">j = </span><span class="s4">0</span><span class="s1">; j &lt; subjectsOfStudent.getLen(); j++)</span>
 <a name="l101"><span class="ln">101  </span></a>                            <span class="s1">{</span>
-<a name="l102"><span class="ln">102  </span></a>                                <span class="s1">individual_cost.combine(dijkstra.shortestPath(Integer.toString(subjectsOfStudent.returnAtIndex(j)), graph));</span>
+<a name="l102"><span class="ln">102  </span></a>                                <span class="s1">individual_cost.combine(dijkstra.shortestPath(Integer.toString(subjectsOfStudent.returnAtIndex(j)), graph, </span><span class="s2">false</span><span class="s1">));</span>
 <a name="l103"><span class="ln">103  </span></a>                            <span class="s1">}</span>
 <a name="l104"><span class="ln">104  </span></a>
 <a name="l105"><span class="ln">105  </span></a>                            <span class="s2">int </span><span class="s1">j = </span><span class="s4">0</span><span class="s1">;</span>
@@ -146,8 +146,8 @@ MRecommendation.java</font>
 <a name="l125"><span class="ln">125  </span></a>                        <span class="s2">for</span><span class="s1">(Pair&lt;Integer, Integer&gt; pair : assignment)</span>
 <a name="l126"><span class="ln">126  </span></a>                        <span class="s1">{</span>
 <a name="l127"><span class="ln">127  </span></a>                            <span class="s2">if</span><span class="s1">(studentNamesMask[pair.getValue()] != </span><span class="s2">null</span><span class="s1">)</span>
-<a name="l128"><span class="ln">128  </span></a>                                <span class="s1">System.out.println(studentNamesMask[pair.getValue()] + </span><span class="s5">&quot;: &quot; </span><span class="s1">+ cost_mask[pair.getKey()]);</span>
-<a name="l129"><span class="ln">129  </span></a>                            <span class="s0">/*              outputs the student name with the suggested subject                   */</span>
+<a name="l128"><span class="ln">128  </span></a>                                <span class="s1">System.out.println(studentNamesMask[pair.getValue()] + </span><span class="s5">&quot;: &quot; </span><span class="s1">+ db.getRandomClub(db.getID(cost_mask[pair.getKey()], </span><span class="s5">&quot;Subjects&quot;</span><span class="s1">)));</span>
+<a name="l129"><span class="ln">129  </span></a>                            <span class="s0">/*              outputs the student name with the suggested subject                       */</span>
 <a name="l130"><span class="ln">130  </span></a>                        <span class="s1">}</span>
 <a name="l131"><span class="ln">131  </span></a>
 <a name="l132"><span class="ln">132  </span></a>                        <span class="s1">String limit = </span><span class="s5">&quot; WHERE &quot;</span><span class="s1">;</span>

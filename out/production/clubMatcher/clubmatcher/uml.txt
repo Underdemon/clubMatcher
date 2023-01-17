@@ -52,6 +52,7 @@ entity "Club" as club
   BLA : VARCHAR(1)
   //TeacherID// : INTEGER <<FK>>
   //DepartmentID// : INTEGER <<FK>>
+  //SubjectsID// : INTEGER <<FK>>
   StartTime : VARCHAR(255)
 }
 

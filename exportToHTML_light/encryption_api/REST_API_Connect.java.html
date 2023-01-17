@@ -55,7 +55,7 @@ REST_API_Connect.java</font>
 <a name="l34"><span class="ln">34   </span></a>            <span class="s0">else</span>
 <a name="l35"><span class="ln">35   </span></a>                <span class="s1">url = </span><span class="s0">new </span><span class="s1">URL(</span><span class="s2">&quot;https://str.justyy.workers.dev/atob/?s=&quot; </span><span class="s1">+ data);    </span><span class="s3">// decrypt from base64</span>
 <a name="l36"><span class="ln">36   </span></a>            <span class="s3">//Parse URL into HttpURLConnection in order to open the connection in order to get the JSON data</span>
-<a name="l37"><span class="ln">37   </span></a>            <span class="s1">HttpURLConnection conn = (HttpURLConnection)url.openConnection();</span>
+<a name="l37"><span class="ln">37   </span></a>            <span class="s1">HttpURLConnection conn = (HttpURLConnection) url.openConnection();</span>
 <a name="l38"><span class="ln">38   </span></a>            <span class="s3">//Set the request to GET or POST as per the requirements</span>
 <a name="l39"><span class="ln">39   </span></a>            <span class="s1">conn.setRequestMethod(</span><span class="s2">&quot;GET&quot;</span><span class="s1">);</span>
 <a name="l40"><span class="ln">40   </span></a>            <span class="s1">log.info(</span><span class="s2">&quot;Request Method Set: GET&quot;</span><span class="s1">);</span>
@@ -80,24 +80,23 @@ REST_API_Connect.java</font>
 <a name="l59"><span class="ln">59   </span></a>                    <span class="s1">inline += sc.nextLine();</span>
 <a name="l60"><span class="ln">60   </span></a>                <span class="s1">}</span>
 <a name="l61"><span class="ln">61   </span></a>                <span class="s1">inline = inline.replaceAll(</span><span class="s2">&quot;^</span><span class="s6">\&quot;</span><span class="s2">|</span><span class="s6">\&quot;</span><span class="s2">$&quot;</span><span class="s1">, </span><span class="s2">&quot;&quot;</span><span class="s1">);</span>
-<a name="l62"><span class="ln">62   </span></a>                <span class="s1">System.out.println(</span><span class="s2">&quot;</span><span class="s6">\n</span><span class="s2">JSON Response in String format&quot;</span><span class="s1">);</span>
-<a name="l63"><span class="ln">63   </span></a>                <span class="s1">System.out.println(inline);</span>
-<a name="l64"><span class="ln">64   </span></a>                <span class="s3">//Close the stream when reading the data has been finished</span>
-<a name="l65"><span class="ln">65   </span></a>                <span class="s1">sc.close();</span>
-<a name="l66"><span class="ln">66   </span></a>            <span class="s1">}</span>
-<a name="l67"><span class="ln">67   </span></a>
-<a name="l68"><span class="ln">68   </span></a>            <span class="s3">//Disconnect the HttpURLConnection stream</span>
-<a name="l69"><span class="ln">69   </span></a>            <span class="s1">conn.disconnect();</span>
-<a name="l70"><span class="ln">70   </span></a>        <span class="s1">}</span>
-<a name="l71"><span class="ln">71   </span></a>        <span class="s0">catch</span><span class="s1">(Exception e)</span>
-<a name="l72"><span class="ln">72   </span></a>        <span class="s1">{</span>
-<a name="l73"><span class="ln">73   </span></a>            <span class="s1">log.severe(</span><span class="s2">&quot;Connection Failed&quot;</span><span class="s1">);</span>
-<a name="l74"><span class="ln">74   </span></a>            <span class="s1">System.out.println(e.toString());</span>
-<a name="l75"><span class="ln">75   </span></a>        <span class="s1">}</span>
-<a name="l76"><span class="ln">76   </span></a>
-<a name="l77"><span class="ln">77   </span></a>        <span class="s0">return </span><span class="s1">inline;</span>
-<a name="l78"><span class="ln">78   </span></a>    <span class="s1">}</span>
-<a name="l79"><span class="ln">79   </span></a><span class="s1">}</span>
-<a name="l80"><span class="ln">80   </span></a></pre>
+<a name="l62"><span class="ln">62   </span></a>                <span class="s1">log.info(</span><span class="s2">&quot;</span><span class="s6">\n</span><span class="s2">JSON Response in String format&quot; </span><span class="s1">+ inline);</span>
+<a name="l63"><span class="ln">63   </span></a>                <span class="s3">//Close the stream when reading the data has been finished</span>
+<a name="l64"><span class="ln">64   </span></a>                <span class="s1">sc.close();</span>
+<a name="l65"><span class="ln">65   </span></a>            <span class="s1">}</span>
+<a name="l66"><span class="ln">66   </span></a>
+<a name="l67"><span class="ln">67   </span></a>            <span class="s3">//Disconnect the HttpURLConnection stream</span>
+<a name="l68"><span class="ln">68   </span></a>            <span class="s1">conn.disconnect();</span>
+<a name="l69"><span class="ln">69   </span></a>        <span class="s1">}</span>
+<a name="l70"><span class="ln">70   </span></a>        <span class="s0">catch</span><span class="s1">(Exception e)</span>
+<a name="l71"><span class="ln">71   </span></a>        <span class="s1">{</span>
+<a name="l72"><span class="ln">72   </span></a>            <span class="s1">log.severe(</span><span class="s2">&quot;Connection Failed&quot;</span><span class="s1">);</span>
+<a name="l73"><span class="ln">73   </span></a>            <span class="s1">System.out.println(e.toString());</span>
+<a name="l74"><span class="ln">74   </span></a>        <span class="s1">}</span>
+<a name="l75"><span class="ln">75   </span></a>
+<a name="l76"><span class="ln">76   </span></a>        <span class="s0">return </span><span class="s1">inline;</span>
+<a name="l77"><span class="ln">77   </span></a>    <span class="s1">}</span>
+<a name="l78"><span class="ln">78   </span></a><span class="s1">}</span>
+<a name="l79"><span class="ln">79   </span></a></pre>
 </body>
 </html>
